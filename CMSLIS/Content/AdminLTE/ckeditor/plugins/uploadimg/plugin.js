@@ -15,5 +15,7 @@ CKEDITOR.plugins.add('uploadimg', {
                     e.openDialog('uploadimgDialog');
                 }
             });
+           
+           
         }
    });

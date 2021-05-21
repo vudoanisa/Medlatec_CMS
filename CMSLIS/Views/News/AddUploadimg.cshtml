@@ -11,7 +11,8 @@
     var dialog = window.parent;
    
     var CKEDITOR = dialog.CKEDITOR;
-    var oEditor = CKEDITOR.instances.content;
+    var curentInstance = CKEDITOR.currentInstance.name;
+    var oEditor = CKEDITOR.instances[curentInstance];
     var okListener = function (ev) {
         var sHtml = $('#list').html();
         oEditor.insertHtml(sHtml);

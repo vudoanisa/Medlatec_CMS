@@ -4761,9 +4761,6 @@
     <Content Include="Content\assets\Themes\ckeditor\skins\v2\templates.css" />
     <Content Include="Content\assets\Themes\ckeditor\styles.js" />
     <Content Include="Content\assets\Themes\ckeditor\themes\default\theme.js" />
-    <Content Include="Content\assets\Themes\ckfinder\bin\Debug\CKFinder.dll" />
-    <Content Include="Content\assets\Themes\ckfinder\bin\Debug\CKFinder.pdb" />
-    <Content Include="Content\assets\Themes\ckfinder\bin\Release\CKFinder.dll" />
     <Content Include="Content\assets\Themes\ckfinder\changelog.txt" />
     <Content Include="Content\assets\Themes\ckfinder\ckfinder.html" />
     <Content Include="Content\assets\Themes\ckfinder\ckfinder.js" />
@@ -8437,6 +8434,8 @@
     <Folder Include="Content\assets\Themes\ckeditor\samples\toolbarconfigurator\font\" />
     <Folder Include="Content\assets\Themes\ckeditor\samples\toolbarconfigurator\js\" />
     <Folder Include="Content\assets\Themes\ckeditor\samples\toolbarconfigurator\lib\codemirror\" />
+    <Folder Include="Content\assets\Themes\ckfinder\bin\Debug\" />
+    <Folder Include="Content\assets\Themes\ckfinder\bin\Release\" />
     <Folder Include="Global\" />
     <Folder Include="ImagePath\imageslead\" />
     <Folder Include="ImagePath\images\" />
