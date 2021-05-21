@@ -1,0 +1,160 @@
+﻿@model  CMS_Core.Entity.cms_Video
+@using CMS_Core.Entity;
+@{
+
+    ViewBag.Title = "Thêm mới video";
+    CMS_Core.Common.ComboBoxFinal<cms_VideoCate> VideoCate = new CMS_Core.Common.ComboBoxFinal<cms_VideoCate>();
+}
+
+
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/js/Customer/ListVideoAdd.js"></script>
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<script src="/Content/assets/Themes/ckeditor/ckeditor.js"></script>
+
+
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ListVideoAdd", "News", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        <div class="box-body">
+
+
+            <!-- Begin left page -->
+            <div class="col-md-9">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Tên video<span class="required">*</span> </label>
+                    <div class="col-xs-10">
+                        @Html.TextBoxFor(m => m.VideoName, new { @class = "form-control", type = "SingleLine", placeholder = "Tên video" })
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Tiêu đề video<span class="required">*</span> </label>
+                    <div class="col-xs-10">
+                        @Html.TextBoxFor(m => m.VideoTitle, new { @class = "form-control", type = "SingleLine", placeholder = "Tiêu đề video" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Mô tả<span class="required">*</span> </label>
+                    <div class="col-xs-10">
+                        @Html.TextAreaFor(m => m.VideoDescription, new { @class = "form-control", type = "SingleLine", placeholder = "Vắn tắt", rows = "3" })
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="col-lg-12" style="height:525px;">
+                        @Html.TextAreaFor(m => m.VideoCode, new { @class = "form-control", type = "SingleLine", placeholder = "VideoCode", rows = "800", id = "content", name = "content" })
+                        <script>
+                            //<![CDATA[
+                            CKEDITOR.replace('content',
+                                {
+                                    height: '400px',
+                                    filebrowserBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html',
+                                    filebrowserImageBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html?type=Images',
+                                    filebrowserUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=/archive/',
+                                    filebrowserImageUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Images&currentFolder=/cars/'
+                                });
+                                                                                                                                                                        //]]>
+                        </script>
+                    </div>
+                </div>
+
+
+                <div class="form-group text-center">
+                    <div class="col-xs-12" style="margin-top:20px;">
+                        <button type="submit" name="submit" id="SaveListVideoAdd" value="SaveListVideoAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+                        <a id="BackListVideo" href="/News/ListVideo" class="btn btn-primary"> <i class="fa fa-backward"></i>  Quay lại (Alt + Z) </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- End left page -->
+            <!-- Begin right page -->
+
+            <div class="col-md-3">
+                <div class="box box-info">
+
+
+                    <h4 class="text-center mt-3 mb-1 ">Chuyên mục video</h4>
+                    @Html.DropDownListFor(m => m.vId, VideoCate.GetComboBoxBySelected("select vid,vName from [dbo].[cms_VideoCate] where vActive = 1", "vid", "vName", Model.vId.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                    <p class="text-center control-label" style="margin:6px 0 1px 10px;">Ảnh đại diện (300px x 400px)</p>
+                    <input type="file" name="ImageFile" id="ImageFile" class="form-control" />
+                    @if (@Model.VideoImageThumb != null)
+                    {
+                        <Img src='@CMSLIS.Common.Common.GetPathImage(Model.VideoImageThumb)' height="40px" width="40px" />
+                        @Html.TextBoxFor(m => m.VideoImageThumb, new { @class = "checkbox-inline", Type = "hidden" })
+                        @Html.TextBoxFor(m => m.VideoFileWeb, new { @class = "checkbox-inline", Type = "hidden" })
+                    }
+
+                    <p class="text-center control-label" style="margin:6px 0 1px 10px;">Video</p>
+                    <input type="file" name="VideoFilePath" id="VideoFilePath" class="form-control" />
+                    @if (@Model.VideoFile != null)
+                    {
+                        <Img src='@CMSLIS.Common.Common.GetPathImage(Model.VideoImageThumb)' height="40px" width="40px" />
+                        @Html.TextBoxFor(m => m.VideoFile, new { @class = "checkbox-inline", Type = "hidden" })
+                    }
+
+                    <p class="text-center control-label" style="margin:6px 0 2px 10px;">Chiều rộng</p>
+                    @Html.TextBoxFor(m => m.VideoWidth, new { @class = "form-control", type = "number", placeholder = "Chiều rộng" })
+
+                    <p class="text-center control-label" style="margin:6px 0 2px 10px;">Chiều cao</p>
+                    @Html.TextBoxFor(m => m.VideoHight, new { @class = "form-control", type = "number", placeholder = "Chiều cao" })
+
+                    <p class="text-center control-label" style="margin:6px 0 2px 10px;">Thời gian xuất bản</p>
+                    @Html.TextBoxFor(m => m.datepubView, new { @class = "form-control", type = "SingleLine", placeholder = "Thời gian xuất bản" })
+
+                    <p class="text-center control-label" style="margin:6px 0 2px 10px;">LinkVideo</p>
+                    @Html.TextBoxFor(m => m.linkvideo, new { @class = "form-control", type = "SingleLine", placeholder = "LinkVideo" })
+
+
+                </div>
+            </div>
+
+
+            @Html.TextBoxFor(m => m.videoId, new { Type = "hidden" })
+
+        </div>
+    }
+</div>
+<!-- End Form -->
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+<script src="/Content/assets/vendors/js/datepicker/moment.min.js"></script>
+
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+<script src="/Content/AdminLTE/js/adminlte.js"></script>
+<script src="/Content/AdminLTE/js/init.js"></script>
+
+
+
+@*<script src="/Content/AdminLTE/js/adminlte.js"></script>
+    <script src="/Content/AdminLTE/js/init.js"></script>*@

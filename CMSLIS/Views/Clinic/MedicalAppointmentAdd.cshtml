@@ -1,0 +1,431 @@
+﻿@model  CMS_Core.Entity.CMS_PATIENTINFO_APPOINTMENT
+@using CMS_Core.Entity;
+
+@{
+    ViewBag.Title = "Đặt lịch khám";
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBox = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+}
+
+
+
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+
+
+
+
+    @*@Html.ValidationSummary(false, "", new { @class = "text-danger" })*@
+
+
+
+    @using (Html.BeginForm("MedicalAppointmentAdd", "Clinic", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+    {
+
+        @Html.AntiForgeryToken()
+        <!-- Main content -->
+        <section class="content">
+            <div class="col-md-12">
+
+
+
+
+                <div class="tab-content">
+
+
+
+                    <div class="col-12 ml-auto" style="margin-top: -10px;margin-bottom: -5px;">
+                        <div class="section-title mt-3 mb-3">
+                            <h4>
+                                1. Thông tin bệnh nhân
+                            </h4>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Mã KH:</label>
+                                <div class="col-xs-9">
+                                    @Html.TextBoxFor(m => m.PATIENTINFO_ID, new { @class = "form-control", type = "SingleLine", placeholder = "Mã KH", autocomplete = "false", id = "PATIENTINFO_ID" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Họ tên:<span class="required">*</span></label>
+                                <div class="col-xs-9">
+                                    @Html.TextBoxFor(m => m.PATIENTNAME, new { @class = "form-control", type = "SingleLine", placeholder = "Họ tên", autocomplete = "false", id = "PATIENTNAME" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Giới tính:</label>
+                                <div class="col-xs-9">
+                                    @Html.DropDownListFor(m => m.SEX, ComboBox.GetComboBoxBySelected("SELECT   category_name  as idfield,    category_desc as namefield FROM  dm_gioitinh where categorys_status = 2", "idfield", "namefield", Model.SEX.ToString(), false), new { @class = "form-control select2", id = "SEX", onchange = "SelectedValueSEX(this)" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label col-xs-4 " style="font-weight:bold;  ">Cân nặng:</label>
+                                <div class="col-xs-8">
+                                    @Html.TextBoxFor(m => m.weight, new { @class = "form-control", type = "number", placeholder = "Cân nặng", autocomplete = "false", id = "weight" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label col-xs-5 " style="font-weight:bold;  ">Ngày Sinh:</label>
+                                <div class="col-xs-7">
+                                    @Html.TextBoxFor(m => m.BIRTHDAYVIEW, new { @class = "form-control", id = "date", name = "date" })
+                                    <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group row">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Tuổi:</label>
+                                <div class="col-xs-9">
+                                    @Html.TextBoxFor(m => m.AGE, new { @class = "form-control", type = "number", placeholder = "Tuổi", id = "AGE" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Tỉnh:</label>
+                                <div class="col-xs-9">
+                                    @Html.DropDownListFor(m => m.CITY, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    category_desc as namefield FROM  DM_TINHTHANH where categorys_status = 2", "idfield", "namefield", Model.CITY.ToString(), false), new { @class = "form-control select2", ID = "city", onchange = "SelectedValueTinh(this)" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Huyện:</label>
+                                <div class="col-xs-9">
+                                    @Html.DropDownListFor(m => m.DISTRICT, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    category_desc as namefield FROM  DM_QUANHUYEN where categorys_status = 2 and tinhthanh_id =   " + Model.CITY, "idfield", "namefield", Model.DISTRICT.ToString(), true), new { @class = "form-control select2", id = "huyen", onchange = "SelectedValuehuyen(this)" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label col-xs-2 " style="font-weight:bold;  ">Địa chỉ:</label>
+                                <div class="col-xs-10">
+                                    @Html.TextBoxFor(m => m.ADDRESS, new { @class = "form-control", type = "SingleLine", placeholder = "Địa chỉ", autocomplete = "false", id = "ADDRESS" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    
+
+                    <div class="form-group row">
+                        <label class="col-lg-5 form-control-label text-bold text-right">Thông tin phụ huynh (Đối với trẻ dưới 72 tháng tuổi)  </label>
+                        <div class="col-lg-7">
+                            @Html.TextBoxFor(m => m.PARENTS_INFO, new { @class = "form-control", type = "SingleLine", placeholder = "Thông tin phụ huynh", autocomplete = "false", id = "PARENTS_INFO" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Di động:</label>
+                                <div class="col-xs-9">
+                                    @Html.TextBoxFor(m => m.PHONE, new { @class = "form-control", type = "number", placeholder = "Di động", id = "PHONE" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Cố định:</label>
+                                <div class="col-xs-9">
+                                    @Html.TextBoxFor(m => m.PHONE1, new { @class = "form-control", type = "number", placeholder = "Cố định", id = "PHONE1" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Email:</label>
+                                <div class="col-xs-9">
+                                    @Html.TextBoxFor(m => m.EMAILADDRESS, new { @class = "form-control", type = "email", placeholder = "Email", autocomplete = "false", id = "EMAILADDRESS" })
+                                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+ 
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Số CMT:</label>
+                                <div class="col-xs-9">
+                                    @Html.TextBoxFor(m => m.IDENTIFICATION, new { @class = "form-control", type = "SingleLine", placeholder = "Số chứng minh thư", autocomplete = "false", id = "IDENTIFICATION" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Ngày cấp:</label>
+                                <div class="col-xs-9">
+                                    @Html.TextBoxFor(m => m.IDENTIFICATION_DATEVIEW, new { @class = "form-control", id = "dateCMT", name = "dateCMT" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Nơi cấp:</label>
+                                <div class="col-xs-9">
+                                    @Html.TextBoxFor(m => m.IDENTIFICATION_ISSUED, new { @class = "form-control", type = "SingleLine", placeholder = "Nơi cấp", autocomplete = "false", id = "IDENTIFICATION_ISSUED" })
+                                </div>
+                            </div>
+                        </div>
+
+
+                        
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Hộ chiếu:</label>
+                                <div class="col-xs-9">
+                                    @Html.TextBoxFor(m => m.PASSPORT, new { @class = "form-control", type = "SingleLine", placeholder = "Số Hộ chiếu", autocomplete = "false", id = "PASSPORT" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Ngày cấp:</label>
+                                <div class="col-xs-9">
+                                    @Html.TextBoxFor(m => m.PASSPORT_DATEVIEW, new { @class = "form-control", id = "datePassport", name = "datePassport" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Nơi cấp:</label>
+                                <div class="col-xs-9">
+                                    @Html.TextBoxFor(m => m.PASSPORT_ISSUED, new { @class = "form-control", type = "SingleLine", placeholder = "Nơi cấp", autocomplete = "false", id = "PASSPORT_ISSUED" })
+                                </div>
+                            </div>
+                        </div>
+
+
+                       
+                    </div>
+
+
+
+
+                    <div class="col-12 ml-auto" style=" margin-bottom: -5px;">
+                        <div class="section-title mt-3 mb-3">
+                            <h4>2. Thông tin BHYT</h4>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label col-xs-3 " style="font-weight:bold;  ">Số thẻ:</label>
+                                <div class="col-xs-9">
+                                    @Html.TextBoxFor(m => m.INSURANCE_CARD, new { @class = "form-control", type = "SingleLine", placeholder = "Số thẻ", ID = "INSURANCE_CARD", Name = "INSURANCE_CARD", autocomplete = "false" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label col-xs-4 " style="font-weight:bold;  ">Nơi ĐK:</label>
+                                <div class="col-xs-8">
+                                    @Html.TextBoxFor(m => m.INSURANCE_CARD_PLACE, new { @class = "form-control", type = "SingleLine", placeholder = "Nơi đăng ký", autocomplete = "false", id = "INSURANCE_CARD_PLACE" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label class="control-label col-xs-2 " style="font-weight:bold;  ">Hạn SD:</label>
+                                <div class="col-xs-4">
+                                    @Html.TextBoxFor(m => m.INSURANCE_CARD_STARTVIEW, new { @class = "form-control", id = "INSURANCE_CARD_START", name = "INSURANCE_CARD_START" })
+                                </div>
+                                <label class="control-label col-xs-2 " style="font-weight:bold;  ">Đến:</label>
+                                <div class="col-xs-4">
+                                    @Html.TextBoxFor(m => m.INSURANCE_CARD_ENDVIEW, new { @class = "form-control", id = "INSURANCE_CARD_END", name = "INSURANCE_CARD_END" })
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                   
+
+                    <div class="col-12 ml-auto" style=" margin-bottom: -5px;">
+                        <div class="section-title mt-3 mb-3">
+                            <h4>3. Thông tin đặt lịch</h4>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label col-xs-4 " style="font-weight:bold;  ">Thời gian đặt lịch:</label>
+                                <div class="col-xs-8">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        @Html.TextBoxFor(m => m.APPOINTMENT_VIEW, new { @class = "form-control", Type = "text", id = "APPOINTMENT_VIEW", name = "INSURANCE_CARD_END" })
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                </div>
+                        </div>
+
+                        @*<label class="col-lg-1 form-control-label text-bold text-right">Thời gian đặt lịch </label>
+                        <div class="col-lg-2">
+
+                            <div class='input-group date' id='datetimepicker1'>
+                                @Html.TextBoxFor(m => m.APPOINTMENT_VIEW, new { @class = "form-control", Type = "text", id = "APPOINTMENT_VIEW", name = "INSURANCE_CARD_END" })
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>*@
+
+                        <label class="col-lg-1 form-control-label text-bold text-right">Kênh đặt lịch<span class="required">*</span></label>
+                        <div class="col-lg-2">
+                            @Html.DropDownListFor(m => m.CHANNEL, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    category_desc as namefield FROM  DM_CHANNEL where categorys_status = 2  ", "idfield", "namefield", Model.CHANNEL.ToString(), true), new { @class = "form-control select2", id = "CHANNEL", onchange = "SelectedValueChannel(this)" })
+                        </div>
+                        <label class="col-lg-1 form-control-label text-bold text-right">Phòng khám</label>
+                        <div class="col-lg-2">
+                            @Html.DropDownListFor(m => m.DEPARTMENTSID, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    DEPARTMENT_NAME as namefield FROM  CMS_DEPARTMENT where DEPARTMENT_STATUS = 2 and PARTNERID = " + UserInfo.PARTNERID + "  order by DEPARTMENT_NAME asc", "idfield", "namefield", Model.DEPARTMENTSID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValueDEPARTMENTSID(this)", id = "DEPARTMENTSID" })
+                            @*@Html.DropDownListFor(m => m.DEPARTMENTSID, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    category_desc as namefield FROM  DM_KHOAPHONG where categorys_status = 2 and PARTNERID = " + UserInfo.PARTNERID + "  order by CATEGORY_ORDER asc", "idfield", "namefield", Model.DEPARTMENTSID.ToString(), true), new { @class = "form-control select2", id = "DEPARTMENTSID", onchange = "SelectedValueDEPARTMENTSID(this)" })*@
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+
+
+
+
+                @Html.TextBoxFor(m => m.PID, new { @class = "checkbox-inline", Type = "hidden" })
+                @Html.TextBoxFor(m => m.PARTNERID, new { @class = "checkbox-inline", Type = "hidden" })
+                @Html.TextBoxFor(m => m.partnerid_Code, new { @class = "checkbox-inline", Type = "hidden" })
+
+                <div class="em-separator separator-dashed"></div>
+                <div class="text-right" style="margin-top: 15px;">
+                    <button type="submit" name="submit" value="hiddent" id="hiddent" class="btn btn-danger" style="display: none;"></button>
+                    <button type="submit" name="submit" id="SaveMedicalAppointmentAdd" value="SaveMedicalAppointmentAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+
+                    <a id="BackMedicalAppointment" href="/Clinic/MedicalAppointment" class="btn btn-primary"><i class="fa fa-backward"></i> Quay lại (Alt + Z) </a>
+
+                </div>
+
+
+            </div>
+        </section>
+    }
+</div>
+<!-- End Content -->
+<!-- End Row -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<!-- InputMask -->
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.js"></script>
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.extensions.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+<script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+
+
+
+@*<script src="/Content/AdminLTE/js/moment.js"></script>
+    <script src="/Content/AdminLTE/js/bootstrap-datetimepicker.js"></script>*@
+
+
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+<script src="/Content/AdminLTE/js/Customer/MedicalAppointmentAdd.js"></script>
+
+<script src="/Content/assets/js/jquery.maskedinput.js"></script>
+<script src="/Content/assets/js/jquery.masknumber.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#INSURANCE_CARD").mask("aa-9-99 999-999-9999");
+    });
+</script>
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker({
+            // dateFormat: 'dd-mm-yy',
+            format: 'DD/MM/YYYY HH:mm:ss'
+        });
+
+
+       // $('#datetimepicker1').datetimepicker();
+    });
+</script>
+

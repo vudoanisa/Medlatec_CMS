@@ -1,0 +1,75 @@
+﻿@model  CMSLIS.Models.FileModel
+@{
+    ViewBag.Title = "Upload ảnh";
+    var UploadImagePaths = (List<string>)ViewBag.UploadImagePaths;
+
+}
+
+
+<script type="text/javascript">
+
+    var dialog = window.parent;
+   
+    var CKEDITOR = dialog.CKEDITOR;
+    var oEditor = CKEDITOR.instances.content;
+    var okListener = function (ev) {
+        var sHtml = $('#list').html();
+        oEditor.insertHtml(sHtml);
+        CKEDITOR.dialog.getCurrent().removeListener("ok", okListener);
+        CKEDITOR.dialog.getCurrent().removeListener("cancel", cancelListener);
+    };
+    var cancelListener = function (ev) {
+
+        CKEDITOR.dialog.getCurrent().removeListener("ok", okListener);
+        CKEDITOR.dialog.getCurrent().removeListener("cancel", cancelListener);
+    };
+    CKEDITOR.event.implementOn(CKEDITOR.dialog.getCurrent());
+    CKEDITOR.dialog.getCurrent().on("ok", okListener);
+    CKEDITOR.dialog.getCurrent().on("cancel", cancelListener);
+</script>
+
+
+
+<div class="widget has-shadow">
+    @using (Html.BeginForm("AddUploadimg", "News", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <label class="text-danger"> @ViewBag.TitleSuccsess</label>
+
+        <div class="form-group row d-flex align-items-center mb-5">
+            <label class="col-lg-2 form-control-label d-flex justify-content-lg-end" style="margin-left:21px;">
+            Chọn ảnh<span class="required">*</span></label>
+            <div class="col-lg-6" style="margin-left:15px;">
+                @Html.TextBoxFor(model => model.files, "", new { @type = "file", @multiple = "multiple" })
+            </div>
+        </div>
+
+        <div class="em-separator separator-dashed"></div>
+        <div class="sign-btn text-center">
+            <button type="submit" name="submit" value="Uploadimg" class="btn btn-gradient-01">Upload</button>
+        </div>
+
+        if (UploadImagePaths != null)
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 text-success">
+                    <div id="list">
+                        @foreach (var data in UploadImagePaths)
+                        {
+                            <img src="@data.ToString()" />
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<!-- End Form -->
+<!-- Begin Page Vendor Js -->
+<script src="/Content/assets/vendors/js/nicescroll/nicescroll.min.js"></script>
+<script src="/Content/assets/vendors/js/owl-carousel/owl.carousel.min.js"></script>
+<script src="/Content/assets/vendors/js/app/app.min.js"></script>
+<!-- End Page Vendor Js -->

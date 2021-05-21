@@ -1,0 +1,193 @@
+﻿@model  CMSLIS.Models.ListControlViewModel
+@using CMS_Core.Entity;
+
+@{
+    ViewBag.Title = "CATEGORYSAddListField";
+}
+
+
+<!-- Begin Content -->
+
+
+@using (Html.BeginForm("CATEGORYSAddListField", "CatalogSystem", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="widget has-shadow">
+
+                <div class="form-group row d-flex align-items-center mb-5">
+                    @if (@ViewBag.TitleSuccsess != null)
+                    {
+                        <span class="text-danger justify-content-lg-end" style="margin-left: 22px;">
+                            @ViewBag.TitleSuccsess
+                        </span>
+                    }
+                </div>
+                <div class="form-group row d-flex align-items-center mb-5">
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xl-12">
+            <!-- Sorting -->
+            <div class="widget has-shadow">
+                <div class="widget-body">
+                    <div class="table-responsive">
+                        <table class="table mb-0" id="example2">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Class</th>
+                                    <th>Label name</th>
+                                    <th>Placeholder</th>
+                                    <th>Required</th>
+                                    <th>FieldType</th>
+                                    <th>Field Name</th>
+                                    <th>DisplayOrder</th>
+                                    <th>Orientation</th>
+                                    <th>SQL</th>
+                                    <th>Cols Length</th>
+                                    <th>Rows Length</th>
+                                    <th>Textbox Type</th>
+                                    <th>Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model._Menus != null)
+                                {
+                                    for (int i = 0; i < Model._Menus.Count; i++)
+
+                                    {
+                                        <tr>
+                                            <td>@Model._Menus[i].ID</td>
+                                            <td>@Model._Menus[i].menName </td>
+                                            <td>@Model._Menus[i].ControlID</td>
+                                            <td>@Model._Menus[i].ControlName</td>
+                                            <td>@Model._Menus[i].ControlDes</td>
+                                            <td>
+                                                @Html.DropDownListFor(m => m._Menus[i].ControlStatus, CMSLIS.Common.Common.GetStatus(Model._Menus[i].ControlStatus), new { @class = "form-control select2", id = "ControlStatus", name = "ControlStatus" })
+                                            </td>
+                                            <td>
+                                                @Html.DropDownListFor(m => m._Menus[i].LangID, CMSLIS.Common.Common.Getcms_Language(Model._Menus[i].LangID), new { @class = "form-control select2", id = "LangID", name = "LangID" })
+                                            </td>
+                                            <td>
+                                                <a class="Update" href="javascript:;">Update</a>
+
+                                            </td>
+                                            @Html.TextBoxFor(m => m._Menus[i].ID, new { @class = "checkbox-inline", Type = "hidden", name = "ID" })
+                                            @Html.TextBoxFor(m => m._Menus[i].menID, new { @class = "checkbox-inline menID", Type = "hidden", name = "menID" })
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+
+
+                        <table class="table mb-0">
+                            <tr>
+                                <td>
+                                    @Html.TextBoxFor(m => m._ControlName.ControlID, new { @class = "form-control", type = "SingleLine", placeholder = "ID Control" })
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(m => m._ControlName.ControlName, new { @class = "form-control", type = "SingleLine", placeholder = "Tên Control" })
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(m => m._ControlName.ControlDes, new { @class = "form-control", type = "SingleLine", placeholder = "Mô tả" })
+                                </td>
+                                <td>
+                                    @Html.DropDownListFor(m => m._ControlName.ControlStatus, CMSLIS.Common.Common.GetStatus(), new { @class = "form-control select2", id = "ControlStatus", name = "ControlStatus" })
+                                </td>
+                                <td>
+                                    @Html.DropDownListFor(m => m._ControlName.LangID, CMSLIS.Common.Common.Getcms_Language(), new { @class = "form-control select2", id = "LangID", name = "LangID" })
+                                </td>
+                                <td>
+                                    <button type="submit" id="SaveListControl" name="submit" value="SaveListControl" class="btn btn-primary" style="width:105px"> <i class="fa fa-save"></i> Lưu</button>
+                                </td>
+
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- End Sorting -->
+
+        </div>
+    </div>
+    <!-- End Content -->
+}
+
+<!-- Begin Page Vendor Js -->
+<script src="/Content/assets/vendors/js/datatables/datatables.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/dataTables.buttons.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/jszip.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/buttons.html5.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/pdfmake.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/vfs_fonts.js"></script>
+<script src="/Content/assets/vendors/js/tabledit/jquery.tabledit.js"></script>
+<script src="/Content/assets/vendors/js/datatables/buttons.print.min.js"></script>
+<script src="/Content/assets/vendors/js/nicescroll/nicescroll.min.js"></script>
+<script src="/Content/assets/vendors/js/app/app.min.js"></script>
+
+<!-- End Page Vendor Js -->
+<!-- Begin Page Snippets -->
+<script src="/Content/assets/js/components/tables/tables.js"></script>
+<!-- End Page Snippets -->
+
+
+<script type="text/javascript">
+    //To get selected value an text of dropdownlist
+    function SelectedValue(ddlObject) {
+        document.getElementById('cmdSearch').click();
+    }
+
+    $('#example2').Tabledit({
+        editButton: false,
+        deleteButton: false,
+        hideIdentifier: false,
+        columns: {
+            identifier: [0, 'id'],
+            editable: [[2, 'ControlID'], [3, 'ControlName'], [4, 'ControlDes']]
+        }
+    });
+
+
+    //Update event handler.
+    $("body").on("click", "#example2 .Update", function () {
+        var row = $(this).closest("tr");
+        var cms_ControlName = {};
+        cms_ControlName.menID = row.find(".menID").val();
+        cms_ControlName.id = row.find('input[name="id"]').val();
+        cms_ControlName.ControlID = row.find('input[name="ControlID"]').val();
+        cms_ControlName.ControlName = row.find('input[name="ControlName"]').val();
+        cms_ControlName.ControlDes = row.find('input[name="ControlDes"]').val();
+        cms_ControlName.ControlStatus = row.find('select[id="ControlStatus"]').val();
+        cms_ControlName.LangID = row.find('select[id="LangID"]').val();
+        $.ajax({
+            type: "POST",
+            url: "/System/ListControlUpdate",
+            data: '{ControlNameValue:' + JSON.stringify(cms_ControlName) + '}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        });
+
+        location.reload();
+
+
+    });
+
+
+</script>
+
+
+

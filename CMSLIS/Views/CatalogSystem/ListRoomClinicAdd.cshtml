@@ -1,0 +1,94 @@
+﻿@model  CMS_Core.Entity.CMS_ROOM_CLINIC
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Thêm mới phòng khám";
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBox = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+}
+<script src="/Content/AdminLTE/js/Customer/ListRoomClinicAdd.js"></script>
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<!-- Begin Form -->
+<div class="box box-info">
+     
+    @using (Html.BeginForm("ListRoomClinicAdd", "CatalogSystem", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+    <div class="box-body">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Tên phòng khám:<span class="required">*</span></label>
+            <div class="col-xs-6">
+                @Html.TextBoxFor(m => m.ROOM_NAME, new { @class = "form-control", type = "SingleLine", placeholder = "Tên phòng khám" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Mô tả :<span class="required">*</span> </label>
+            <div class="col-xs-6">
+                @Html.TextAreaFor(m => m.ROOM_DESC, new { @class = "form-control", @title = "Mô tả ", rows = "10" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Chọn khoa khám:</label>
+            <div class="col-xs-3">
+                @Html.DropDownListFor(m => m.DEPARTMENT_ID, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    DEPARTMENT_NAME as namefield FROM  CMS_DEPARTMENT where DEPARTMENT_STATUS = 2 and  PARTNERID = " + @UserInfo.PARTNERID, "idfield", "namefield", Model.DEPARTMENT_ID.ToString(), true), new { @class = "form-control select2", ID = "GROUP_SERVICEID", onchange = "SelectedValue(this)" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Chọn nhóm loại dịch vụ:</label>
+            <div class="col-xs-3">
+                @Html.DropDownListFor(m => m.SERVICETYPE, ComboBox.GetComboBoxBySelected("SELECT id as idfield,  name as namefield  FROM   CMS_SERVICE_TYPE where status = 2 ", "idfield", "namefield", Model.SERVICETYPE.ToString(), true), new { @class = "form-control select2", ID = "GROUP_SERVICEID", onchange = "SelectedValue(this)" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Chọn nhóm dịch vụ:</label>
+            <div class="col-xs-3">
+                @Html.DropDownListFor(m => m.SERVICE_ID, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    SERVICE_NAME as namefield FROM  CMS_SERVICE where SERVICE_STATUS = 2 and PARTNERID = " + @UserInfo.PARTNERID, "idfield", "namefield", Model.SERVICE_ID.ToString(), true), new { @class = "form-control select2" })
+            </div>
+        </div>*@
+
+       
+
+
+        @Html.TextBoxFor(m => m.ID, new { @class = "checkbox-inline", Type = "hidden" })
+
+        <div class="form-group text-center">
+
+            <button type="submit" name="submit" id="SaveListRoomClinicAdd" value="SaveListRoomClinicAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+            <a id="BackListRoomClinic" href="/CatalogSystem/ListRoomClinic" class="btn btn-primary"><i class="fa fa-backward"></i> Quay lại (Alt + Z) </a>
+        </div>
+
+
+
+    </div>
+    }
+</div>
+<!-- End Form -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+ 

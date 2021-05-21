@@ -1,0 +1,165 @@
+﻿@using CMS_Core.Entity;
+@model  CMSNEW.Models.ReportViewModels
+
+@{
+    ViewBag.Title = "ReportSearchCTV";
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBox = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+    var CMS_logSearch = (List<tbl_logSearch>)ViewBag.CMS_logSearch;
+
+
+    int STT = 0;
+    float total = 0;
+
+
+
+}
+
+
+
+<script src="/Content/AdminLTE/js/Customer/ReportSearchCTV.js"></script>
+
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ReportSearchCTV", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="box-body">
+            <div class="form-group row ">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-3 " style="font-weight:bold;  ">Từ ngày: </label>
+                        <div class="col-xs-7">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.startdate, new { @class = "form-control", placeholder = "Từ ngày", id = "date", name = "date" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-3 " style="font-weight:bold;  ">Đến ngày: </label>
+                        <div class="col-xs-7">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.enddate, new { @class = "form-control", placeholder = "Đến ngày", id = "dateDenngay", name = "dateDenngay" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <button type="submit" id="Search" name="submit" value="SearchReportSearchCTV" class="btn btn-primary   "><i class="fa fa-search"></i>  Tìm kiếm</button>
+                        <button type="submit" id="Search" name="submit" value="ExportReportSearchCTV" class="btn btn-primary   "><i class="fa fa-print"></i> Báo cáo</button>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    }
+
+
+    <div class="box box-info" style="margin-top: 5px;">
+        <!-- Sorting -->
+        <section class="panel">
+
+            @if (CMS_logSearch != null)
+            {
+                if (CMS_logSearch.Count() > 0)
+                {
+                    <!-- Begin Content -->
+                    <div class="panel-body">
+
+                        <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                            <thead>
+                                <tr>
+
+                                    <th id="STT" width="80px">STT</th>
+                                    <th id="SERVICETYPE_NAME" class="text-center" width="150px">Username</th>
+                                    <th id="Count_Service" class="text-center" width="200px">DoctorID</th>
+                                    <th id="Total_Price" class="text-center">IP</th>
+                                    <th id="Note" class="text-center" width="150px">DataSeach</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (CMS_logSearch != null)
+                                {
+                                    foreach (var data in CMS_logSearch)
+                                    {
+                                        <tr>
+                                            <td>@STT</td>
+                                            <td style="font-weight:bold;">@data.Username</td>
+                                            <td style="font-weight:bold;">@data.doctorID</td>
+                                            <td style="font-weight:bold;">@data.IP</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.ReFmtDate(data.datesave)</td>
+
+                                            <span style="display:none">
+                                                @(STT = STT + 1)
+                                            </span>
+                                        </tr>
+                                    }
+                                }
+
+
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- End Content -->
+                }
+            }
+        </section>
+    </div>
+
+
+</div>
+<!-- End Content -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+
+

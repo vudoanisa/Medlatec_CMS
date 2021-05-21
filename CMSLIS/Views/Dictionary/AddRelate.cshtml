@@ -1,0 +1,416 @@
+﻿@using CMS_Core.Entity;
+@model  CMSLIS.Models.SearchNewsViewModel
+@{
+
+    Layout = null;
+    ViewBag.Title = "Tin liên quan";
+    var DataReport = (List<cms_News>)ViewBag.DataReport;
+    var DataChoi = (List<cms_News>)ViewBag.DataChoi;
+    var newsId = Model.newsId;
+    int countChoi = 0;
+    if (DataChoi != null)
+    {
+        countChoi = DataChoi.Count;
+    }
+}
+<link rel="stylesheet" href="/Content/assets/vendors/css/base/bootstrap.css">
+<link rel="stylesheet" href="/Content/assets/vendors/css/base/elisyam-1.5.css">
+<link rel="stylesheet" href="/Content/assets/css/datatables/datatables.min.css">
+
+<link rel="stylesheet" href="/Content/assets/css/owl-carousel/owl.carousel.css">
+<link rel="stylesheet" href="/Content/assets/css/owl-carousel/owl.theme.css">
+
+
+<style>
+
+    /*  */
+
+    #preview {
+        position: absolute;
+        border: 1px solid #ccc;
+        background: #333;
+        padding: 5px;
+        display: none;
+        color: #fff;
+    }
+
+    /*  */
+</style>
+
+
+@using (Html.BeginForm("AddRelate", "Dictionary", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+{
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="widget has-shadow">
+
+                <div class="form-group row d-flex align-items-center mb-5">
+                    @if (@ViewBag.TitleSuccsess != null)
+                    {
+                        <span class="text-danger justify-content-lg-end" style="margin-left: 22px;">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @ViewBag.TitleSuccsess
+                        </span>
+                    }
+                </div>
+                <div class="form-group row d-flex align-items-center mb-5" style="margin-left:10px;">
+
+                    <label class="col-lg-2 form-control-label d-flex justify-content-lg-end">Chuyên mục  </label>
+                    <div class="col-lg-2">
+                        @Html.DropDownListFor(m => m.ParrenId, this.ViewBag.Getcms_CategoryParrent as List<SelectListItem>, new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                    </div>
+
+                    <label class="col-lg-2 form-control-label d-flex justify-content-lg-end">Từ khóa tìm kiếm  </label>
+
+                    <div class="col-lg-2">
+                        @Html.TextBoxFor(m => m.keyword, new { @class = "form-control", type = "SingleLine", placeholder = "Từ khóa tìm kiếm" })
+
+
+                    </div>
+                    <button type="submit" id="cmdSearch" name="submit" value="SearchAddRelate" class="btn btn-primary   ">Tìm kiếm</button>
+
+                    &nbsp;&nbsp;
+                    <a id="ChoiAddRelate" class="btn btn-primary   " style="width:100px; color:#fff;"> Chọn </a>
+                    &nbsp;&nbsp;
+                    <a id="DeleteAddRelate" class="btn btn-primary   " style="width:100px; color:#fff;"> Xóa </a>
+
+                    &nbsp;&nbsp;
+                    <a id="CloseAddRelate" class="btn btn-primary   " style="width:100px; color:#fff;"> Đóng </a>
+                </div>
+
+
+                @Html.TextBoxFor(m => m.newsId, new { @class = "checkbox-inline", Type = "hidden", name = "newsId" })
+
+                <div class="form-group row mb-5 d-flex">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <!-- Sorting -->
+        <div class="widget has-shadow">
+            <div class="widget-body">
+                <label class="col-lg-2 form-control-label d-flex justify-content-lg-end">Danh sách tin bài</label>
+                <div class="table-responsive" id="panelPrecios">
+                    <table id="sorting-table" class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                                <th>Ảnh</th>
+                                <th>Tiêu đề</th>
+                                <th>Chuyên mục</th>
+                                <th>Xuất bản</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (DataReport != null)
+                            {
+                                foreach (var data in DataReport)
+                                {
+                                    <tr>
+                                        <td><input type="checkbox" name="ID" value="@data.newsId" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                        <td>
+                                            <a href="@CMSLIS.Common.Common.GetPathImage(data.newsImages)" class="preview">
+                                                <Img src='@CMSLIS.Common.Common.GetPathImage(data.newsImages)' height="30px" width="30px" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span class="text-primary">
+                                                <a href="@CMSLIS.Common.Common.GetURLDetailByNews("tin-tuc",data.newsName.ToString().ToLower(),"s"+@data.cateId.ToString(),"n"+data.newsId.ToString()) " target="_blank">
+                                                    @data.newsName
+                                                </a>
+
+                                            </span>
+                                        </td>
+
+
+                                        <td>@data.ParentName</td>
+
+                                        <td>@CMSLIS.Common.Common.ReFmtTime(data.datepub)</td>
+
+
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- End Sorting -->
+
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-xl-12">
+        <!-- Sorting -->
+        <div class="widget has-shadow">
+            <div class="widget-body">
+                <label class="col-lg-2 form-control-label d-flex justify-content-lg-end">Danh sách đã chọn</label>
+                <div class="table-responsive" id="panelPrecios">
+                    <table id="sorting-tableRelate" class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkBoxAllRelate" class="custom-checkbox" /></th>
+                                <th>Ảnh</th>
+                                <th>Tiêu đề</th>
+                                <th>Chuyên mục</th>
+                                <th>Xuất bản</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (DataChoi != null)
+                            {
+                                foreach (var data in DataChoi)
+                                {
+                                    <tr>
+                                        <td><input type="checkbox" name="ID" value="@data.newsId" class="checkBox custom-checkbox chkCheckBoxIdRelate" /></td>
+                                        <td>
+                                            <a href="@CMSLIS.Common.Common.GetPathImage(data.newsImages)" class="preview">
+                                                <Img src='@CMSLIS.Common.Common.GetPathImage(data.newsImages)' height="30px" width="30px" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span class="text-primary">
+                                                <a href="@CMSLIS.Common.Common.GetURLDetailByNews("tin-tuc",data.newsName.ToString().ToLower(),"s"+@data.cateId.ToString(),"n"+data.newsId.ToString()) " target="_blank">
+                                                    @data.newsName
+                                                </a>
+
+
+                                            </span>
+                                        </td>
+                                        <td>@data.ParentName</td>
+
+                                        <td>@CMSLIS.Common.Common.ReFmtTime(data.datepub)</td>
+
+
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Sorting -->
+
+    </div>
+</div>
+
+
+
+
+<!-- End Page Vendor Js -->
+<!-- Begin Page Snippets -->
+<!-- Begin Vendor Js -->
+<script src="/Content/assets/js/jquery-3.3.1.js"></script>
+<script src="/Content/assets/vendors/js/base/core.min.js"></script>
+
+<!-- Begin Page Vendor Js -->
+<script src="/Content/assets/vendors/js/datatables/datatables.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/dataTables.buttons.min.js"></script>
+<script src="/Content/assets/vendors/js/nicescroll/nicescroll.min.js"></script>
+<script src="/Content/assets/vendors/js/app/app.min.js"></script>
+
+<!-- End Page Vendor Js -->
+<!-- Begin Page Snippets -->
+@*<script src="/Content/assets/js/components/tables/tables.js"></script>*@
+
+<!-- End Page Snippets -->
+<script type="text/javascript">
+    //To get selected value an text of dropdownlist
+    function SelectedValue(ddlObject) {
+        //Selected value of dropdownlist
+        var selectedValue = ddlObject.value;
+        //Selected text of dropdownlist
+        var selectedText = ddlObject.options[ddlObject.selectedIndex].innerHTML;
+        document.getElementById('cmdSearch').click();
+
+    }
+</script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#checkBoxAll').click(function () {
+            if ($(this).is(":checked")) {
+                $(".chkCheckBoxId").prop("checked", true)
+            }
+            else {
+                $(".chkCheckBoxId").prop("checked", false)
+            }
+        });
+        imagePreview();
+
+
+        var newid = @newsId;
+        $("#ChoiAddRelate").click(function () {
+            debugger;
+            var selectedIDs = new Array();
+            $('input:checkBox.checkBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            if (selectedIDs == '') {
+                alert("Mời chọn bản ghi để chọn");
+            } else {
+               
+                var options = {};
+                options.url = "/Dictionary/ChoseAddRelate";
+                options.type = "POST";
+                options.data = "{'customerIDs':'" + JSON.stringify(selectedIDs) + "', 'newid':'" + newid + "'}",
+
+                    options.contentType = "application/json";
+                options.dataType = "json";
+                options.success = function (msg) {
+                    // alert(msg);
+                    location.reload();
+                };
+                options.error = function () {
+                    alert("Có lỗi trong quá trình chọn bản ghi");
+                };
+                $.ajax(options);
+            }
+        });
+
+
+        $("#DeleteAddRelate").click(function () {
+
+            var selectedIDs = new Array();
+            $('input:checkBox.checkBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
+                }
+            });
+            if (selectedIDs == '') {
+                alert("Mời chọn bản ghi để chọn");
+            } else {
+                var options = {};
+                options.url = "/Dictionary/DeleteAddRelate";
+                options.type = "POST";
+                options.data = "{'customerIDs':'" + JSON.stringify(selectedIDs) + "', 'newid':'" + newid + "'}",
+
+                    options.contentType = "application/json";
+                options.dataType = "json";
+                options.success = function (msg) {
+                   // alert(msg);
+                    location.reload();
+                };
+                options.error = function () {
+                    alert("Có lỗi trong quá trình chọn bản ghi");
+                };
+                $.ajax(options);
+            }
+        });
+
+        $("#CloseAddRelate").click(function () {
+
+            var opener = window.opener;
+            if (opener) {
+                var oDom = opener.document;
+                var elem = oDom.getElementById("ListNewsRelate");
+                if (elem) {
+                        elem.value = @countChoi.ToString();
+                }
+            }
+
+            var daddy = window.self;
+            daddy.opener = window.self;
+            daddy.close();
+        });
+
+
+
+
+
+
+    });
+
+    this.imagePreview = function () {
+        /* CONFIG */
+
+        xOffset = 10;
+        yOffset = 30;
+
+        // these 2 variable determine popup's distance from the cursor
+        // you might want to adjust to get the right result
+
+        /* END CONFIG */
+        $("a.preview").hover(function (e) {
+            this.t = this.title;
+            this.title = "";
+            var c = (this.t != "") ? "<br/>" + this.t : "";
+            $("body").append("<p id='preview'><img src='" + this.href + "' alt='Image preview' width='250px' />" + c + "</p>");
+            $("#preview")
+                .css("top", (e.pageY - xOffset) + "px")
+                .css("left", (e.pageX + yOffset) + "px")
+                .fadeIn("fast");
+        },
+            function () {
+                this.title = this.t;
+                $("#preview").remove();
+            });
+        $("a.preview").mousemove(function (e) {
+            $("#preview")
+                .css("top", (e.pageY - xOffset) + "px")
+                .css("left", (e.pageX + yOffset) + "px");
+        });
+    };
+
+
+
+</script>
+
+
+<script>
+
+    (function ($) {
+
+        'use strict';
+
+        // ------------------------------------------------------- //
+        // Auto Hide
+        // ------------------------------------------------------ //
+
+        $(function () {
+            $('#sorting-table').DataTable({
+                "lengthMenu": [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ]
+            });
+        });
+
+
+        $(function () {
+            $('#sorting-tableRelate').DataTable({
+                "lengthMenu": [
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
+                ]
+            });
+        });
+
+
+
+
+    })(jQuery);
+
+</script>
+

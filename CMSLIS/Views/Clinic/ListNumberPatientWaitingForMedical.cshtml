@@ -1,0 +1,136 @@
+﻿@using CMS_Core.Entity;
+@model  CMS_Core.Models.PatientViewModel
+@{
+    ViewBag.Title = "Danh sách bệnh nhân chờ khám";
+    var CMS_PATIENTINFO_QUEUES = (List<CMS_PATIENTINFO_QUEUE>)ViewBag.CMS_PATIENTINFO_QUEUES;
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBox = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+
+}
+
+    <script language="javascript">
+        setTimeout(function () {
+            window.location.reload(1);
+        }, 12000);
+    </script>
+
+   
+
+<script src="/Content/AdminLTE/js/Customer/ListPatientWaitingForMedical.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+    @using (Html.BeginForm("ListNumberPatientWaitingForMedical", "Clinic", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+    {
+        <div class="box-body">
+            <div class="form-group row ">
+
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Phòng khám:  </label>
+                        <div class="col-xs-7">
+
+                            @Html.DropDownListFor(m => m.LOCATIONID, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    ROOM_NAME as namefield FROM  CMS_ROOM_CLINIC where STATUS = 2 and PARTNERID = " + UserInfo.PARTNERID + "    order by ROOM_NAME asc", "idfield", "namefield", Model.LOCATIONID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValueDEPARTMENTSID(this)", ID = "phong", name = "phong" })
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+
+                        <button type="submit" id="cmdSearch" name="submit" value="SearchListPatientWaitingForMedical" class="btn btn-primary   "><i class="fa fa-search"></i>  Tìm kiếm</button>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    }
+
+    <div class="box box-info" style="margin-top: 5px;">
+        <!-- Sorting -->
+        <section class="panel">
+
+            <!-- Begin Content -->
+            <div class="panel-body">
+
+                <table id="sorting-table" class="table table-bordered table-striped mb-none">
+                    <thead>
+                        <tr>
+                            <th id="SID">Số thứ tự</th>
+                            <th id="patientname">Họ và tên</th>
+                            <th id="gender">Giới tính</th>
+                            <th id="age">Tuổi</th>
+                            <th id="Price">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (CMS_PATIENTINFO_QUEUES != null)
+                        {
+                            foreach (var data in CMS_PATIENTINFO_QUEUES)
+                            {
+                                <tr>
+                                    <td>@data.PATIENTINFO_NUMBER</td>
+                                    <td>
+                                        <a href="/Clinic/medicalExamination?sid=@data.SID&channel=@Model.channel&queueid=@data.ID">
+                                            @data.PATIENTINFO_NAME
+                                        </a>
+                                    </td>
+
+
+                                    <td>@CMSLIS.Common.Common.GetGENDERName(data.PATIENTINFO_SEX.ToString())</td>
+                                    <td>@data.PATIENTINFO_AGE</td>
+                                    <td>@CMSLIS.Common.Common.GetStatusWaiting(data.STATUS)</td>
+
+
+
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- End Content -->
+        </section>
+        <!-- End Sorting -->
+    </div>
+</div>
+<!-- End Content -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+
+
+

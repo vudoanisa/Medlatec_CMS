@@ -1,0 +1,180 @@
+﻿@model  CMS_Core.Entity.tbl_TestCode
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Thêm mới xét nghiệm";
+}
+
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/js/Customer/ListTestCodeAdd.js"></script>
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<script src="/Content/AdminLTE/ckeditor/ckeditor.js"></script>
+
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ListTestCodeAdd", "CatalogSystem", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="box-body">
+
+
+            <!-- Begin left page -->
+            <div class="col-md-12">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Mã xét nghiệm <span class="required">*</span> </label>
+                    <div class="col-xs-6">
+                        @Html.TextBoxFor(m => m.TestCode, new { @class = "form-control", type = "SingleLine", placeholder = "Mã xét nghiệm" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Tên xét nghiệm <span class="required">*</span> </label>
+                    <div class="col-xs-6">
+                        @Html.TextBoxFor(m => m.TestName, new { @class = "form-control", type = "SingleLine", placeholder = "Tên xét nghiệm" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Loại xét nghiệm <span class="required">*</span> </label>
+                    <div class="col-xs-6">
+                        @Html.TextBoxFor(m => m.Category, new { @class = "form-control", type = "SingleLine", placeholder = "Loại xét nghiệm" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Giá tiền </label>
+                    <div class="col-xs-6">
+                        @Html.TextBoxFor(m => m.Price, new { @class = "form-control", type = "number", placeholder = "Giá tiền" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Link mô tả </label>
+                    <div class="col-xs-6">
+                        @Html.TextBoxFor(m => m.linkurl, new { @class = "form-control", type = "SingleLine", placeholder = "Link mô tả" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; "><a onclick="showPopup();" class="btn btn-primary mr-1 mb-2" style=" margin-top: -7px; color:#fff; "> Chọn tin liên quan </a>  </label>
+                    <div class="col-xs-3">
+                        <input class="form-control" id="ListNewsRelate" name="ListNewsRelate" value="@ViewBag.CountNewsRelate"  >
+                    </div>
+
+                    
+
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Mô tả XN </label>
+                    <div class="col-xs-10">
+
+                        @Html.TextAreaFor(m => m.Conclusion, new { @class = "form-control", type = "SingleLine", placeholder = ">Mô tả xét XN", rows = "400", id = "Conclusion", name = "Conclusion" })
+                        <script>
+                            //<![CDATA[
+                            CKEDITOR.replace('Conclusion',
+                                {
+                                    height: '320px',
+                                    filebrowserBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html',
+                                    filebrowserImageBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html?type=Images',
+
+                                    filebrowserUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/',
+                                    filebrowserImageUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/'
+                                });
+                            //]]>
+                        </script>
+
+
+
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Mô tả XN Chi tiết </label>
+                    <div class="col-xs-10">
+
+                        @Html.TextAreaFor(m => m.Conclusion1, new { @class = "form-control", type = "SingleLine", placeholder = ">Mô tả xét XN", rows = "400", id = "Conclusion1", name = "Conclusion1" })
+                        <script>
+                            //<![CDATA[
+                            CKEDITOR.replace('Conclusion1',
+                                {
+                                    height: '320px',
+                                    filebrowserBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html',
+                                    filebrowserImageBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html?type=Images',
+
+                                    filebrowserUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/',
+                                    filebrowserImageUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/'
+                                });
+                            //]]>
+                        </script>
+
+
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+            @Html.TextBoxFor(m => m.ID, new { Type = "hidden" })
+            @Html.TextBoxFor(m => m.UserI, new { Type = "hidden" })
+            @Html.TextBoxFor(m => m.UserU, new { Type = "hidden" })
+
+            @Html.TextBoxFor(m => m.Intime, new { Type = "hidden" })
+
+
+            <div class="form-group text-center">
+                <div class="col-xs-8">
+                    <button type="submit" name="submit" id="SaveListTestCodeAdd" value="SaveListTestCodeAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+                    <a id="BacListTestCode" href="/CatalogSystem/TestCode" class="btn btn-primary"> <i class="fa fa-backward"></i>  Quay lại (Alt + Z) </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<!-- End Form -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+<script src="/Content/AdminLTE/js/adminlte.js"></script>
+<script src="/Content/AdminLTE/js/init.js"></script>
+
+<script>
+
+
+    function showPopup() {
+        window.open("/News/AddRelateTestcode?testcodeID=" + @Model.ID , "DialogName", "height=700,width=1000,modal=yes,alwaysRaised=yes");
+
+
+
+    }
+
+
+
+</script>

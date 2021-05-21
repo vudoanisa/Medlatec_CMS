@@ -1,0 +1,333 @@
+﻿@model  CMS_Core.Entity.Cms_DictionaryEntity
+@{
+    ViewBag.Title = "Thêm mới bài viết";
+}
+
+
+
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<script src="/Content/AdminLTE/ckeditor/ckeditor.js"></script>
+
+
+<div class="box box-info">
+    @using (Html.BeginForm("Add", "Dictionary", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+    {
+    <div class="box-body">
+        <!-- Begin Form -->
+        <!-- Begin left page -->
+        <div class="col-md-9">
+            <div class="box box-info">
+                <div class="box-body">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-2" style="font-weight:bold; ">Tiêu đề <span class="required">*</span> </label>
+                        <div class="col-xs-10">
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", type = "SingleLine", placeholder = "Tiêu đề", id = "Name", name = "Name", onkeyup = "CreateSlug();" })
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-2" style="font-weight:bold; ">Tổng quan<span class="required">*</span> </label>
+                        <div class="col-xs-12">
+                            @Html.TextAreaFor(m => m.Content, new { @class = "form-control", type = "SingleLine", placeholder = "Vắn tắt", rows = "800", id = "content", name = "content" })
+                            <script>
+                                //<![CDATA[
+                                CKEDITOR.replace('content',
+                                    {
+                                        height: '160px',
+                                        filebrowserBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html',
+                                        filebrowserImageBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html?type=Images',
+
+                                        filebrowserUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/',
+                                        filebrowserImageUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/'
+                                    });
+                                //]]>
+                            </script>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-2" style="font-weight:bold; ">Nguyên nhân<span class="required">*</span> </label>
+                        <div class="col-xs-12">
+                            @Html.TextAreaFor(m => m.Cause, new { @class = "form-control", type = "SingleLine", placeholder = "Nguyên nhân", rows = "800", id = "Cause", name = "Cause" })
+                            <script>
+                                //<![CDATA[
+                                CKEDITOR.replace('Cause',
+                                    {
+                                        height: '160px',
+                                        filebrowserBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html',
+                                        filebrowserImageBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html?type=Images',
+
+                                        filebrowserUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/',
+                                        filebrowserImageUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/'
+                                    });
+                                //]]>
+                            </script>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-2" style="font-weight:bold; ">Triệu chứng<span class="required">*</span> </label>
+                        <div class="col-xs-12">
+                            @Html.TextAreaFor(m => m.Symptom, new { @class = "form-control", type = "SingleLine", placeholder = "Nguyên nhân", rows = "800", id = "Symptom", name = "Symptom" })
+                            <script>
+                                //<![CDATA[
+                                CKEDITOR.replace('Symptom',
+                                    {
+                                        height: '160px',
+                                        filebrowserBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html',
+                                        filebrowserImageBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html?type=Images',
+
+                                        filebrowserUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/',
+                                        filebrowserImageUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/'
+                                    });
+                                //]]>
+                            </script>
+                        </div>
+                    </div>   <div class="form-group">
+                        <label class="control-label col-xs-2" style="font-weight:bold; ">Đường lây nhiễm<span class="required">*</span> </label>
+                        <div class="col-xs-12">
+                            @Html.TextAreaFor(m => m.PathOfInfection, new { @class = "form-control", type = "SingleLine", placeholder = "Đường lây nhiễm", rows = "800", id = "PathOfInfection", name = "PathOfInfection" })
+                            <script>
+                                //<![CDATA[
+                                CKEDITOR.replace('PathOfInfection',
+                                    {
+                                        height: '160px',
+                                        filebrowserBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html',
+                                        filebrowserImageBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html?type=Images',
+
+                                        filebrowserUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/',
+                                        filebrowserImageUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/'
+                                    });
+                                //]]>
+                            </script>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-2" style="font-weight:bold; ">Đối tượng nguy cơ<span class="required">*</span> </label>
+                        <div class="col-xs-12">
+                            @Html.TextAreaFor(m => m.ObjectGravity, new { @class = "form-control", type = "SingleLine", placeholder = "Đối tượng nguy cơ", rows = "800", id = "ObjectGravity", name = "ObjectGravity" })
+                            <script>
+                                //<![CDATA[
+                                CKEDITOR.replace('ObjectGravity',
+                                    {
+                                        height: '160px',
+                                        filebrowserBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html',
+                                        filebrowserImageBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html?type=Images',
+
+                                        filebrowserUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/',
+                                        filebrowserImageUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/'
+                                    });
+                                //]]>
+                            </script>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-2" style="font-weight:bold; ">Phòng ngừa<span class="required">*</span> </label>
+                        <div class="col-xs-12">
+                            @Html.TextAreaFor(m => m.Prevent, new { @class = "form-control", type = "SingleLine", placeholder = "Phòng ngừa", rows = "800", id = "Prevent", name = "Prevent" })
+                            <script>
+                                //<![CDATA[
+                                CKEDITOR.replace('Prevent',
+                                    {
+                                        height: '160px',
+                                        filebrowserBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html',
+                                        filebrowserImageBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html?type=Images',
+
+                                        filebrowserUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/',
+                                        filebrowserImageUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/'
+                                    });
+                                //]]>
+                            </script>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-2" style="font-weight:bold; ">Chuẩn đoán<span class="required">*</span> </label>
+                        <div class="col-xs-12">
+                            @Html.TextAreaFor(m => m.Diagnostic, new { @class = "form-control", type = "SingleLine", placeholder = "Phòng ngừa", rows = "800", id = "Diagnostic", name = "Diagnostic" })
+                            <script>
+                                //<![CDATA[
+                                CKEDITOR.replace('Diagnostic',
+                                    {
+                                        height: '160px',
+                                        filebrowserBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html',
+                                        filebrowserImageBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html?type=Images',
+
+                                        filebrowserUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/',
+                                        filebrowserImageUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/'
+                                    });
+                                //]]>
+                            </script>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-2" style="font-weight:bold; ">Điều trị<span class="required">*</span> </label>
+                        <div class="col-xs-12">
+                            @Html.TextAreaFor(m => m.Treatment, new { @class = "form-control", type = "SingleLine", placeholder = "Phòng ngừa", rows = "800", id = "Treatment", name = "Treatment" })
+                            <script>
+                                //<![CDATA[
+                                CKEDITOR.replace('Treatment',
+                                    {
+                                        height: '160px',
+                                        filebrowserBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html',
+                                        filebrowserImageBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html?type=Images',
+
+                                        filebrowserUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/',
+                                        filebrowserImageUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/'
+                                    });
+                                //]]>
+                            </script>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- End left page -->
+        <!-- Begin right page -->
+
+        <div class="col-md-3">
+            <div class="box box-info">
+
+                <p class="text-center control-label" style="margin:6px 0 2px 10px;">Ảnh đại diện</p>
+
+                <input type="file" name="ImageFile" id="ImageFile" class="form-control" />
+                @if (@Model.Image != null)
+                {
+                    <Img src='@CMSLIS.Common.Common.GetPathImage(Model.Image)' height="40px" width="40px" />
+                    @Html.TextBoxFor(m => m.Image, new { @class = "checkbox-inline", Type = "hidden" })
+                    @Html.TextBoxFor(m => m.Image, new { @class = "checkbox-inline", Type = "hidden" })
+                }
+
+                <p class="text-center control-label" style="margin:6px 0 2px 10px;">Bác sỹ duyệt</p>
+
+                @Html.DropDownListFor(m => m.DoctorID, this.ViewBag.Getcms_NewsDoctor as List<SelectListItem>, new { @class = "form-control select2" })
+
+
+                <p class="text-center control-label" style="margin:6px 0 1px 10px;">Tác giả bài viết</p>
+                @Html.TextBoxFor(m => m.Authour, new { @class = "form-control", type = "SingleLine", placeholder = "Tác giả bài viết" })
+
+                <p class="text-center control-label" style="margin:6px 0 1px 10px;">Từ khóa Seo</p>
+                @Html.TextBoxFor(m => m.Keyword, new { @class = "form-control", type = "SingleLine", placeholder = "Từ khóa Seo" })
+
+
+                <p class="text-center control-label" style="margin:6px 0 1px 10px;">Tag<span class="required">*</span></p>
+                @Html.TextBoxFor(m => m.Tags, new { @class = "form-control", type = "SingleLine", placeholder = "Tag" })
+
+                <p class="text-center control-label" style="margin:14px 0 1px 10px;">  @Html.CheckBoxFor(m => m.IsActive, new { @checked = Model.IsActive }) <span style="margin-top:-4px;"> Xuất bản</span> </p>
+
+
+
+                <div class="form-group">
+                    <div class="form-group">
+                        <label class="control-label col-xs-3" style="font-weight:bold; ">Thời gian xuất bản:<span class="required">*</span> </label>
+                        <div class="col-xs-9">
+                            <div class="input-group" data-plugin-datepicker data-date-format="dd/MM/yyyy HH:mm:ss">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                @Html.TextBoxFor(m => m.DatePublish, new { @class = "form-control", type = "text", placeholder = "Thời gian xuất bản", id = "DatePublish", name = "DatePublish" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-9" style="font-weight:bold; "><a onclick="showPopup();" class="btn btn-primary mr-1 mb-2" style=" margin-top: -7px; color:#fff; "> Chọn tin liên quan </a>  </label>
+                        <div class="col-xs-3">
+                            <input class="form-control" id="ListNewsRelate" name="ListNewsRelate" value="@ViewBag.CountNews">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top:10px">
+                    <div class="col-lg-12">
+                        <button type="submit" name="submit" value="SaveAdd" id="SaveAdd" class="btn btn-danger" style="width:120px;">Lưu</button>
+                        <a href="/Dictionary/Index" id="backAdd" class="btn btn-primary" style="width:120px;"> Back </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        @Html.TextBoxFor(m => m.ID, new { Type = "hidden" })
+        @Html.TextBoxFor(m => m.Url, new { Type = "hidden" })
+
+
+
+        <!-- End right page -->
+    </div>
+    }
+
+</div>
+
+
+
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+<script src="/Content/assets/vendors/js/datepicker/moment.min.js"></script>
+<script src="/Content/assets/vendors/js/datepicker/daterangepicker.js"></script>
+
+
+
+<script src="/Content/AdminLTE/js/Customer/Add.js"></script>
+
+
+
+<script src="/Content/AdminLTE/js/adminlte.js"></script>
+<script src="/Content/AdminLTE/js/init.js"></script>
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+
+
+
+<script>
+
+
+    function CreateSlug() {
+        var text = $('#newsName').val();
+        var text_create;
+        text_create = text.replace(/à|á|á|ạ|ạ|ả|ắ|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|á|ẵ/g, "a").replace(/\ /g, '-').replace(/đ/g, "d").replace(/đ/g, "d").replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y").replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u").replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ộ|ổ|ỗ|ơ|ọ|ờ|ớ|ợ|ở|ọ|ỡ.+/g, "o").replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ.+/g, "e").replace(/ì|í|ị|ỉ|ì|ĩ/g, "i");
+        $('#Slug').val(text_create);
+    }
+
+</script>
+<!-- End Page Snippets -->
+
+<script>
+
+
+    function showPopup() {
+        window.open("/Dictionary/AddRelate?newsId=" + @Model.ID , "DialogName", "height=750,width=1000,modal=yes,alwaysRaised=yes");
+    }
+
+
+
+</script>
+

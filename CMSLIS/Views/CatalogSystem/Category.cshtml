@@ -1,0 +1,142 @@
+﻿@using CMS_Core.Entity;
+@model  CMSLIS.Models.SearchCategoryViewModel
+@{
+    ViewBag.Title = "Danh sách chuyên mục";
+    var Categories = (List<cms_Category>)ViewBag.Categories;
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    CMS_Core.Common.ComboBoxFinal<CMS_PARTNER> ComboBox = new CMS_Core.Common.ComboBoxFinal<CMS_PARTNER>();
+
+}
+
+
+<script src="/Content/AdminLTE/js/Customer/Category.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+    @using (Html.BeginForm("Category", "CatalogSystem", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+    {
+        <div class="box-body">
+            @if (UserInfo.PARTNERID == 1)
+            {
+                <div class="col-sm-3">
+                    <div class="form-group align-content-center">
+                        <label class="control-label col-xs-4" style="font-weight:bold; ">Đối tác: </label>
+                        <div class="col-xs-8">
+                            @Html.DropDownListFor(m => m.PARTNERID, ComboBox.GetComboBoxBySelected("SELECT  id,partner_name FROM    cms_partner where PARTNER_STATUS = 2", "id", "partner_name", Model.PARTNERID.ToString(), true), new { @class = "form-control select2", style = "width: 100%;", onchange = "SelectedValue(this)" })
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.PARTNERID, new { @class = "checkbox-inline", Type = "hidden" })
+            }
+
+            <div class="col-sm-3">
+                <div class="form-group align-content-center">
+                    <label class="control-label col-xs-4" style="font-weight:bold; ">Trạng thái: </label>
+                    <div class="col-xs-8">
+                        @Html.DropDownListFor(m => m.Status, this.ViewBag.GetTypeStatus as List<SelectListItem>, new { @class = "form-control select2", style = "width: 90%;", onchange = "SelectedValue(this)" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <button type="submit" id="cmdSearch" name="submit" value="SearchCategory" class="btn btn-primary"><i class="fa fa-search"></i>  Tìm kiếm</button>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    }
+
+    <div class="box box-info" style="margin-top: 5px;">
+        <!-- Sorting -->
+        <section class="panel">
+
+
+            <!-- Begin Content -->
+            <div class="panel-body">
+                <div class="row" style="margin-bottom: 5px;margin-left: -5px;">
+                    <a id="CategoryNew" href="/CatalogSystem/CategoryAdd" class="btn btn-info mr-1 mb-2"><i class="fa fa-plus-square-o"></i> Thêm mới (Ctrl + F1) </a>
+                    <button type="button" id="CategoryDelete" value="CategoryDelete" class="btn btn-danger mr-1 mb-2" style="width:100px;" onclick="return ConfirmDelete();"><i class="fa fa-remove"></i> Xóa </button>
+                    <button type="button" id="CategoryPublic" value="CategoryPublic" class="btn btn-info mr-1 mb-2" style="width:100px;" onclick="return ConfirmPublic();"><i class="fa fa-check-square-o"></i> Duyệt </button>
+                </div>
+
+                <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                            <th id="CATEGORY_NAME">Tên Chuyên mục</th>
+                            <th id="CATEGORY_DESC">Mô tả</th>
+                            <th id="CATEGORY_ORDER">Vị trí</th>
+                            <th id="CATEGORY_ORDER">Đối tác</th>
+                            <th id="Status"><span style="width:100px;">Trạng thái</span></th>
+                            <th id="edit">Edit</th>
+                            <th id="AddField">Bổ xung trường</th>
+                            <th id="AddCATEGORY">Nhập danh mục</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Categories != null)
+                        {
+                            foreach (var data in Categories)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" name="ID" value="@data.ID" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                    <td>@data.CATEGORY_NAME</td>
+                                    <td>@data.CATEGORY_DESC</td>
+                                    <td>@data.CATEGORY_ORDER</td>
+                                    <td>@data.PARTNERNAME</td>
+                                    <td style="width: 120px; ">@Html.Raw(CMSLIS.Common.Common.getTypeStatus(data.CATEGORYS_STATUS))</td>
+                                    <td class="td-actions">
+                                        <a href="/CatalogSystem/CategoryAdd?ID=@data.ID" id="Edit"><i class="fa fa-edit edit"></i></a>
+                                    </td>
+                                    <td class="td-actions">
+                                        <a href="/CatalogSystem/complementSettup?CATE_ID=@data.ID" id="complementSettup"><i class="fa fa-plus-square-o"></i> </a>
+                                    </td>
+                                    <td class="td-actions">
+                                        <a href="/CatalogSystem/CategoryDynamic?CATE_ID=@data.ID" id="complementSettup"><i class="fa fa-plus-square-o"></i> </a>
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+
+
+
+            </div>
+        </section>
+        <!-- End Sorting -->
+    </div>
+</div>
+<!-- End Content -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>

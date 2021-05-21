@@ -1,0 +1,233 @@
+﻿@model  CMSNEW.Models.RefundStoreViewModels
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Hoàn tiền thuốc";
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBoxClass = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+}
+
+<!-- Begin Content -->
+
+<script src="/Content/AdminLTE/js/Customer/REFUNDStoreAdd.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("REFUNDStoreAdd", "pharmacyStore", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="box-body">
+
+
+
+        <div class="form-group row ">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label col-xs-4 " style="font-weight:bold;  ">Số phiếu:</label>
+                    <div class="col-xs-8">
+                        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CMS_MEDICINE_EXPORT_STORE_CODE, new { @class = "form-control", type = "SingleLine", placeholder = "Số phiếu", id = "CMS_MEDICINE_EXPORT_STORE_CODE" })
+                        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.ID, new { @class = "checkbox-inline", Type = "hidden" })
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label col-xs-4 " style="font-weight:bold;  ">Mã KH:</label>
+                    <div class="col-xs-8">
+                        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.EMPLOYEECODE, new { @class = "form-control", type = "SingleLine", placeholder = "Mã khách hàng", id = "EMPLOYEECODE", disabled = "True" })
+                        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.EMPLOYEECODE, new { @class = "checkbox-inline", Type = "hidden" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label col-xs-4 " style="font-weight:bold;">KH: </label>
+                    <div class="col-xs-8">
+                        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_NAME, new { @class = "form-control", type = "SingleLine", placeholder = "Khách hàng", id = "CUSTOMER_NAME", disabled = "True" })
+                        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_NAME, new { @class = "checkbox-inline", Type = "hidden" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label col-xs-4 " style="font-weight:bold;  ">Giới tính:</label>
+                    <div class="col-xs-8">
+                        @Html.DropDownListFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_GENDER, ComboBoxClass.GetComboBoxBySelected("SELECT   category_name  as idfield,    category_desc as namefield FROM  dm_gioitinh where categorys_status = 2", "idfield", "namefield", Model._MEDICINE_EXPORT_STORE.CUSTOMER_GENDER.ToString(), false), new { @class = "form-control select2", id = "CUSTOMER_GENDER", disabled = "True" })
+                        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_GENDER, new { @class = "checkbox-inline", Type = "hidden" })
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+        <div class="form-group row ">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label col-xs-4 " style="font-weight:bold;  ">Địa chỉ:<span class="required">*</span></label>
+                    <div class="col-xs-8">
+                        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_ADDRESS, new { @class = "form-control", type = "SingleLine", placeholder = "Địa chỉ", id = "CUSTOMER_ADDRESS", disabled = "True" })
+                        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_ADDRESS, new { @class = "checkbox-inline", Type = "hidden" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label col-xs-4 " style="font-weight:bold;  ">Mobile:<span class="required">*</span></label>
+                    <div class="col-xs-8">
+                        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_MOBILE, new { @class = "form-control", type = "number", placeholder = "Số điện thoại", id = "CUSTOMER_MOBILE", disabled = "True" })
+                        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_MOBILE, new { @class = "checkbox-inline", Type = "hidden" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label col-xs-4 " style="font-weight:bold;  ">Email:</label>
+                    <div class="col-xs-8">
+                        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_EMAIL, new { @class = "form-control", type = "email", placeholder = "Email", id = "CUSTOMER_EMAIL", disabled = "True" })
+                        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_EMAIL, new { @class = "checkbox-inline", Type = "hidden" })
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label col-xs-4 " style="font-weight:bold;margin-left: -2px;   ">Ghi chú:</label>
+                    <div class="col-xs-8">
+                        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CMS_MEDICINE_EXPORT_STORE_NOTE, new { @class = "form-control", type = "SingleLine", placeholder = "Ghi chú", id = "NOTE" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.ID, new { @class = "checkbox-inline", Type = "hidden" })
+        @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.REFUND_STORE, new { @class = "checkbox-inline", Type = "hidden" })
+
+        @*<div class="col-sm-3">
+            <div class="form-group">
+
+                <button type="submit" id="cmdSearch" name="submit" value="SearchMenu" class="btn btn-primary"><i class="fa fa-search"></i>  Tìm kiếm</button>
+                &nbsp;
+                <button type="submit" id="SaveMenu" name="submit" value="SaveMenu" class="btn btn-danger" style="width:105px"><i class="fa fa-save"></i> Lưu</button>
+            </div>
+        </div>*@
+
+
+    </div>
+
+
+
+        <section class="panel">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                    <a href="#" class="fa fa-caret-down"></a>
+                    <a href="#" class="fa fa-times"></a>
+                </div>
+
+                <h2 class="panel-title">
+                    Danh sách thuốc đã xuất
+
+
+                </h2>
+            </header>
+
+            <!-- Begin Content -->
+            <div class="panel-body">
+
+                <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                    <thead>
+                        <tr>
+                            @*<th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" title="Hoàn tiền" />Hoàn tiền</th>*@
+                            <th>Tên thuốc</th>
+                            <th>Đơn vị</th>
+                            <th>Đơn giá</th>
+                            <th>Số lượng bán</th>
+                            <th>Số lượng hoàn</th>
+                            <th>Tiền hoàn</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model._MEDICINE_EXPORT_DETAILS != null)
+                        {
+
+                            for (int i = 0; i < Model._MEDICINE_EXPORT_DETAILS.Count; i++)
+
+                            {
+                        <tr>
+                            @*<td>
+            @Html.CheckBoxFor(m => m._MEDICINE_EXPORT_DETAILS[i].isRefund, new { @class = "checkBox custom-checkbox chkCheckBoxId" })
+        </td>*@
+                            <td class="MEDICINE_NAME1">@Model._MEDICINE_EXPORT_DETAILS[i].MEDICINE_NAME</td>
+
+                            <td>@Model._MEDICINE_EXPORT_DETAILS[i].MEDICINE_UNIT_NAME</td>
+                            <td class="MEDICINE_PRICE1">@CMSLIS.Common.Common.FmtAmt(Model._MEDICINE_EXPORT_DETAILS[i].MEDICINE_PRICE)</td>
+                            <td class="MEDICINE_AMOUNT1">@Model._MEDICINE_EXPORT_DETAILS[i].MEDICINE_AMOUNT </td>
+                            <td class="Refund1">@Html.TextBoxFor(m => m._MEDICINE_EXPORT_DETAILS[i].Refund, new { @class = "form-control Refund", type = "number" }) </td>
+                            <td class="Refund_PRICE1">@Html.TextBoxFor(m => m._MEDICINE_EXPORT_DETAILS[i].Refund_PRICE, new { @class = "form-control Refund_PRICE", type = "SingleLine", disabled = "True" }) </td>
+                            @Html.TextBoxFor(m => m._MEDICINE_EXPORT_DETAILS[i].ID, new { @class = "checkbox-inline", Type = "hidden" })
+                            @Html.TextBoxFor(m => m._MEDICINE_EXPORT_DETAILS[i].MEDICINE_AMOUNT, new { @class = "checkbox-inline", Type = "hidden" })
+                            @Html.TextBoxFor(m => m._MEDICINE_EXPORT_DETAILS[i].MEDICINE_PRICE, new { @class = "checkbox-inline", Type = "hidden" })
+                            @Html.TextBoxFor(m => m._MEDICINE_EXPORT_DETAILS[i].MEDICINE_ID, new { @class = "checkbox-inline", Type = "hidden" })
+                            @Html.TextBoxFor(m => m._MEDICINE_EXPORT_DETAILS[i].MEDICINE_NAME, new { @class = "checkbox-inline", Type = "hidden" })
+                        </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+
+
+
+                <!-- End Sorting -->
+
+
+                <div class="em-separator separator-dashed"></div>
+                <div class="sign-btn text-center">
+
+
+
+                    <button type="submit" name="submit" value="hiddent" id="hiddent" class="btn btn-danger" style="display: none;"></button>
+                    <button type="submit" name="submit" value="SaveREFUNDStore" id="SaveREFUNDStore1" class="btn btn-danger"><i class="fa fa-save"></i> Hoàn tiền (Alt + S)</button>
+                    <a id="BackListPatients" href="/pharmacyStore/REFUNDStore" class="btn btn-primary"><i class="fa fa-backward"></i> Quay lại (Alt + Z)</a>
+
+                </div>
+
+            </div>
+        </section>
+
+    }
+</div>
+<!-- End Content -->
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+

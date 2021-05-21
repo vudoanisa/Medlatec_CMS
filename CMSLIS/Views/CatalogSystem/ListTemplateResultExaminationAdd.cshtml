@@ -1,0 +1,121 @@
+﻿@model  CMS_Core.Entity.CMS_TEMPLATERESULTEXAMINATION
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Nhập mẫu kết quả";
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBox = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+}
+<script src="/Content/AdminLTE/js/Customer/ListTemplateResultExaminationAdd.js"></script>
+
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<script src="/Content/AdminLTE/ckeditor/ckeditor.js"></script>
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+    
+
+    @using (Html.BeginForm("ListTemplateResultExaminationAdd", "CatalogSystem", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+    <div class="box-body">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Tên mẫu:<span class="required">*</span></label>
+            <div class="col-xs-6">
+                @Html.TextBoxFor(m => m.NAME, new { @class = "form-control", type = "SingleLine", placeholder = "Tên mẫu nhập kết quả" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Kết quả:<span class="required">*</span> </label>
+            <div class="col-xs-8">
+                @Html.TextAreaFor(m => m.TEMPLATE, new { @class = "form-control", @title = "Mô tả mẫu nhập kết quả", rows = "8", name = "TEMPLATE" })
+
+                <script>
+                    //<![CDATA[
+                    CKEDITOR.replace('TEMPLATE',
+                        {
+                            height: '200px',
+
+                        });
+
+                </script>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Kết luận:<span class="required">*</span></label>
+            <div class="col-xs-8">
+                @Html.TextAreaFor(m => m.RESULT, new { @class = "form-control", @title = "Triệu trứng", rows = "8", name = "RESULT" })
+                <script>
+                    //<![CDATA[
+                    CKEDITOR.replace('RESULT',
+                        {
+                            height: '200px',
+
+                        });
+
+                </script>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Chọn nhóm dịch vụ:</label>
+            <div class="col-xs-3">
+                @Html.DropDownListFor(m => m.GROUP_SERVICEID, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    SERVICE_GROUP_NAME as namefield FROM  CMS_SERVICE_GROUP where SERVICE_GROUP_STATUS = 2 and ( PARTNERID = " + @UserInfo.PARTNERID + " or PARTNERID = 0 ) ", "idfield", "namefield", Model.GROUP_SERVICEID.ToString(), true), new { @class = "form-control select2", ID = "GROUP_SERVICEID", onchange = "SelectedValue(this)" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Chọn nhóm dịch vụ:</label>
+            <div class="col-xs-3">
+                @Html.DropDownListFor(m => m.SERVICEID, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    SERVICE_NAME as namefield FROM  CMS_SERVICE where SERVICE_STATUS = 2 and PARTNERID = " + @UserInfo.PARTNERID, "idfield", "namefield", Model.SERVICEID.ToString(), true), new { @class = "form-control select2" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Chọn loại dịch vụ:</label>
+            <div class="col-xs-3">
+                @Html.DropDownListFor(m => m.SERVICETYPE, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    NAME as namefield FROM  CMS_SERVICE_TYPE where STATUS = 2 and (PARTNERID = " + @UserInfo.PARTNERID + " or PARTNERID = 0) order by name asc" , "idfield", "namefield", Model.SERVICETYPE.ToString(), true), new { @class = "form-control select2" })
+            </div>
+        </div>
+
+
+        @Html.TextBoxFor(m => m.ID, new { @class = "checkbox-inline", Type = "hidden" })
+
+        <div class="form-group text-center">
+
+            <button type="submit" name="submit" id="SaveListTemplateResultExaminationAdd" value="SaveListTemplateResultExaminationAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+            <a id="BackListTemplateResultExamination" href="/CatalogSystem/ListTemplateResultExamination" class="btn btn-primary"><i class="fa fa-backward"></i> Quay lại (Alt + Z) </a>
+        </div>
+
+
+
+    </div>
+    }
+</div>
+<!-- End Form -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+

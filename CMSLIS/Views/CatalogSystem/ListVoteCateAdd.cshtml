@@ -1,0 +1,140 @@
+﻿@model  CMS_Core.Entity.tbl_VoteCate
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Thêm mới loại vote";
+
+
+}
+
+
+<script src="/Content/AdminLTE/js/Customer/ListVoteCateAdd.js"></script>
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ListVoteCateAdd", "CatalogSystem", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="box-body">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Tên vote :<span class="required">*</span> </label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.VoteCate, new { @class = "form-control", @title = "Tên vote" })
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Mô tả vote</label>
+                <div class="col-xs-6">
+                    @Html.TextAreaFor(m => m.VoteCateDesc, new { @class = "form-control", @title = "Mô tả vote", rows = "10" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Mã gói khám :  </label>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(m => m.CodeHIS, new { @class = "form-control", @title = "Tên vote" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Tên gói khám gói khám :  </label>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(m => m.CodeName, new { @class = "form-control", @title = "Tên vote" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Thời gian bắt đầu :  </label>
+                <div class="col-xs-3">
+                    <div class="input-group" data-plugin-datepicker data-date-format="dd/MM/yyyy HH:mm:ss">
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                        @Html.TextBoxFor(m => m.datesartView, new { @class = "form-control", type = "text", placeholder = "Thời gian bắt đầu", id = "datesartView", name = "datesartView" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Thời gian kết thúc :  </label>
+                <div class="col-xs-3">
+                    <div class="input-group" data-plugin-datepicker data-date-format="dd/MM/yyyy HH:mm:ss">
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                        @Html.TextBoxFor(m => m.dataendView, new { @class = "form-control", type = "text", placeholder = "Thời gian kết thúc", id = "dataendView", name = "dataendView" })
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Ảnh đại diện :  </label>
+                <div class="col-xs-3">
+                    <input type="file" name="ImageFile" id="ImageFile" class="form-control" />
+
+
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+            @Html.TextBoxFor(m => m.ImagePath, new { @class = "checkbox-inline", Type = "hidden" })
+            @Html.TextBoxFor(m => m.ID, new { @class = "checkbox-inline", Type = "hidden" })
+
+            <div class="form-group text-center">
+
+                <button type="submit" name="submit" id="SaveListVoteCateAdd" value="SaveListVoteCateAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+                <a id="BackListVoteCate" href="/CatalogSystem/ListVoteCate" class="btn btn-primary"><i class="fa fa-backward"></i> Quay lại (Alt + Z) </a>
+            </div>
+
+
+
+        </div>
+    }
+</div>
+<!-- End Form -->
+
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+
+<script src="/Content/assets/vendors/js/datepicker/moment.min.js"></script>
+<script src="/Content/assets/vendors/js/datepicker/daterangepicker.js"></script>
+
+
+
+
+
+

@@ -1,0 +1,175 @@
+﻿@using CMS_Core.Entity;
+@model  CMSNEW.Models.ReportViewModels
+@{
+    ViewBag.Title = "Báo cáo kê đơn thuốc";
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBox = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+    var CMS_PATIENT_PRESCRIPTIONS = (List<CMS_PATIENT_PRESCRIPTION>)ViewBag.CMS_PATIENT_PRESCRIPTIONS;
+
+
+    int STT = 0;
+   
+
+
+}
+
+
+
+<script src="/Content/AdminLTE/js/Customer/serviceReport.js"></script>
+
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ReportMedicinePrescription", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="box-body">
+            <div class="form-group row ">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-3 " style="font-weight:bold;  ">Từ ngày: </label>
+                        <div class="col-xs-7">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.startdate, new { @class = "form-control", placeholder = "Từ ngày", id = "date", name = "date" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-3 " style="font-weight:bold;  ">Đến ngày: </label>
+                        <div class="col-xs-7">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.enddate, new { @class = "form-control", placeholder = "Đến ngày", id = "dateDenngay", name = "dateDenngay" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Bác sỹ: </label>
+                        <div class="col-xs-7">
+                            @if (UserInfo.ISADMIN == 1)
+                            {
+                                @Html.DropDownListFor(m => m.DOCTOR_ID, ComboBox.GetComboBoxBySelected("SELECT   ACCOUNTID  as idfield,    HOTEN as namefield FROM  CMS_ACCOUNT where STATUS = 2 and PARTNERID = " + UserInfo.PARTNERID + "   order by HOTEN asc", "idfield", "namefield", Model.DOCTOR_ID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValueDOCTOR(this)" })
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(m => m.DOCTOR_ID, ComboBox.GetComboBoxBySelected("SELECT   ACCOUNTID  as idfield,    HOTEN as namefield FROM  CMS_ACCOUNT where STATUS = 2 and ACCOUNTID = " + UserInfo.accountid + "   order by HOTEN asc", "idfield", "namefield", Model.DOCTOR_ID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValueDOCTOR(this)" })
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <button type="submit" id="Search" name="submit" value="SearchReportMedicinePrescription" class="btn btn-primary   "><i class="fa fa-search"></i>  Tìm kiếm</button>
+                        <a class="btn btn-primary" target="_blank" href="/Report/ReportMedicinePrescriptionPrint?startdate=@Model.startdate.Replace("/","")&enddate=@Model.enddate.Replace("/","")&DOCTOR_ID=@Model.DOCTOR_ID&Token=@CMSLIS.Common.Common.generalKeyPrivate(Model.startdate.Replace("/",""), Model.enddate.Replace("/",""))" style="width:105px; "> <i class="fa fa-print"></i> Báo cáo </a>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    }
+
+
+    <div class="box box-info" style="margin-top: 5px;">
+        <!-- Sorting -->
+        <section class="panel">
+
+         
+                    <!-- Begin Content -->
+                    <div class="panel-body">
+                        
+                        <table id="sorting-table" class="table table-bordered table-striped mb-none">
+                            <thead>
+                                <tr>
+
+                                    <th id="STT" width="80px">STT</th>
+                                    <th id="SERVICETYPE_NAME" class="text-center" width="150px">Mã BN</th>
+                                    <th id="Count_Service" class="text-center" width="150px">Mã KCB</th>
+                                    <th id="Total_Price" class="text-center">Tên bệnh nhân</th>
+                                    <th id="Note" class="text-center">Bác sỹ</th>
+                                    <th id="Note" class="text-center" width="150px">Ngày kê đơn</th>
+                                
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (CMS_PATIENT_PRESCRIPTIONS != null)
+                                {
+                                    foreach (var data in CMS_PATIENT_PRESCRIPTIONS)
+                                    {
+                                        <tr>
+                                            <td>@STT</td>
+                                            <td style="font-weight:bold;text-align:right;"> <a id="PATIENT_PRESCRIPTIONS" target="_blank" href="/Clinic/medicalExaminationPrescriptionDoctor?sid=@data.SID&pid=@data.PID&accountid=@UserInfo.accountid&Token=@CMSLIS.Common.Common.generalKeyPrivate(data.SID.ToString(), data.PID.ToString())"  >@data.PID</a></td>
+                                            <td style="font-weight:bold;text-align:right;"> <a id="PATIENT_PRESCRIPTIONS" target="_blank" href="/Clinic/medicalExaminationPrescriptionDoctor?sid=@data.SID&pid=@data.PID&accountid=@UserInfo.accountid&Token=@CMSLIS.Common.Common.generalKeyPrivate(data.SID.ToString(), data.PID.ToString())">  @data.SID </a></td>
+                                            <td style="font-weight:bold;"> <a id="PATIENT_PRESCRIPTIONS" target="_blank" href="/Clinic/medicalExaminationPrescriptionDoctor?sid=@data.SID&pid=@data.PID&accountid=@UserInfo.accountid&Token=@CMSLIS.Common.Common.generalKeyPrivate(data.SID.ToString(), data.PID.ToString())"  > @data.PATIENTINFO_NAME </a></td>
+                                            <td style="font-weight:bold;">@data.DOCTOR_NAME</td>
+                                            <td style="font-weight:bold;">@data.Create_PRESCRIPTION</td>
+                                             
+                                            <span style="display:none">
+                                                @(STT = STT + 1)
+                                               
+
+                                            </span>
+                                        </tr>
+                                    }
+                                }
+
+ 
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- End Content -->
+               
+        </section>
+    </div>
+
+
+</div>
+<!-- End Content -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+

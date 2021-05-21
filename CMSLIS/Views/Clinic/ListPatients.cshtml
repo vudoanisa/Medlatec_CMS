@@ -1,0 +1,194 @@
+﻿@using CMS_Core.Entity;
+@model  CMS_Core.Models.PatientViewModel
+@{
+    ViewBag.Title = "Danh sách bệnh nhân";
+    var PATIENTINFO_TOTALS = (List<CMS_PATIENTINFO_TOTAL>)ViewBag.PATIENTINFO_TOTALS;
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    CMS_Core.Common.ComboBoxFinal<CMS_PARTNER> ComboBox = new CMS_Core.Common.ComboBoxFinal<CMS_PARTNER>();
+
+}
+
+
+<script src="/Content/AdminLTE/js/Customer/ListPatients.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+    @using (Html.BeginForm("ListPatients", "Clinic", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+    {
+        <div class="box-body">
+            <div class="form-group row ">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="control-label col-xs-2 " style="font-weight:bold;  ">Từ ngày:</label>
+                        <div class="col-xs-4">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.tungay, new { @class = "form-control", placeholder = "Từ ngày", id = "date", name = "date" })
+                            </div>
+                        </div>
+
+                        <label class="control-label col-xs-2 " style="font-weight:bold;  ">Đến ngày:</label>
+                        <div class="col-xs-4">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.denngay, new { @class = "form-control", placeholder = "Đến ngày", id = "dateDenngay", name = "dateDenngay" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        @*<label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Tìm theo:  </label>*@
+                        <div class="col-xs-12">
+                            @Html.DropDownListFor(m => m.TypeKeyword, this.ViewBag.GetTypeKeyword as List<SelectListItem>, new { @class = "form-control select2" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold; ">Từ khóa:  </label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.keyword, new { @class = "form-control", type = "SingleLine", placeholder = "Từ khóa tìm kiếm" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <button type="submit" id="cmdSearch" name="submit" value="SearchListPatients" class="btn btn-primary   "> <i class="fa fa-search"></i>  Tìm kiếm</button>
+                    </div>
+                </div>
+
+            </div>
+
+
+            @*<div class="form-group row ">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Tìm theo:  </label>
+                        <div class="col-xs-7">
+                            @Html.DropDownListFor(m => m.TypeKeyword, this.ViewBag.GetTypeKeyword as List<SelectListItem>, new { @class = "form-control select2" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="control-label col-xs-3 control-label-invisible " style="font-weight:bold; margin-left:5px; ">Từ khóa:  </label>
+                        <div class="col-xs-7">
+                            @Html.TextBoxFor(m => m.keyword, new { @class = "form-control", type = "SingleLine", placeholder = "Từ khóa tìm kiếm" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <button type="submit" id="cmdSearch" name="submit" value="SearchListPatients" class="btn btn-primary   "> <i class="fa fa-search"></i>  Tìm kiếm</button>
+                    </div>
+                </div>
+
+            </div>*@
+
+
+
+        </div>
+    }
+
+        <div class="box box-info" style="margin-top: 5px;">
+            <!-- Sorting -->
+            <section class="panel">
+               
+                <!-- Begin Content -->
+                <div class="panel-body">
+
+                    <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                                <th id="PID">In hồ sơ</th>
+                                <th id="PID">Xem bệnh</th>
+                                <th id="PID">PID</th>
+                                <th id="patientname">Họ và tên</th>
+                                <th id="address">Địa chỉ</th>
+                                <th id="cratedate">Ngày tạo</th>
+                                <th id="seq">SĐT</th>
+                                <th id="Reason">Lý do vào viện</th>
+                                <th id="GHICHU">Ghi chú</th>
+                                <th id="edit">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (PATIENTINFO_TOTALS != null)
+                            {
+                                foreach (var data in PATIENTINFO_TOTALS)
+                                {
+                                    <tr>
+                                        <td><input type="checkbox" name="ID" value="#@data.PID" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                        <td style="width:100px;">
+                                            <a target="_blank" href="/Clinic/ListPatientsPrint?pid=@data.PID&Token=@CMSLIS.Common.Common.generalKeyPrivate(data.PID.ToString())" id="Edit"><i class="fa fa-print"></i></a>
+                                        </td>
+                                        <td style="width:50px;">
+                                            <a href="/Clinic/medicalExaminationResult?sid=@data.SID&pid=@data.PID&Token=@CMSLIS.Common.Common.generalKeyPrivate(data.SID.ToString(),data.PID.ToString())" target="_blank" id="Edit"><i class="fa fa-eye"></i></a>
+                                        </td>
+                                        <td><a href="/Clinic/ListPatientsCreateOrder?pid=@data.PID">@data.PID</a></td>
+                                        <td><a href="/Clinic/ListPatientsCreateOrder?pid=@data.PID">  @data.PATIENTNAME</a></td>
+                                        <td>@data.ADDRESS</td>
+                                        <td>@data.CREATEDATE.ToString("dd/MM/yyyy")</td>
+                                        <td>@data.PHONE</td>
+                                        <td>@data.REASON</td>
+                                        <td>@data.GHICHU_CMS_PAITIENT</td>
+                                        <td class="td-actions">
+                                            <a href="/Clinic/ListPatientsAdd?PID=@data.PID" id="Edit"><i class="fa fa-edit edit"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                    <a id="ListPatientsAdd" href="/Clinic/ListPatientsAdd" class="btn btn-primary"><i class="fa fa-plus-square-o"></i> Thêm hồ sơ (Ctrl + F1) </a>
+                    @*<button type="button" id="ListPatientsPrint" class="btn btn-info mr-1 mb-2"> <i class="fa fa-print"></i>  In hồ sơ</button>*@
+                    <button type="button" id="ListPatientsCreateOrder" class="btn btn-info mr-1 mb-2"><i class="fa fa-stethoscope"></i>   Đăng ký khám</button>
+                    @*<button type="button" id="ListPatientsView" class="btn btn-info mr-1 mb-2"> <i class="fa fa-heart"></i> Xem bệnh</button>*@
+                    <button type="button" id="ListPatientDelete" value="ListPatientDelete" class="btn btn-danger mr-1 mb-2" style="width:100px;" onclick="return ConfirmDelete();"><i class="fa fa-remove"></i>  Xóa </button>
+                </div>
+                <!-- End Content -->
+            </section>
+            <!-- End Sorting -->
+        </div>
+    </div>
+    <!-- End Content -->
+
+    <script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+    <script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+    <script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+    <!-- Specific Page Vendor -->
+    <script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+    <script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+    <script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+    <!-- Theme Base, Components and Settings -->
+    <script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+    <!-- Theme Custom -->
+    <script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+    <!-- Theme Initialization Files -->
+    <script src="/Content/AdminLTE/javascripts/theme.init.js"></script>

@@ -1,0 +1,217 @@
+﻿@model CMSNEW.Models.ClinicViewModels
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Hoàn tiền dịch vụ";
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBoxClass = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+}
+
+<!-- Begin Content -->
+
+<script src="/Content/AdminLTE/js/Customer/REFUNDServiceAdd.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("REFUNDServiceAdd", "Clinic", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        if (Model.PATIENTINFO != null)
+        {
+            <div class="box-body">
+
+
+                <div class="form-group row ">
+
+
+
+
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-3 control-label-invisible " style="font-weight:bold;  ">SID:</label>
+                            <div class="col-xs-8">
+                                @Html.TextBoxFor(m => m.keyword, new { @class = "form-control", type = "SingleLine", placeholder = "SID (ID khám bệnh khách hàng)", id = "SID" })
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+
+                <div class="form-group row ">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 " style="font-weight:bold;  ">Tên khách hàng: @Model.PATIENTINFO.PATIENTNAME</label>
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label col-xs-4 " style="font-weight:bold;  ">Mã KH: @Model.PATIENTINFO.PID</label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label col-xs-4 " style="font-weight:bold;">Tuổi: @Model.PATIENTINFO.AGE </label>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label col-xs-4 " style="font-weight:bold;  ">Giới tính: @Model.PATIENTINFO.sexname</label>
+
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+                <div class="form-group row ">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 " style="font-weight:bold;  ">Địa chỉ: @Model.PATIENTINFO.ADDRESS</label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 " style="font-weight:bold;  ">Mobile:@Model.PATIENTINFO.PHONE</label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 " style="font-weight:bold;  ">Email: @Model.PATIENTINFO.EMAILADDRESS</label>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 " style="font-weight:bold;margin-left: -2px;   ">Ghi chú: @Model.PATIENTINFO.GHICHU</label>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        }
+
+
+        <section class="panel">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                    <a href="#" class="fa fa-caret-down"></a>
+                    <a href="#" class="fa fa-times"></a>
+                </div>
+
+                <h2 class="panel-title">
+                    Danh sách dịch vụ
+
+
+                </h2>
+            </header>
+
+            <!-- Begin Content -->
+            <div class="panel-body">
+
+                <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                    <thead>
+                        <tr>
+                            <th> Hoàn tiền</th>
+                            <th>Tên dịch vụ</th>
+                            <th>Giá tiền</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.CMS_PATIENT_SERVICES != null)
+                        {
+
+                            for (int i = 0; i < Model.CMS_PATIENT_SERVICES.Count; i++)
+
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.CMS_PATIENT_SERVICES[i].isRefund, new { @class = "minimal" })
+
+                                    </td>
+                                    <td class="MEDICINE_NAME1">@Model.CMS_PATIENT_SERVICES[i].SERVICE_NAME</td>
+                                    <td>@CMSLIS.Common.Common.FmtAmt(Model.CMS_PATIENT_SERVICES[i].SERVICE_PRICE)</td>
+                                    @Html.TextBoxFor(m => m.CMS_PATIENT_SERVICES[i].SERVICETYPE, new { @class = "checkbox-inline", Type = "hidden" })
+                                    @Html.TextBoxFor(m => m.CMS_PATIENT_SERVICES[i].SERVICE_NAME, new { @class = "checkbox-inline", Type = "hidden" })
+                                    @Html.TextBoxFor(m => m.CMS_PATIENT_SERVICES[i].SERVICE_NOTE, new { @class = "checkbox-inline", Type = "hidden" })
+                                    @Html.TextBoxFor(m => m.CMS_PATIENT_SERVICES[i].SERVICE_PRICE, new { @class = "checkbox-inline", Type = "hidden" })
+                                    @Html.TextBoxFor(m => m.CMS_PATIENT_SERVICES[i].SERVICE_ID, new { @class = "checkbox-inline", Type = "hidden" })
+                                    @Html.TextBoxFor(m => m.CMS_PATIENT_SERVICES[i].ID, new { @class = "checkbox-inline", Type = "hidden" })
+
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+
+
+
+                <!-- End Sorting -->
+                @Html.TextBoxFor(m => m.PATIENTINFO.PID, new { @class = "checkbox-inline", Type = "hidden" })
+                @Html.TextBoxFor(m => m.PATIENT.SID, new { @class = "checkbox-inline", Type = "hidden" })
+
+                <div class="em-separator separator-dashed"></div>
+                <div class="sign-btn text-center">
+
+
+
+                    <button type="submit" name="submit" value="hiddent" id="hiddent" class="btn btn-danger" style="display: none;"></button>
+                    <button type="submit" name="submit" value="SaveREFUNDService" id="SaveREFUNDService1" class="btn btn-danger"><i class="fa fa-save"></i> Hoàn tiền (Alt + S)</button>
+                    <a id="BackListPatients" href="/clinic/REFUNDService" class="btn btn-primary"><i class="fa fa-backward"></i> Quay lại (Alt + Z)</a>
+
+                </div>
+
+            </div>
+        </section>
+
+    }
+</div>
+<!-- End Content -->
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+

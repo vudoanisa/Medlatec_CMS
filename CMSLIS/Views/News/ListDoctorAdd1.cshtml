@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "ListDoctorAdd1";
+
+
+}
+
+
+
+
+<style>
+    .row {
+        margin: 10px;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <button id="btnSave" class="btn btn-default">Save Checked Nodes</button>
+    </div>
+    <div class="row">
+        <div id="dulieuabc"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        var tree = $('#dulieuabc').tree({
+                    primaryKey: 'id',
+                    uiLibrary: 'bootstrap4',
+                    dataSource: '/News/AddGetGroupDoctor?query=' + @Model.id,
+                    checkboxes: true
+                });
+
+        var checkedIds = tree.getCheckedNodes();
+
+
+                tree.on('checkboxChange', function (e, $node, record, state) {
+                    if (tree.getCheckedNodes() != '') {
+                        $('#cateIdList').val(tree.getCheckedNodes());
+                    } else {
+                        $('#cateIdList').val('');
+                    }
+                });
+            });
+</script>
+
+
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />

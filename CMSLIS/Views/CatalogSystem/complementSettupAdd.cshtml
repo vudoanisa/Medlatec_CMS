@@ -1,0 +1,146 @@
+﻿@model  CMS_Core.Entity.COMPLEMENT_SETTUP
+@using CMS_Core.Entity;
+
+@{
+    ViewBag.Title = "Thêm mới bổ xung trường chuyên mục";
+    CMS_Core.Common.ComboBoxFinal<TYPECLASS> ComboBox = new CMS_Core.Common.ComboBoxFinal<TYPECLASS>();
+    CMS_Core.Common.ComboBoxFinal<TYPEINPUT> ComboBoxTYPEINPUT = new CMS_Core.Common.ComboBoxFinal<TYPEINPUT>();
+    CMS_Core.Common.ComboBoxFinal<TEXTBOXTYPE> ComboBoxTEXTBOXTYPE = new CMS_Core.Common.ComboBoxFinal<TEXTBOXTYPE>();
+    CMS_Core.Common.ComboBoxFinal<TYPEDATAINPUT> ComboBoxTYPEDATAINPUT = new CMS_Core.Common.ComboBoxFinal<TYPEDATAINPUT>();
+
+}
+
+
+<script src="/Content/AdminLTE/js/Customer/complementSettupAdd.js"></script>
+
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+
+
+
+
+    @using (Html.BeginForm("complementSettupAdd", "CatalogSystem", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="box-body">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Tên trường:<span class="required">*</span></label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.FIELD_NAME, new { @class = "form-control", type = "SingleLine", placeholder = "Tên trường", autocomplete = "true" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Tiêu đề trường:<span class="required">*</span></label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.LABEL_NAME, new { @class = "form-control", type = "SingleLine", placeholder = "Tiêu đề trường", autocomplete = "true" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Kiểu dữ liệu:<span class="required">*</span></label>
+                <div class="col-xs-3">
+                    @Html.DropDownListFor(m => m.TYPEDATAINPUT, ComboBoxTYPEDATAINPUT.GetComboBoxBySelected("select id,name from TYPEDATAINPUT where status = 2", "id", "name", Model.TYPEDATAINPUT.ToString(), false), new { @class = "form-control select2" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Class: <span class="required">*</span></label>
+                <div class="col-xs-3">
+                    @Html.DropDownListFor(m => m.CLASS, ComboBox.GetComboBoxBySelected("select id,name from TYPECLASS where status = 2", "name", "name", Model.CLASS.ToString(), false), new { @class = "form-control select2" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Placeholder:</label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.PLACEHOLDER, new { @class = "form-control", type = "SingleLine", placeholder = "Placeholder", autocomplete = "true" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Required:</label>
+                <div class="col-xs-3">
+                    
+                    @Html.CheckBoxFor(m => m.REQUIREDVALUE, new { @class = "minimal" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Loại input: <span class="required">*</span></label>
+                <div class="col-xs-3">
+                    @Html.DropDownListFor(m => m.FIELDTYPE, ComboBoxTYPEINPUT.GetComboBoxBySelected("select id,name from TYPEINPUT where status = 2", "id", "name", Model.FIELDTYPE.ToString(), false), new { @class = "form-control select2" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Loại Type TextBox:</label>
+                <div class="col-xs-3">
+                    @Html.DropDownListFor(m => m.TEXTBOX_TYPE, ComboBoxTEXTBOXTYPE.GetComboBoxBySelected("select id,name from TEXTBOXTYPE where status = 2", "name", "name", Model.TEXTBOX_TYPE.ToString(), false), new { @class = "form-control select2" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Vị trí hiển thị:</label>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(m => m.DISPLAYORDER, new { @class = "form-control", type = "number", placeholder = "Vị trí hiển thị " })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">SQL:</label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.SQL, new { @class = "form-control", type = "SingleLine", placeholder = "SQL (dành cho DropDownList)" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Số cột (Max 12):</label>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(m => m.COLS_LENGTH, new { @class = "form-control", type = "number", placeholder = "Số cột (Max 12)" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Số dòng:</label>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(m => m.ROWS_LENGTH, new { @class = "form-control", type = "number", placeholder = "Số dòng" })
+                </div>
+            </div>
+
+
+
+
+            @Html.TextBoxFor(m => m.CATEGORYS_ID, new { @class = "checkbox-inline", Type = "hidden" })
+            @Html.TextBoxFor(m => m.ID, new { @class = "checkbox-inline", Type = "hidden" })
+
+            <div class="form-group text-center">
+                <button type="submit" name="submit" id="SavecomplementSettupAdd" value="SavecomplementSettupAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+                <a id="listcomplementSettup" href="/CatalogSystem/complementSettup" class="btn btn-primary"><i class="fa fa-backward"></i> Quay lại (Alt + Z) </a>
+            </div>
+        </div>
+    }
+</div>
+<!-- End Form -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>

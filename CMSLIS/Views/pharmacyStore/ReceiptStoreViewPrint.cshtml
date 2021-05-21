@@ -1,0 +1,306 @@
+﻿
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+<link href="/Content/AdminLTE/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/Content/AdminLTE/css/font-awesome.min.css" rel="stylesheet" />
+<link href="/Content/AdminLTE/css/AdminLTE.css" rel="stylesheet" />
+
+
+
+<script src="/Content/AdminLTE/js/plugins/jquery/jquery-3.3.1.js"></script>
+<script src="/Content/AdminLTE/js/plugins/bootstrap/bootstrap.js"></script>
+
+
+
+<!-- Specific Page Vendor CSS -->
+<link rel="stylesheet" href="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+
+<!-- Theme CSS -->
+<link rel="stylesheet" href="/Content/AdminLTE/stylesheets/theme.css" />
+
+
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+
+@{
+    ViewBag.Title = "Thông tin phiếu nhập kho";
+    int count = 1;
+    
+}
+<body class="hold-transition" style="background-color: white !important;">
+    <!-- Begin Content -->
+    <section role="main" class="content-body" style="background-color:#ffffff; ">
+        <div class="row" style="background-color:#ffffff;margin-left:5px; margin-right:5px;">
+
+
+            <div class="form-group row ">
+                <div class="col-sm-12" style="height:10px;">
+
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-left " style="font-weight:bold;font-size:18px;  ">PHÒNG KHÁM ĐA KHOA DUNG CHÂU</label>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-left " style="font-weight:bold;font-size:16px;  ">ĐT: 0210. 3816. 196</label>
+                    </div>
+                </div>
+
+                <div class="col-sm-12" style="height:10px;">
+
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-center " style="font-weight:bold; font-size:18px; ">PHIẾU NHẬP THUỐC: @Model._MEDICINE_RECEIPT_STORE.MEDICINE_RECEIPT_STORE_CODE  </label>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-center " style="font-weight:bold;  ">NGÀY XUẤT: @Model._MEDICINE_RECEIPT_STORE.CREATEDATE.ToString("dd/MM/yyyy HH:mm")  </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group row ">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;  ">Số hợp đồng: @Model._MEDICINE_RECEIPT_STORE.CONTRACT  </label>
+                    </div>
+                </div>
+
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;">Ngày hợp đồng: @Model._MEDICINE_RECEIPT_STORE.CONTRACT_DATE_VIEW </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row ">
+
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;  ">Nhà cung cấp: @Model._MEDICINE_RECEIPT_STORE.MEDICINE_SUPPLIER_NAME  </label>
+                    </div>
+                </div>
+
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;">Ghi chú: @Model._MEDICINE_RECEIPT_STORE.NOTE </label>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group row ">
+
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;  ">Tổng tiền: @CMSLIS.Common.Common.FmtAmt(Model._MEDICINE_RECEIPT_STORE.TOTAL_PRICE) (VNĐ) </label>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+            <div class="form-group row ">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-center " style="font-weight:bold;  "> DANH SÁCH THUỐC </label>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Begin Content -->
+            <div class="form-group row ">
+                <table id="sorting-table" class="table table-bordered table-striped mb-none" style="background-color:#ffffff">
+                    <thead>
+                        <tr>
+                            <th style="border: 1px solid black;font-weight:bold; ">STT</th>
+                            <th style="border: 1px solid black;font-weight:bold; " id="CATEGORY_NAME">Tên thuốc</th>
+                            <th style="border: 1px solid black;font-weight:bold; " id="CATEGORY_DESC">Mã thuốc</th>
+                            <th style="border: 1px solid black;font-weight:bold; " id="CATEGORY_ORDER">Số lô</th>
+                            <th style="border: 1px solid black;font-weight:bold; " id="CATEGORY_ORDER">Số hợp đồng</th>
+                            <th style="border: 1px solid black;font-weight:bold; " id="CATEGORY_ORDER">Số lượng</th>
+                            <th style="border: 1px solid black;font-weight:bold; " id="CATEGORY_ORDER">Giá nhập</th>
+                            <th style="border: 1px solid black;font-weight:bold; " id="CATEGORY_ORDER">Giá bán</th>
+                            <th style="border: 1px solid black;font-weight:bold; " id="CATEGORY_ORDER">Ngày SX</th>
+                            <th style="border: 1px solid black;font-weight:bold; " id="CATEGORY_ORDER">Hạn SD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model._MEDICINE_RECEIPT_DETAILS != null)
+                        {
+                            foreach (var data in Model._MEDICINE_RECEIPT_DETAILS)
+                            {
+                                <tr>
+                                    <td style="border: 1px solid black;">@(count++) </td>
+                                    <td style="border: 1px solid black;" class="MEDICINE_NAME1">@data.MEDICINE_NAME</td>
+                                    <td style="border: 1px solid black;" class="MEDICINE_CODE1">@data.MEDICINE_CODE</td>
+                                    <td style="border: 1px solid black;" class="LOTMUMBER1">@data.LOTMUMBER</td>
+                                    <td style="border: 1px solid black;" class="REGISTRATIONNUMBER1">@data.REGISTRATIONNUMBER</td>
+                                    <td style="border: 1px solid black;" class="AMOUNT1">@CMSLIS.Common.Common.FmtAmt(data.AMOUNT)</td>
+                                    <td style="border: 1px solid black;" class="IMPORTPRICE1">@CMSLIS.Common.Common.FmtAmt(data.IMPORTPRICE)</td>
+                                    <td style="border: 1px solid black;" class="EXPORTPRICE1">@CMSLIS.Common.Common.FmtAmt(data.EXPORTPRICE)</td>
+                                    <td style="border: 1px solid black;" class="DATEOFMANUFACTURE1">@data.DATEOFMANUFACTURE_View</td>
+                                    <td style="border: 1px solid black;" class="EXPIRYDATE1">@data.EXPIRYDATE_View</td>
+                                    @*<td  style="border: 1px solid black;" class="VAT1" style="display:none;">@data.VAT</td>
+                                        <td  style="border: 1px solid black;" class="PROVIDEDID1" style="display:none;">@data.PROVIDEDID</td>
+                                        <td style="border: 1px solid black;" class="NOTE1" style="display:none;">@data.NOTE</td>*@
+
+
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+
+                    <tfoot>
+
+
+
+                        <tr>
+                            <th style="border: 1px solid black; font-weight:bold; " colspan="5"></th>
+
+                            <th style="border: 1px solid black;font-weight:bold; ">Tổng tiền:</th>
+                            <th style="border: 1px solid black;font-weight:bold; ">@CMSLIS.Common.Common.FmtAmt(Model._MEDICINE_RECEIPT_STORE.TOTAL_PRICE) (VNĐ)</th>
+                            <th style="border: 1px solid black;font-weight:bold; "></th>
+                            <th style="border: 1px solid black;font-weight:bold; "></th>
+                            <th style="border: 1px solid black;font-weight:bold; "></th>
+
+                        </tr>
+                    </tfoot>
+
+
+                </table>
+
+
+            </div>
+            <!-- End Content -->
+        </div>
+
+        <div class="row">
+            &nbsp;
+        </div>
+        <div class="row">
+            <div class="col-xs-6 form-group text-center">
+                <b>Khách hàng</b>
+                </br>
+                (Ký, ghi rõ họ tên)
+            </div>
+
+            <div class="col-xs-6 form-group text-center">
+                <b>Thu ngân</b>
+                </br>
+                (Ký, ghi rõ họ tên)
+            </div>
+
+        </div>
+
+    </section>
+    <!-- End Content -->
+    </body>
+
+
+    <script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+    <script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+    <script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+    <!-- Specific Page Vendor -->
+    <script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+    <script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+    <script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+    <!-- Theme Base, Components and Settings -->
+    <script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+    <!-- Theme Custom -->
+    <script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+    <!-- Theme Initialization Files -->
+    <script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+
+    @*<script type="text/javascript" language="javascript" class="init">
+
+            (function ($) {
+
+                'use strict';
+                var datatableInit = function () {
+
+                    $('#sorting-table').dataTable(
+                        {
+                            "footerCallback": function (row, data, start, end, display) {
+                                var api = this.api(), data;
+                                // Remove the formatting to get integer data for summation
+                                var intVal = function (i) {
+
+                                    return typeof i === 'string' ?
+                                        i.replace(/[\$,]/g, '') * 1 :
+                                        typeof i === 'number' ?
+                                            i : 0;
+                                };
+                                //  Total over all pages
+                                total = api.column(7).data().reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+
+                                total1 = api.column(6).data().reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+
+
+                                //  Total over this page
+                                pageTotal = api
+                                    .column(7, { page: 'current' })
+                                    .data()
+                                    .reduce(function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0);
+
+                                pageTotal1 = api
+                                    .column(6, { page: 'current' })
+                                    .data()
+                                    .reduce(function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0);
+
+
+
+                                // Update footer
+                                $(api.column(7).footer()).html(
+                                    '' + pageTotal + ' ( ' + total + ' total)'
+                                );
+                                $(api.column(6).footer()).html(
+                                    '' + pageTotal1 + ' ( ' + total1 + ' total)'
+                                );
+                            }
+                        }
+                    );
+
+                };
+                var total;
+                var total1;
+                var pageTotal;
+                var pageTotal1;
+                $(function () {
+                    datatableInit();
+                });
+
+            }).apply(this, [jQuery]);
+
+        </script>*@

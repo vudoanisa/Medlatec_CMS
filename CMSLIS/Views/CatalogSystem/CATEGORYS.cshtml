@@ -1,0 +1,110 @@
+﻿@using CMS_Core.Entity;
+@model  CMSLIS.Models.SearchCategoryViewModel
+@{
+    ViewBag.Title = "Danh sách chuyên mục hệ thống";
+    var DataReport = (List<CATEGORYS>)ViewBag.DataReport;
+}
+
+<script src="/Content/assets/js/Category.js"></script>
+
+<!-- Begin Content -->
+<div class="row">
+    <div class="col-xl-12">
+        @using (Html.BeginForm("CATEGORYS", "CatalogSystem", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+        {
+            <div class="widget has-shadow">
+                <div class="form-group row d-flex align-items-center mb-5">
+                    @if (@ViewBag.TextErr != null)
+                    {
+                        <span class="text-danger justify-content-lg-end" style="margin-left: 22px;">
+                            @ViewBag.TextErr
+                        </span>
+                    }
+                </div>
+                <div class="form-group row d-flex align-items-center mb-5  ">
+                    <label class="col-lg-2 form-control-label d-flex justify-content-lg-end">Chuyên mục cha  </label>
+                    <div class="col-lg-3">
+                        @Html.DropDownListFor(m => m.parentID,  CMSLIS.Common.Common.Getcms_CategoryCParrent("ID", "category_name")  as List<SelectListItem>, new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                    </div>
+                    <label class="col-lg-1 form-control-label d-flex justify-content-lg-end">Trạng thái  </label>
+                    <div class="col-lg-2">
+                        @Html.DropDownListFor(m => m.Status, this.ViewBag.GetTypeStatus as List<SelectListItem>, new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                    </div>
+
+
+                    <button type="submit" id="cmdSearch" name="submit" value="SearchCATEGORYS" class="btn btn-primary"><i class="fa fa-search"></i>  Tìm kiếm</button>
+                </div>
+                <div class="form-group row d-flex align-items-center mb-5">
+                </div>
+            </div>
+        }
+
+
+        <!-- Sorting -->
+        <div class="widget has-shadow">
+            <div class="widget-body">
+                <div class="table-responsive">
+                    <table id="sorting-table" class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                                <th>Tên Chuyên mục</th>
+                                <th>Mô tả</th>
+                                <th>Danh sách trường con</th>
+                                <th><span style="width:100px;">Trạng thái</span></th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (DataReport != null)
+                            {
+                                foreach (var data in DataReport)
+                                {
+                                    <tr>
+                                        <td><input type="checkbox" name="ID" value="@data.ID" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                        <td>@data.CATEGORY_NAME</td>
+                                        <td>@data.CATEGORY_DESC</td>
+                                        <td class="td-actions">
+                                            <a href="/CatalogSystem/COMPLEMENT_SETTUPS?ID=@data.ID" id="Edit"><i class="la la-clone"></i></a>
+                                        </td>
+                                        <td>@Html.Raw(CMSLIS.Common.Common.getTypeStatus(data.categorys_status))</td>
+                                        <td class="td-actions">
+                                            <a href="/CatalogSystem/CATEGORYSAdd?ID=@data.ID" id="Edit"><i class="la la-edit edit"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+
+
+
+                    <button type="button" id="CategoryNew" class="btn btn-info mr-1 mb-2" onclick="location.href='@Url.Action("CategoryAdd", "CatalogSystem")'"><i class="fa fa-plus-square-o"></i>Thêm mới</button>
+                    <button type="button" id="CategoryDelete" value="CategoryDelete" class="btn btn-danger mr-1 mb-2" style="width:100px;" onclick="return ConfirmDelete();"><i class="fa fa-remove"></i> Xóa </button>
+                    <button type="button" id="CategoryPublic" value="CategoryPublic" class="btn btn-info mr-1 mb-2" style="width:100px;" onclick="return ConfirmPublic();"><i class="fa fa-check-square-o"></i> Duyệt </button>
+                     
+
+                </div>
+            </div>
+        </div>
+        <!-- End Sorting -->
+    </div>
+</div>
+<!-- End Content -->
+    .
+<!-- Begin Page Vendor Js -->
+<script src="/Content/assets/vendors/js/datatables/datatables.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/dataTables.buttons.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/jszip.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/buttons.html5.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/pdfmake.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/vfs_fonts.js"></script>
+<script src="/Content/assets/vendors/js/datatables/buttons.print.min.js"></script>
+<script src="/Content/assets/vendors/js/nicescroll/nicescroll.min.js"></script>
+<script src="/Content/assets/vendors/js/app/app.min.js"></script>
+
+<!-- End Page Vendor Js -->
+<!-- Begin Page Snippets -->
+<script src="/Content/assets/js/components/tables/tables.js"></script>
+<!-- End Page Snippets -->

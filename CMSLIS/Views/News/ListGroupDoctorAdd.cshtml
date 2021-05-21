@@ -1,0 +1,118 @@
+﻿@model  CMS_Core.Entity.cms_Group_Doctor
+@using CMS_Core.Entity;
+
+@{
+    ViewBag.Title = "Thêm nhóm bác sỹ";
+}
+<script src="/Content/AdminLTE/js/Customer/GroupAccountAdd.js"></script>
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+<script src="/Content/assets/Themes/ckeditor/ckeditor.js"></script>
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ListGroupDoctorAdd", "News", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        <div class="box-body">
+
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Tên nhóm bác sỹ <span class="required">*</span> </label>
+                <div class="col-xs-8">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", type = "SingleLine", placeholder = "Tên nhóm bác sỹ" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Từ khóa</label>
+                <div class="col-xs-8">
+                    @Html.TextBoxFor(m => m.keyword, new { @class = "form-control", type = "SingleLine", placeholder = "Từ khóa" })
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Thứ tự</label>
+                <div class="col-xs-8">
+                    @Html.TextBoxFor(m => m.ord, new { @class = "form-control", type = "number", placeholder = "Thứ tự" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-10" style="height:525px;">
+                    @Html.TextAreaFor(m => m.Desc, new { @class = "form-control", type = "SingleLine", placeholder = "Trích dẫn", rows = "800", id = "content", name = "content" })
+                    <script>
+                        //<![CDATA[
+                        CKEDITOR.replace('content',
+                            {
+                                height: '360px',
+                                filebrowserBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html',
+                                filebrowserImageBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html?type=Images',
+                                filebrowserUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=/archive/',
+                                filebrowserImageUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Images&currentFolder=/cars/'
+                            });
+                                                                                                                                                                                                                            //]]>
+                    </script>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">File</label>
+                <div class="col-xs-8">
+                    <input type="file" name="ImageFile" id="ImageFile" class="form-control" />
+                </div>
+            </div>
+
+
+
+
+            @if (@Model.Image != null)
+            {
+                <div class="form-group">
+                    <Img src='@CMSLIS.Common.Common.GetPathImage(Model.Image)' height="80px" />
+                    @Html.TextBoxFor(m => m.Image, new { @class = "checkbox-inline", Type = "hidden" })
+                </div>
+            }
+
+
+
+            @Html.TextBoxFor(m => m.id, new { Type = "hidden" })
+
+
+
+            <div class="form-group text-center">
+                <div class="col-xs-10">
+                    <button type="submit" name="submit" id="SaveListGroupDoctorAdd" value="SaveListGroupDoctorAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+                    <a id="BackGroupAccount" href="/News/ListGroupDoctor" class="btn btn-primary"> <i class="fa fa-backward"></i>  Quay lại (Alt + Z) </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<!-- End Form -->
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+
+<script src="/Content/AdminLTE/js/adminlte.js"></script>
+<script src="/Content/AdminLTE/js/init.js"></script>
+

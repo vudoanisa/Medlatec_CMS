@@ -1,0 +1,119 @@
+﻿@model  CMS_Core.Entity.cms_Category
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Thêm mới chuyên mục";
+    CMS_Core.Common.ComboBoxFinal<CMS_PARTNER> ComboBox = new CMS_Core.Common.ComboBoxFinal<CMS_PARTNER>();
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    CMS_Core.Common.ComboBoxFinal<CATEGORYS> ComboBoxPARRENT = new CMS_Core.Common.ComboBoxFinal<CATEGORYS>();
+
+}
+
+<script src="/Content/AdminLTE/js/Customer/CategoryAdd.js"></script>
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+    
+
+    @using (Html.BeginForm("CategoryAdd", "CatalogSystem", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="box-body">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Tên chuyên mụ:c<span class="required">*</span></label>
+                <div class="col-xs-5">
+                    @Html.TextBoxFor(m => m.CATEGORY_NAME, new { @class = "form-control", type = "SingleLine", placeholder = "Tên menu" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Chuyên mục cha:c<span class="required">*</span></label>
+                <div class="col-xs-3">
+                    @if (UserInfo.PARTNERID == 1)
+                    {
+                        @Html.DropDownListFor(m => m.CATEGORY_PARRENT, ComboBoxPARRENT.GetComboBoxBySelected("SELECT  id,category_name FROM    categorys where categorys_status = 2 and category_parrent = 0", "id", "category_name", Model.CATEGORY_PARRENT.ToString(), true), new { @class = "form-control select2" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.CATEGORY_PARRENT, ComboBoxPARRENT.GetComboBoxBySelected("SELECT  id,category_name FROM    categorys where categorys_status = 2 and category_parrent = 0 PARTNERID = " + UserInfo.PARTNERID, "id", "category_name", Model.CATEGORY_PARRENT.ToString(), true), new { @class = "form-control select2" })
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Mô tả:<span class="required">*</span></label>
+                <div class="col-xs-5">
+                    @Html.TextBoxFor(m => m.CATEGORY_DESC, new { @class = "form-control", type = "SingleLine", placeholder = "Mô tả" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Vị trí:</label>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(m => m.CATEGORY_ORDER, new { @class = "form-control", type = "number", placeholder = "Vị trí" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-3" style="font-weight:bold; ">Số phần tử con:</label>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(m => m.CATEGORY_COUNT_CHILRENT, new { @class = "form-control", type = "number", placeholder = "Số phần tử con" })
+                </div>
+            </div>
+
+
+            @if (UserInfo.PARTNERID == 1)
+            {
+                <div class="form-group">
+                    <label class="control-label col-xs-3" style="font-weight:bold; ">Đối tác:<span class="required">*</span></label>
+                    <div class="col-xs-3">
+                        @Html.DropDownListFor(m => m.PARTNERID, ComboBox.GetComboBoxBySelected("SELECT  id,partner_name FROM    cms_partner where PARTNER_STATUS = 2", "id", "partner_name", Model.PARTNERID.ToString(), true), new { @class = "form-control select2" })
+                    </div>
+                </div>
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.PARTNERID, new { @class = "checkbox-inline", Type = "hidden" })
+            }
+
+
+
+            @Html.TextBoxFor(m => m.ID, new { @class = "checkbox-inline", Type = "hidden" })
+
+
+            <div class="form-group text-center">
+
+                <button type="submit" id="SaveCategoryAdd" name="submit" value="SaveCategoryAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+                <a id="listCategory" href="/CatalogSystem/Category" class="btn btn-primary"><i class="fa fa-backward"></i> Quay lại (Alt + Z) </a>
+            </div>
+
+
+
+
+        </div>
+    }
+</div>
+<!-- End Form -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+ 

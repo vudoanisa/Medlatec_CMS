@@ -1,0 +1,1123 @@
+﻿@model  CMS_Core.Models.MedicalExaminationViewModel
+@using CMS_Core.Entity;
+@{
+
+    ViewBag.Title = "Khám bệnh siêu âm";
+
+
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBox = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+
+
+    if (string.IsNullOrEmpty(Model.PATIENTINFO.PATIENTNAME))
+    {
+        Response.Redirect("/account/login");
+    }
+
+}
+
+
+
+<script src="/Content/AdminLTE/js/Customer/medicalExamination.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+
+    @if (@ViewBag.TitleSuccsess != null)
+    {
+        <span class="text-danger justify-content-lg-end">
+            &nbsp;&nbsp;&nbsp;&nbsp;  @ViewBag.TitleSuccsess
+        </span>
+    }
+
+
+
+    @using (Html.BeginForm("medicalExaminationSupersonic", "Clinic", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+    {
+
+        @Html.AntiForgeryToken()
+        <!-- Main content -->
+        <section class="content">
+
+
+
+
+            <div class="col-md-12">
+
+
+
+                <ul class="widget-header nav nav-tabs nav-fill" role="tablist">
+                    <li class="nav-item ">
+                        <a class="nav-link" id="just-tab-1" data-toggle="tab" href="#j-tab-1" role="tab" aria-controls="j-tab-1" aria-selected="false"> <i class="fa fa-heart"></i> Thông tin bệnh nhân</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="just-tab-3" data-toggle="tab" href="#j-tab-3" role="tab" aria-controls="j-tab-3" aria-selected="false"><i class="fa fa-h-square"></i>   Tiền sử bệnh</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="just-tab-2" data-toggle="tab" href="#j-tab-2" role="tab" aria-controls="j-tab-2" aria-selected="false"><i class="fa fa-warning"></i> Dị ứng</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" id="just-tab-5" data-toggle="tab" href="#j-tab-5" role="tab" aria-controls="j-tab-5" aria-selected="true"> <i class="fa fa-plus-square"></i> Chỉ định </a>
+                    </li>
+
+                    <li class="nav-item active">
+                        <a class="nav-link" id="just-tab-6" data-toggle="tab" href="#j-tab-6" role="tab" aria-controls="j-tab-6" aria-selected="true"> <i class="fa fa-stethoscope"></i> Siêu âm</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" id="just-tab-4" data-toggle="tab" href="#j-tab-4" role="tab" aria-controls="j-tab-4" aria-selected="true"> <i class="fa fa-support"></i> Kết quả </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" id="just-tab-7" data-toggle="tab" href="#j-tab-7" role="tab" aria-controls="j-tab-7" aria-selected="true"> <i class="fa fa-medkit"></i> Kê đơn </a>
+                    </li>
+
+
+                </ul>
+
+
+                <div class="tab-content" style="min-height: 530px;">
+
+                    <div class="tab-pane " id="j-tab-1" role="tabpanel" aria-labelledby="base-tab-1">
+                        <div class="col-12 ml-auto" style="margin-top: -10px;margin-bottom: -5px;">
+                            <div class="section-title mt-3 mb-3">
+                                <h4>01. Thông tin bệnh nhân</h4>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+
+                            <label class="col-lg-1 form-control-label text-bold text-right " style="border: 1px solid #e1e8ed;">Họ tên:</label>
+                            <div class="col-lg-6" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.PATIENTNAME</label>
+                            </div>
+
+                            <label class="col-lg-3 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Giới tính:</label>
+                            <div class="col-lg-2" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.sexname</label>
+                            </div>
+
+                        </div>
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+
+                            <label class="col-lg-1 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Cân nặng:</label>
+                            <div class="col-lg-2" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.weight (kg)</label>
+                            </div>
+
+                            <label class="col-lg-2 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Ngày Sinh:</label>
+                            <div class="col-lg-2" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@CMSLIS.Common.Common.ReFmtDate(Model.PATIENTINFO.BIRTHDAY)</label>
+                            </div>
+
+                            <label class="col-lg-3 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Tuổi:</label>
+                            <div class="col-lg-2" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.AGE</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+                            <label class="col-lg-1 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Địa chỉ:</label>
+                            <div class="col-lg-11" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.ADDRESS</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+                            <label class="col-lg-3 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Thông tin phụ huynh:</label>
+                            <div class="col-lg-9" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.PARENTS_INFO</label>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+
+                            <label class="col-lg-1 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Di động:</label>
+                            <div class="col-lg-3" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.PHONE</label>
+                            </div>
+
+                            <label class="col-lg-1 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Cố định:</label>
+                            <div class="col-lg-2" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.PHONE1</label>
+                            </div>
+
+                            <label class="col-lg-1 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Email:</label>
+                            <div class="col-lg-4" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.EMAILADDRESS</label>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+
+                            <label class="col-lg-1 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Số CMT:</label>
+                            <div class="col-lg-3" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.IDENTIFICATION</label>
+                            </div>
+
+
+
+
+                            <label class="col-lg-1 form-control-label text-bold text-right" style=" border: 1px solid #e1e8ed;">Ngày cấp:</label>
+                            <div class="col-lg-2" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.IDENTIFICATION_DATEVIEW</label>
+                            </div>
+
+
+
+                            <label class="col-lg-2 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Nơi cấp:</label>
+                            <div class="col-lg-3" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.IDENTIFICATION_ISSUED</label>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row " style="border: 1px solid #e1e8ed;">
+                            <label class="col-lg-1 form-control-label text-bold text-right" style="margin-top: -7px;">Hộ chiếu:</label>
+                            <div class="col-lg-3" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.PASSPORT</label>
+
+                            </div>
+
+                            <label class="col-lg-1 form-control-label text-bold text-right" style="margin-top: -7px;">Ngày cấp:</label>
+                            <div class="col-lg-2" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.PASSPORT_DATEVIEW</label>
+                            </div>
+
+                            <label class="col-lg-2 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Nơi cấp:</label>
+                            <div class="col-lg-3" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.PASSPORT_ISSUED</label>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div class="col-12 ml-auto" style=" margin-bottom: -5px;">
+                            <div class="section-title mt-3 mb-3">
+                                <h4>02. Thông tin BHYT</h4>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+                            <label class="col-lg-1 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Số thẻ:</label>
+                            <div class="col-lg-4" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.INSURANCE_CARD</label>
+                            </div>
+
+                            <label class="col-lg-2 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Nơi đăng ký:</label>
+                            <div class="col-lg-4" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.INSURANCE_CARD_PLACE</label>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+                            <label class="col-lg-1 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Hạn SD:</label>
+                            <div class="col-lg-2" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.INSURANCE_CARD_STARTVIEW</label>
+
+                            </div>
+
+                            <label class="col-lg-1 form-control-label text-bold text-right" style="border: 1px solid #e1e8ed;">Đến:</label>
+                            <div class="col-lg-2" style="border: 1px solid #e1e8ed;">
+                                <label class="  form-control-label text-bold text-right ">@Model.PATIENTINFO.INSURANCE_CARD_ENDVIEW</label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane" id="j-tab-2" role="tabpanel" aria-labelledby="base-tab-2">
+
+
+                        <div class="row">
+                            <div class="form-group row">
+                                <div class="col-lg-6">
+                                    <label class="  form-control-label text-bold ">Họ tên: @Model.PATIENTINFO.PATIENTNAME</label>
+                                </div>
+                                <div class="col-lg-2">
+
+                                    <label class="  form-control-label text-bold ">Giới tính: @Model.PATIENTINFO.sexname</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-lg-2">
+
+                                    <label class="  form-control-label text-bold ">Cân nặng: @Model.PATIENTINFO.weight (kg)</label>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label class="  form-control-label text-bold ">Ngày Sinh: @CMSLIS.Common.Common.ReFmtDate(Model.PATIENTINFO.BIRTHDAY)</label>
+                                </div>
+                                <div class="col-lg-2">
+
+                                    <label class="  form-control-label text-bold ">Tuổi: @Model.PATIENTINFO.AGE</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box box-primary">
+
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Danh sách dị ứng bệnh nhân:</h3>
+                            </div>
+
+                            <div class="widget has-shadow" style="margin-top: 0px;">
+                                <div class="widget-body">
+                                    <div class="form-group row  ">
+                                        <div class="col-lg-4">
+                                            @Html.TextBoxFor(m => m.ALLERGGY.ALLERGY_NAME, new { @class = "form-control  ", type = "SingleLine", placeholder = "Tên dị ứng", autocomplete = "true", id = "ALLERGY_NAME" })
+                                        </div>
+                                        <label class="col-lg-1 form-control-label text-bold text-right">Loại DU</label>
+                                        <div class="col-lg-2">
+                                            @Html.DropDownListFor(m => m.ALLERGGY.ALLERGY_TYPE, ComboBox.GetComboBoxBySelected("SELECT id as idfield,  CATEGORY_DESC as namefield  FROM  DM_LOAIDIUNG  where categorys_status = 2", "idfield", "namefield", Model.ALLERGGY.ALLERGY_TYPE.ToString(), true), new { @class = "form-control select2", id = "ALLERGY_TYPE", onchange = "SelectedValueALLERGY_TYPE(this)" })
+                                        </div>
+                                        <div class="col-lg-3">
+                                            @Html.TextBoxFor(m => m.ALLERGGY.ALLERGY_NOTE, new { @class = "form-control  ", type = "SingleLine", placeholder = "Ghi chú", autocomplete = "true", id = "ALLERGY_NOTE" })
+
+                                        </div>
+                                        <button type="button" class="btn btn-danger mr-1 mb-2" style="width:100px;" id="SaveALLERGGYID" onclick="return SaveALLERGGY();"><i class="fa fa-save"></i> Lưu </button>
+
+                                    </div>
+                                    @Html.TextBoxFor(m => m.ALLERGGY.ID, new { @class = "checkbox-inline", Type = "hidden", id = "ALLERGGYID" })
+                                </div>
+                            </div>
+
+                            <!-- Sorting -->
+                            <div class="widget has-shadow">
+                                <div class="widget-body">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0" id="table-sick">
+                                            <thead>
+                                                <tr>
+                                                    <th id="ALLERGY_NAME">Tên dị ứng</th>
+                                                    <th id="ALLERGY_TYPE">Loại dị ưng</th>
+                                                    <th id="ALLERGY_NOTE">Ghi chú</th>
+                                                    <th id="edit">Edit</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="sorting-table-sick">
+                                                @if (Model.ALLERGGYS != null)
+                                                {
+                                                    foreach (var data in Model.ALLERGGYS)
+                                                    {
+                                                        <tr>
+                                                            <td class="ALLERGY_NAME"><span class="text-primary">@data.ALLERGY_NAME</span></td>
+                                                            <td>@data.ALLERGY_TYPE_NAME</td>
+                                                            <td style="display:none;" class="ALLERGY_TYPE">@data.ALLERGY_TYPE</td>
+                                                            <td style="display:none;" class="ALLERGY_TID">@data.ID</td>
+                                                            <td class="ALLERGY_NOTE">@data.ALLERGY_NOTE</td>
+                                                            <td class='td-actions'>  <a class="Update" href="javascript:;"><i class="fa fa-edit edit"></i></a> </td>
+                                                        </tr>
+                                                    }
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Sorting -->
+
+                        </div>
+
+                    </div>
+
+                    <div class="tab-pane" id="j-tab-3" role="tabpanel" aria-labelledby="base-tab-3">
+
+                        <div class="row">
+                            <div class="form-group row">
+                                <div class="col-lg-6">
+                                    <label class="  form-control-label text-bold ">Họ tên: @Model.PATIENTINFO.PATIENTNAME</label>
+                                </div>
+                                <div class="col-lg-2">
+
+                                    <label class="  form-control-label text-bold ">Giới tính: @Model.PATIENTINFO.sexname</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-lg-2">
+
+                                    <label class="  form-control-label text-bold ">Cân nặng: @Model.PATIENTINFO.weight (kg)</label>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label class="  form-control-label text-bold ">Ngày Sinh: @CMSLIS.Common.Common.ReFmtDate(Model.PATIENTINFO.BIRTHDAY)</label>
+                                </div>
+                                <div class="col-lg-2">
+
+                                    <label class="  form-control-label text-bold ">Tuổi: @Model.PATIENTINFO.AGE</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Tiền sử bệnh:</h3>
+                            </div>
+
+                            <div class="widget has-shadow" style="margin-top: 0px;">
+                                <div class="widget-body">
+                                    <div class="form-group row  ">
+
+                                        @*<label class="col-lg-2 form-control-label text-bold text-right">Tên bệnh</label>*@
+                                        <div class="col-lg-3">
+                                            @Html.DropDownListFor(m => m.HISTORIE.SICKNAME, ComboBox.GetComboBoxBySelected("SELECT id as idfield,  SICK_NAME as namefield  FROM   CMS_SICK where SICK_STATUS = 2", "namefield", "namefield", Model.HISTORIE.SICKNAME.ToString(), false), new { @class = "form-control select2", id = "SICKNAME", onchange = "SelectedValueSICKNAME(this)" })
+                                        </div>
+                                        <label class="col-lg-1 form-control-label text-bold text-right">Năm</label>
+                                        <div class="col-lg-2">
+                                            @Html.TextBoxFor(m => m.HISTORIE.SICKYEAR, new { @class = "form-control  ", type = "number", placeholder = "Năm", autocomplete = "true", id = "SICKYEAR" })
+                                        </div>
+                                        @*<label class="col-lg-1 form-control-label text-bold text-right">Ghi chú</label>*@
+                                        <div class="col-lg-4">
+                                            @Html.TextBoxFor(m => m.HISTORIE.NOTE, new { @class = "form-control  ", type = "SingleLine", placeholder = "Ghi chú", autocomplete = "true", id = "HISTORIENOTE" })
+                                        </div>
+                                        <button type="button" class="btn btn-danger mr-1 mb-2" style="width:100px;" id="SaveHISTORIEID1" onclick="return SaveHISTORIE();"><i class="fa fa-save"></i> Lưu </button>
+
+                                    </div>
+                                    @Html.TextBoxFor(m => m.HISTORIE.ID, new { @class = "checkbox-inline", Type = "hidden", id = "HISTORIEID" })
+                                </div>
+                            </div>
+
+                            <!-- Sorting -->
+                            <div class="widget has-shadow">
+                                <div class="widget-body">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0" id="table_history">
+                                            <thead>
+                                                <tr>
+                                                    <th id="SICKNAME">Tên bệnh</th>
+                                                    <th id="SICKYEAR">Năm</th>
+                                                    <th id="HISTORIENOTE">Ghi chú</th>
+                                                    <th id="edit">Edit</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="sorting-table-history">
+                                                @if (Model.HISTORIES != null)
+                                                {
+                                                    foreach (var data in Model.HISTORIES)
+                                                    {
+                                                        <tr>
+                                                            <td class="SICKNAME">@data.SICKNAME</td>
+                                                            <td class="SICKYEAR">@data.SICKYEAR</td>
+                                                            <td class="HISTORIES_NOTE">@data.NOTE</td>
+                                                            <td style="display:none;" class="HISTORIES_ID">@data.ID</td>
+
+                                                            <td class='td-actions'>  <a class="Update" href="javascript:;"><i class="fa fa-edit edit"></i></a></td>
+
+
+                                                        </tr>
+                                                    }
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Sorting -->
+
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Lịch sử khám:</h3>
+                            </div>
+
+                            <!-- Sorting -->
+                            <div class="widget has-shadow">
+                                <div class="widget-body">
+                                    <div class="table-responsive">
+                                        <table class="table mb-0" id="table_history">
+                                            <thead>
+                                                <tr>
+                                                    <th id="SICKNAME">Ngày khám</th>
+                                                    <th id="SICKYEAR">Lý do khám</th>
+                                                    <th id="SICKYEAR">Khoa khám</th>
+                                                    <th id="HISTORIENOTE">Ghi chú</th>
+                                                    <th id="edit">Xem</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="sorting-table-history">
+                                                @if (Model.PATIENTS != null)
+                                                {
+                                                    foreach (var data in Model.PATIENTS)
+                                                    {
+                                                        <tr>
+                                                            <td><span class="text-primary">@CMSLIS.Common.Common.ReFmtTime(data.DATEIN)</span></td>
+                                                            <td><span>@data.REASON</span></td>
+                                                            <td>@data.DEPARTMENTSID</td>
+                                                            <td>@data.GHICHU</td>
+                                                            <td class='td-actions'><a href='Clinic/ListPatientsCreateOrder?id=@data.SID' id='Edit'><i class='fa fa-search'></i></a> </td>
+                                                        </tr>
+                                                    }
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Sorting -->
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tab-pane" id="j-tab-5" role="tabpanel" aria-labelledby="base-tab-5">
+
+                        <div class="row">
+
+                            <div class="row">
+                                <div class="form-group row">
+                                    <div class="col-lg-6">
+                                        <label class="  form-control-label text-bold ">Họ tên: @Model.PATIENTINFO.PATIENTNAME</label>
+                                    </div>
+                                    <div class="col-lg-2">
+
+                                        <label class="  form-control-label text-bold ">Giới tính: @Model.PATIENTINFO.sexname</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-2">
+
+                                        <label class="  form-control-label text-bold ">Cân nặng: @Model.PATIENTINFO.weight (kg)</label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label class="  form-control-label text-bold ">Ngày Sinh: @CMSLIS.Common.Common.ReFmtDate(Model.PATIENTINFO.BIRTHDAY)</label>
+                                    </div>
+                                    <div class="col-lg-2">
+
+                                        <label class="  form-control-label text-bold ">Tuổi: @Model.PATIENTINFO.AGE</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box box-primary">
+                                <div class="col-md-3">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Lần chỉ định</h3>
+                                    </div>
+                                    <div class="box box-solid">
+
+                                        <div class="box-body no-padding">
+                                            <div class="widget has-shadow">
+                                                <div class="widget-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table mb-0" id="table_history" style="margin-bottom: -1px !important;">
+                                                            <thead>
+                                                                <tr style="border: 1px solid #e1e8ed;">
+                                                                    <th style="border: 1px solid #e1e8ed;" id="SICKYEAR">Thời gian</th>
+                                                                    <th style="border: 1px solid #e1e8ed;" id="SICKYEAR">Số tiền</th>
+                                                                    <th style="border: 1px solid #e1e8ed;" id="SICKYEAR">Nhân viên thu tiền</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="sorting-table-history">
+                                                                @if (Model.PATIENT != null)
+                                                                {
+                                                                    if (!string.IsNullOrEmpty(Model.PATIENT.INVOICE))
+                                                                    {
+                                                                        <tr style="border: 1px solid #e1e8ed;">
+                                                                            <td style="border: 1px solid #e1e8ed;"><span>@CMSLIS.Common.Common.ReFmtDate(Model.PATIENT.DATEIN)</span></td>
+                                                                            <td style="border: 1px solid #e1e8ed;">@CMSLIS.Common.Common.FmtAmt(Model.PATIENT.SUMMONEY)</td>
+                                                                            <td style="border: 1px solid #e1e8ed;">@Model.PATIENT.INVOICE</td>
+
+                                                                        </tr>
+
+                                                                    }
+
+
+                                                                }
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /. box -->
+                                    <!-- /.box -->
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-md-9">
+
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Lần chỉ định</h3>
+                                    </div>
+
+                                    <div class="box box-solid">
+
+                                        <div class="box-body no-padding">
+                                            <!-- Sorting -->
+                                            <div class="widget has-shadow">
+                                                <div class="widget-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table mb-0" id="table_history" style="margin-bottom: -1px !important;">
+                                                            <thead>
+                                                                <tr style="border: 1px solid #e1e8ed;">
+
+                                                                    <th style="border: 1px solid #e1e8ed;" id="SICKYEAR">Bác sỹ</th>
+                                                                    <th style="border: 1px solid #e1e8ed;" id="SICKYEAR">Tên dịch vụ</th>
+                                                                    <th style="border: 1px solid #e1e8ed;" id="HISTORIENOTE">SL</th>
+                                                                    <th style="border: 1px solid #e1e8ed;" id="edit">Đơn giá</th>
+                                                                    <th style="border: 1px solid #e1e8ed;" id="edit">Thành tiền</th>
+                                                                    <th style="border: 1px solid #e1e8ed;" id="edit">Kết quả</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="sorting-table-history">
+                                                                @if (Model.CMS_PATIENT_SERVICES != null)
+                                                                {
+                                                                    foreach (var data in Model.CMS_PATIENT_SERVICES)
+                                                                    {
+                                                                        <tr style="border: 1px solid #e1e8ed;">
+
+                                                                            <td style="border: 1px solid #e1e8ed;">@data.DOCTOR_NAME</td>
+                                                                            <td style="border: 1px solid #e1e8ed;">@data.SERVICE_NAME</td>
+                                                                            <td style="border: 1px solid #e1e8ed;">@data.COUNT</td>
+                                                                            <td style="border: 1px solid #e1e8ed;">@CMSLIS.Common.Common.FmtAmt(data.SERVICE_PRICE)</td>
+                                                                            <td style="border: 1px solid #e1e8ed;">@CMSLIS.Common.Common.FmtAmt(data.SERVICE_PRICE * data.COUNT)</td>
+                                                                            <td style="border: 1px solid #e1e8ed;">@data.SERVICE_RESULT</td>
+                                                                        </tr>
+                                                                    }
+                                                                }
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End Sorting -->
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <!-- /. box -->
+
+                                <div class="col-md-12 ">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Thêm dịch vụ</h3>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-2 form-control-label text-bold text-right">Chọn gói dịch vụ</label>
+                                        <div class="col-lg-2">
+                                            @Html.DropDownListFor(m => m.SERVICE_GROUPID, ComboBox.GetComboBoxBySelected("select id as idfield, service_group_name as namefield from CMS_SERVICE_GROUP where service_group_status = 2 and  (PARTNERID = " + UserInfo.PARTNERID + " or PARTNERID = 0)  order by service_group_name asc", "idfield", "namefield", Model.SERVICE_GROUPID.ToString(), true), new { @class = "form-control select2", id = "SERVICE_GROUPID" })
+                                        </div>
+
+                                        <label class="col-lg-2 form-control-label text-bold text-right">Chọn dịch vụ</label>
+                                        <div class="col-lg-5">
+                                            @Html.DropDownListFor(m => m.SERVICEID, ComboBox.GetComboBoxBySelected("select id as idfield, SERVICE_NAME as namefield from CMS_SERVICE where SERVICE_STATUS = 2 and  (PARTNERID = " + UserInfo.PARTNERID + " or PARTNERID = 0)  order by SERVICE_NAME asc", "idfield", "namefield", Model.SERVICEID.ToString(), false), new { @class = "form-control select2 SERVICEID", multiple = "multiple", id = "SERVICEID" })
+                                        </div>
+                                        <button type="button" class="btn btn-danger " id="SaveSERVICE1" onclick="return SaveSERVICE();"><i class="fa fa-save"></i> Lưu </button>
+
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tab-pane active" id="j-tab-6" role="tabpanel" aria-labelledby="base-tab-6">
+
+                        <div class="row">
+
+                            <div class="row">
+                                <div class="form-group row">
+                                    <div class="col-lg-6">
+                                        <label class="  form-control-label text-bold ">Họ tên: @Model.PATIENTINFO.PATIENTNAME</label>
+                                    </div>
+                                    <div class="col-lg-2">
+
+                                        <label class="  form-control-label text-bold ">Giới tính: @Model.PATIENTINFO.sexname</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-2">
+
+                                        <label class="  form-control-label text-bold ">Cân nặng: @Model.PATIENTINFO.weight (kg)</label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <label class="  form-control-label text-bold ">Ngày Sinh: @CMSLIS.Common.Common.ReFmtDate(Model.PATIENTINFO.BIRTHDAY)</label>
+                                    </div>
+                                    <div class="col-lg-2">
+
+                                        <label class="  form-control-label text-bold ">Tuổi: @Model.PATIENTINFO.AGE</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box box-primary">
+                                <!-- /.col -->
+                                <div class="col-md-9">
+
+
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Nhập kết quả khám</h3>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-lg-1 form-control-label text-bold text-right">Dịch vụ: <span class="required">*</span></label>
+                                        <div class="col-lg-6">
+                                            @Html.DropDownListFor(m => m.CMS_PATIENT_SERVICE_RESULTS_INPUT.SERVICE_ID, ComboBox.GetComboBoxBySelected("SELECT service_id as idfield , service_name as namefield FROM  cms_patient_service where   is_pay = 1  and patient_id = " + Model.PATIENT.SID + " and pid=" + Model.PATIENT.PID + " order by id asc", "idfield", "namefield", Model.CMS_PATIENT_SERVICE_RESULTS_INPUT.SERVICE_ID.ToString(), false), new { @class = "form-control select2" })
+                                        </div>
+                                    </div>
+
+                                    <div class="box-body">
+                                        <div class="form-group row">
+                                            <label class="col-lg-1 form-control-label text-bold text-right">Tiền sử bệnh</label>
+                                            <div class="col-lg-10">
+                                                @Html.TextAreaFor(m => m.CMS_PATIENT_SERVICE_RESULTS_INPUT.HISTORY_SICK, new { @class = "form-control", placeholder = "Tiền sử bệnh" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-1 form-control-label text-bold text-right">Nội dung khám: <span class="required">*</span></label>
+                                            <div class="col-lg-10">
+                                                @Html.TextAreaFor(m => m.CMS_PATIENT_SERVICE_RESULTS_INPUT.EXAMINATION_CONTENT, new { @class = "form-control", placeholder = "Nội dung khám", rows = "4" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-1 form-control-label text-bold text-right">Tóm tắt KQ: <span class="required">*</span></label>
+                                            <div class="col-lg-10">
+                                                @Html.TextAreaFor(m => m.CMS_PATIENT_SERVICE_RESULTS_INPUT.SERVICE_RESULT, new { @class = "form-control", placeholder = "Tóm tắt KQ", rows = "9" })
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-1 form-control-label text-bold text-right">Bệnh chính: <span class="required">*</span></label>
+                                            <div class="col-lg-6">
+                                                @Html.DropDownListFor(m => m.CMS_PATIENT_SERVICE_RESULTS_INPUT.MAINSICK, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    SICK_NAME as namefield FROM  CMS_SICK where SICK_STATUS = 2 and  PARTNERID = " + UserInfo.PARTNERID + "  order by SICK_NAME asc", "idfield", "namefield", Model.CMS_PATIENT_SERVICE_RESULTS_INPUT.MAINSICK.ToString(), false), new { @class = "form-control select2" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-1 form-control-label text-bold text-right">Bệnh phụ: </label>
+                                            <div class="col-lg-6">
+                                                @Html.DropDownListFor(m => m.CMS_PATIENT_SERVICE_RESULTS_INPUT.SECONDARY_SICK, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    SICK_NAME as namefield FROM  CMS_SICK where SICK_STATUS = 2 and  PARTNERID = " + UserInfo.PARTNERID + "  order by SICK_NAME asc", "idfield", "namefield", Model.CMS_PATIENT_SERVICE_RESULTS_INPUT.SECONDARY_SICK, true), new { @class = "form-control select2 SECONDARY_SICK", multiple = "multiple", id = "SECONDARY_SICK" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-1 form-control-label text-bold text-right">Dặn dò: </label>
+                                            <div class="col-lg-10">
+                                                @Html.TextAreaFor(m => m.CMS_PATIENT_SERVICE_RESULTS_INPUT.SERVICE_ADVICE, new { @class = "form-control", placeholder = "Dặn dò", rows = "3" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-1 form-control-label text-bold text-right">Ghi chú: </label>
+                                            <div class="col-lg-10">
+                                                @Html.TextAreaFor(m => m.CMS_PATIENT_SERVICE_RESULTS_INPUT.SERVICE_NOTE, new { @class = "form-control", placeholder = "Ghi chú" })
+                                            </div>
+                                        </div>
+
+                                        @Html.TextBoxFor(m => m.PATIENTINFO.PID, new { @class = "checkbox-inline", Type = "hidden" })
+                                        @Html.TextBoxFor(m => m.PATIENTINFO.PARTNERID, new { @class = "checkbox-inline", Type = "hidden" })
+                                        @Html.TextBoxFor(m => m.PATIENTINFO.partnerid_Code, new { @class = "checkbox-inline", Type = "hidden" })
+                                        @Html.TextBoxFor(m => m.SID, new { @class = "checkbox-inline", Type = "hidden" })
+
+                                        <button type="submit" name="submit" id="SavemedicalExamination" value="SavemedicalExamination" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu</button>
+
+                                    </div>
+
+                                    <div style="display:none;">
+                                        @(Model.CMS_PATIENT_SERVICE_RESULTS_INPUT.CPS_ID = Model.PATIENT.SID);
+
+                                        @(Model.CMS_PATIENT_SERVICE_RESULTS_INPUT.PATIENT_ID = Model.PATIENT.SID);
+                                        @(Model.CMS_PATIENT_SERVICE_RESULTS_INPUT.PID = Model.PATIENTINFO.PID ?? 0);
+
+                                    </div>
+
+                                    @Html.TextBoxFor(m => m.CMS_PATIENT_SERVICE_RESULTS_INPUT.CPS_ID, new { @class = "checkbox-inline", Type = "hidden" })
+
+                                    @Html.TextBoxFor(m => m.CMS_PATIENT_SERVICE_RESULTS_INPUT.PATIENT_ID, new { @class = "checkbox-inline", Type = "hidden" })
+                                    @Html.TextBoxFor(m => m.CMS_PATIENT_SERVICE_RESULTS_INPUT.PID, new { @class = "checkbox-inline", Type = "hidden" })
+                                    @Html.TextBoxFor(m => m.CMS_PATIENT_SERVICE_RESULTS_INPUT.ID, new { @class = "checkbox-inline", Type = "hidden" })
+
+
+
+
+
+
+
+                                </div>
+
+                                <div class="col-md-3">
+
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Chụp ảnh</h3>
+                                    </div>
+
+
+                                    <!-- Profile Image -->
+                                    <div class="box box-info" style="margin-left: -10px;">
+                                        <div class="box-body box-profile">
+
+                                            <div class="mt-5" id="my_camera">
+                                                @if (string.IsNullOrEmpty(Model.PATIENTINFO.PATIENTIMAGE))
+                                                {
+                                                    <img src="/Content/assets/img/User.svg" alt="..." style="width: 120px;" class="profile-user-img img-responsive img-circle">
+                                                }
+                                                else
+
+                                                {
+                                                    <img src="/@Model.PATIENTINFO.PATIENTIMAGE" alt="..." style="width: 120px;" class="profile-user-img img-responsive img-circle">
+                                                }
+                                            </div>
+
+                                            <h3 class="profile-username text-center">Chup ảnh</h3>
+
+
+                                            <!-- /.box-body -->
+                                        </div>
+
+                                        <!-- First, include the Webcam.js JavaScript Library -->
+                                        <script type="text/javascript" src="/Content/assets/js/webcam.min.js"></script>
+
+                                        <!-- Configure a few settings and attach camera -->
+                                        <script language="JavaScript">
+                                            Webcam.set({
+                                                width: 240,
+                                                height: 200,
+                                                image_format: 'jpeg',
+                                                jpeg_quality: 90
+                                            });
+                                            Webcam.attach('#my_camera');
+                                        </script>
+
+
+
+                                        <script language="JavaScript">
+
+                                            function take_snapshot() {
+                                                // take snapshot and get image data
+                                                Webcam.snap(function (data_uri) {
+                                                    // display results in page
+                                                    document.getElementById('my_camera').innerHTML =
+                                                        '<img src="' +
+                                                        data_uri +
+                                                        '" />';
+
+                                                    document.getElementById('PATIENTPATH').value = data_uri;
+                                                    Webcam.upload(data_uri,
+                                                        '/Clinic/Capture',
+                                                        function (code, text) {
+                                                            alert('Chụp ảnh');
+                                                        });
+                                                });
+                                            }
+
+
+
+                                        </script>
+
+
+
+                                        <!-- /.box -->
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="j-tab-4" role="tabpanel" aria-labelledby="base-tab-4">
+
+
+                        <div class="row">
+                            <div class="form-group row">
+                                <div class="col-lg-6">
+                                    <label class="  form-control-label text-bold ">Họ tên: @Model.PATIENTINFO.PATIENTNAME</label>
+                                </div>
+                                <div class="col-lg-2">
+
+                                    <label class="  form-control-label text-bold ">Giới tính: @Model.PATIENTINFO.sexname</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-lg-2">
+
+                                    <label class="  form-control-label text-bold ">Cân nặng: @Model.PATIENTINFO.weight (kg)</label>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label class="  form-control-label text-bold ">Ngày Sinh: @CMSLIS.Common.Common.ReFmtDate(Model.PATIENTINFO.BIRTHDAY)</label>
+                                </div>
+                                <div class="col-lg-2">
+
+                                    <label class="  form-control-label text-bold ">Tuổi: @Model.PATIENTINFO.AGE</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box box-primary">
+
+
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Danh sách kết quả</h3>
+                            </div>
+
+
+                            <div class="box box-solid">
+
+                                <div class="box-body no-padding">
+                                    <!-- Sorting -->
+                                    <div class="widget has-shadow">
+                                        <div class="widget-body">
+                                            <div class="table-responsive">
+                                                <table class="table mb-0" id="table_history" style="margin-bottom: -1px !important;">
+                                                    <thead>
+                                                        <tr style="border: 1px solid #e1e8ed;">
+                                                            <th style="border: 1px solid #e1e8ed;" id="IDKham">ID</th>
+                                                            <th style="border: 1px solid #e1e8ed;" id="SICKYEAR">Thời gian</th>
+                                                            <th style="border: 1px solid #e1e8ed;" id="DOCTOR_NAME">Bác sỹ</th>
+                                                            <th style="border: 1px solid #e1e8ed;" id="SERVICE_NAME">Dịch vụ</th>
+                                                            <th style="border: 1px solid #e1e8ed;" id="SERVICE_RESULT">Chuẩn đoán</th>
+                                                            <th style="border: 1px solid #e1e8ed;" id="MAINSICK">Bệnh</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="sorting-table-history">
+                                                        @if (Model.CMS_PATIENT_SERVICE_RESULTS != null)
+                                                        {
+                                                            foreach (var data in Model.CMS_PATIENT_SERVICE_RESULTS)
+                                                            {
+                                                                if (!string.IsNullOrEmpty(data.SERVICE_RESULT))
+                                                                {
+                                                                    <tr style="border: 1px solid #e1e8ed;">
+                                                                        <td style="border: 1px solid #e1e8ed;">@data.ID</td>
+                                                                        <td style="border: 1px solid #e1e8ed;"><span>@CMSLIS.Common.Common.ReFmtDate(data.CREATE_DATE)</span></td>
+                                                                        <td style="border: 1px solid #e1e8ed;">@data.DOCTOR_NAME</td>
+                                                                        <td style="border: 1px solid #e1e8ed;">@data.SERVICE_NAME</td>
+                                                                        <td style="border: 1px solid #e1e8ed;">@data.SERVICE_RESULT</td>
+                                                                        <td style="border: 1px solid #e1e8ed;">@data.MAINSICK_NAME</td>
+
+                                                                    </tr>
+
+                                                                }
+
+                                                            }
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Sorting -->
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12 text-right">
+                                <a href="/CatalogSystem/Category" class="btn btn-primary"><i class="fa fa-print"></i> In KQ (F9) </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tab-pane" id="j-tab-7" role="tabpanel" aria-labelledby="base-tab-7">
+
+
+                        <div class="row">
+                            <div class="form-group row">
+                                <div class="col-lg-6">
+                                    <label class="  form-control-label text-bold ">Họ tên: @Model.PATIENTINFO.PATIENTNAME</label>
+                                </div>
+                                <div class="col-lg-2">
+
+                                    <label class="  form-control-label text-bold ">Giới tính: @Model.PATIENTINFO.sexname</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-lg-2">
+
+                                    <label class="  form-control-label text-bold ">Cân nặng: @Model.PATIENTINFO.weight (kg)</label>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label class="  form-control-label text-bold ">Ngày Sinh: @CMSLIS.Common.Common.ReFmtDate(Model.PATIENTINFO.BIRTHDAY)</label>
+                                </div>
+                                <div class="col-lg-2">
+
+                                    <label class="  form-control-label text-bold ">Tuổi: @Model.PATIENTINFO.AGE</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box box-primary">
+
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Kê thuốc</h3>
+                            </div>
+                            <div class="box box-solid">
+
+                                <div class="box-body no-padding">
+                                    <div class="form-group row ">
+                                        <label class="col-lg-1 form-control-label text-bold">Tên thuốc:<span class="required">*</span></label>
+                                        <div class="col-lg-3">
+                                            @Html.TextBoxFor(m => m.PATIENT_PRESCRIPTION.MEDICINE_ID, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_ID1" })
+
+                                            @Html.DropDownListFor(m => m.PATIENT_PRESCRIPTION.MEDICINE_ID, ComboBox.GetComboBoxBySelected("SELECT   ID as idfield,    MEDICINE_NAME as namefield FROM  CMS_MEDICINE where MEDICINE_STATUS = 2 and (PARTNERID = " + @UserInfo.PARTNERID + " or PARTNERID = 0)", "idfield", "namefield", Model.PATIENT_PRESCRIPTION.MEDICINE_ID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValue(this)", id = "MEDICINE_ID" })
+                                        </div>
+                                        <label class="col-lg-1 form-control-label text-bold">Mã thuốc:</label>
+                                        <div class="col-lg-1">
+                                            @Html.TextBoxFor(m => m.PATIENT_PRESCRIPTION.MEDICINE_CODE, new { @class = "form-control", type = "SingleLine", placeholder = "Mã thuốc", disabled = "True", id = "MEDICINE_CODE" })
+                                            @Html.TextBoxFor(m => m.PATIENT_PRESCRIPTION.MEDICINE_CODE, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_CODE1" })
+                                            @Html.TextBoxFor(m => m.PATIENT_PRESCRIPTION.MEDICINE_NAME, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_NAME" })
+                                        </div>
+
+                                        <label class="col-lg-1 form-control-label text-bold">Đơn vị tính:</label>
+                                        <div class="col-lg-1">
+                                            @Html.TextBoxFor(m => m.PATIENT_PRESCRIPTION.MEDICINE_UNIT_NAME, new { @class = "form-control", type = "SingleLine", placeholder = "Đơn bị tính", disabled = "True", id = "MEDICINE_UNIT_NAME" })
+                                            @Html.TextBoxFor(m => m.PATIENT_PRESCRIPTION.MEDICINE_UNIT, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_UNIT" })
+                                        </div>
+                                        <label class="col-lg-1 form-control-label text-bold">Số lượng:</label>
+                                        <div class="col-lg-1">
+                                            @Html.TextBoxFor(m => m.PATIENT_PRESCRIPTION.COUNT, new { @class = "form-control", type = "number", placeholder = "Mã thuốc", id = "MEDICINE_AMOUNT" })
+                                            @Html.TextBoxFor(m => m.PATIENT_PRESCRIPTION.MEDICINE_USAGE, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_USAGE" })
+
+                                            <input class="form-control" id="UserName" value="@UserInfo.Hoten" Type="hidden">
+                                            <input class="form-control" id="SID" value="@Model.PATIENT.SID" Type="hidden">
+                                            <input class="form-control" id="PID" value="@Model.PATIENTINFO.PID" Type="hidden">
+                                            <input class="form-control" id="PATIENT_PRESCRIPTION_ID" value="@Model.PATIENT_PRESCRIPTION.ID" Type="hidden">
+
+                                        </div>
+
+                                        <div class="col-lg-2">
+                                            <button type="submit" name="submit" id="SavePATIENT_PRESCRIPTION11" onclick="return SavePATIENT_PRESCRIPTION();" class="btn btn-danger"><i class="fa fa-save"></i>  Chọn</button>
+                                            <button type="submit" name="submit" id="DeletePATIENT_PRESCRIPTION1" onclick="return DeletePATIENT_PRESCRIPTION();" class="btn btn-danger"><i class="fa fa-save"></i>  Xóa</button>
+
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Danh sách thuốc đã kê</h3>
+                                </div>
+                                <div class="box box-solid">
+
+                                    <div class="box-body no-padding">
+                                        <!-- Sorting -->
+                                        <div class="widget has-shadow">
+                                            <div class="widget-body">
+                                                <div class="table-responsive">
+                                                    <table class="table mb-0" id="table_history_PATIENT_PRESCRIPTION" style="margin-bottom: -1px !important;">
+                                                        <thead>
+                                                            <tr style="border: 1px solid #e1e8ed;">
+                                                                <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                                                                <th style="border: 1px solid #e1e8ed;" id="IDKham">Ngày</th>
+                                                                <th style="border: 1px solid #e1e8ed;" id="DOCTOR_NAME">Bác sỹ</th>
+                                                                <th style="border: 1px solid #e1e8ed;" id="SERVICE_NAME">Tên thuốc</th>
+                                                                <th style="border: 1px solid #e1e8ed;" id="SERVICE_RESULT">Đơn vị</th>
+                                                                <th style="border: 1px solid #e1e8ed;" id="MAINSICK">Số lượng</th>
+                                                                <th style="border: 1px solid #e1e8ed;" id="MAINSICK">Cách dùng</th>
+                                                                <th id="edit">Edit</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="sorting-table-PATIENT_PRESCRIPTION">
+                                                            @if (Model.CMS_PATIENT_PRESCRIPTIONS != null)
+                                                            {
+                                                                foreach (var data in Model.CMS_PATIENT_PRESCRIPTIONS)
+                                                                {
+                                                                    if (!string.IsNullOrEmpty(data.MEDICINE_NAME))
+                                                                    {
+                                                                        <tr style="border: 1px solid #e1e8ed;">
+                                                                            <td><input type="checkbox" name="ID" value="@data.MEDICINE_ID" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                                                            <td class="CREATE_DATE" style="border: 1px solid #e1e8ed;"><span>@CMSLIS.Common.Common.ReFmtDate(data.CREATE_DATE)</span></td>
+                                                                            <td class="DOCTOR_NAME" style="border: 1px solid #e1e8ed;">@data.DOCTOR_NAME</td>
+                                                                            <td class="MEDICINE_NAME" style="border: 1px solid #e1e8ed;">@data.MEDICINE_NAME</td>
+                                                                            <td class="MEDICINE_UNIT" style="border: 1px solid #e1e8ed;">@data.MEDICINE_UNIT_NAME</td>
+                                                                            <td class="COUNT" style="border: 1px solid #e1e8ed;">@data.COUNT</td>
+                                                                            <td class="MEDICINE_USAGE" style="border: 1px solid #e1e8ed;">@data.MEDICINE_USAGE</td>
+                                                                            <td class="MEDICINE_ID" style="border: 1px solid #e1e8ed;display:none;">@data.MEDICINE_ID</td>
+                                                                            <td class="CMS_PATIENT_PRESCRIPTIONS_ID" style="border: 1px solid #e1e8ed;display:none;">@data.ID</td>
+
+                                                                            <td style="border: 1px solid #e1e8ed;" class='td-actions'>
+                                                                                <a class="Update" href="javascript:;"><i class="fa fa-edit edit"></i></a>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                    }
+
+                                                                }
+                                                            }
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End Sorting -->
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 text-right">
+                                <a href="/CatalogSystem/Category" class="btn btn-primary"><i class="fa fa-print"></i> In Đơn (F9) </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </section>
+    }
+</div>
+<!-- End Content -->
+<!-- End Row -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<!-- InputMask -->
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.js"></script>
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.extensions.js"></script>
+
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+

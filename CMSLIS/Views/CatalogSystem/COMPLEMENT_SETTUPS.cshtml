@@ -1,0 +1,206 @@
+﻿@model  CMSLIS.Models.COMPLEMENT_SETTUPViewModel
+@using CMS_Core.Entity;
+@using CMS_Core.Common;
+@{
+    ViewBag.Title = "COMPLEMENT_SETTUPS";
+    ComboBoxFinal<ROWS_LENGTH> COLS_LENGTH = new ComboBoxFinal<ROWS_LENGTH>();
+    ComboBoxFinal<ROWS_LENGTH> ROWS_LENGTH = new ComboBoxFinal<ROWS_LENGTH>();
+    ComboBoxFinal<TEXTBOXTYPE> TEXTBOXTYPE = new ComboBoxFinal<TEXTBOXTYPE>();
+    ComboBoxFinal<TYPEINPUT> TYPEINPUT = new ComboBoxFinal<TYPEINPUT>();
+
+}
+
+
+<!-- Begin Content -->
+
+
+@using (Html.BeginForm("COMPLEMENT_SETTUPS", "CatalogSystem", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="widget has-shadow">
+
+                <div class="form-group row d-flex align-items-center mb-5">
+                    @if (@ViewBag.TitleSuccsess != null)
+                    {
+                        <span class="text-danger justify-content-lg-end" style="margin-left: 22px;">
+                            @ViewBag.TitleSuccsess
+                        </span>
+                    }
+                </div>
+                <div class="form-group row d-flex align-items-center mb-5">
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xl-12">
+            <!-- Sorting -->
+            <div class="widget has-shadow">
+                <div class="widget-body">
+                    <div class="table-responsive">
+                        <table class="table" id="example2" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th style="width:140px;">Class</th>
+                                    <th style="width:140px;">Label name</th>
+                                    <th>Kiểu Input</th>
+                                    <th style="width:180px;">Placeholder</th>
+                                    <th>Required</th>                                  
+                                    <th>Field Name</th>
+                                    <th>DisplayOrder</th>
+                                    <th>Orientation</th>
+                                    <th style="width:240px;">SQL</th>
+                                    <th>Cols Length</th>
+                                    <th>Rows Length</th>
+                                    <th>Textbox Type</th>
+                                    <th>Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.COMPLEMENT_SETTUPS != null)
+                                {
+                                    for (int i = 0; i < Model.COMPLEMENT_SETTUPS.Count; i++)
+
+                                    {
+                                <tr>
+                                    <td>@Model.COMPLEMENT_SETTUPS[i].ID</td>
+                                    <td>@Model.COMPLEMENT_SETTUPS[i].CLASS </td>
+                                    <td>@Model.COMPLEMENT_SETTUPS[i].LABEL_NAME</td>
+                                    <td>
+                                        @Html.DropDownListFor(m => m.COMPLEMENT_SETTUPS[i].FIELDTYPE, TYPEINPUT.GetComboBoxBySelected("select * from TYPEINPUT where status = 2 order by id desc", "id", "name", Model.COMPLEMENT_SETTUPS[i].FIELDTYPE.ToString(), true), new { @class = "form-control select2", style = "width:130px;", id = "FIELDTYPE", name = "FIELDTYPE" })
+                                    </td>
+                                    <td>@Model.COMPLEMENT_SETTUPS[i].PLACEHOLDER</td>
+                                    <td>@Model.COMPLEMENT_SETTUPS[i].REQUIRED</td>                                    
+                                    <td>@Model.COMPLEMENT_SETTUPS[i].FIELD_NAME</td>
+                                    <td>@Model.COMPLEMENT_SETTUPS[i].DISPLAYORDER</td>
+                                    <td>@Model.COMPLEMENT_SETTUPS[i].ORIENTATION</td>
+                                    <td>@Model.COMPLEMENT_SETTUPS[i].SQL</td>
+                                    <td>
+                                        @Html.DropDownListFor(m => m.COMPLEMENT_SETTUPS[i].COLS_LENGTH, COLS_LENGTH.GetComboBoxBySelected("select * from cols_length  where status = 2 order by id desc", "id", "name", Model.COMPLEMENT_SETTUPS[i].COLS_LENGTH.ToString(), true), new { @class = "form-control select2", style = "width:100px;", id = "COLS_LENGTH", name = "COLS_LENGTH" })                                        
+                                    </td>
+                                    <td>
+                                        @Html.DropDownListFor(m => m.COMPLEMENT_SETTUPS[i].ROWS_LENGTH, ROWS_LENGTH.GetComboBoxBySelected("select * from ROWS_LENGTH where status = 2 order by id desc", "id", "name", Model.COMPLEMENT_SETTUPS[i].ROWS_LENGTH.ToString(), true), new { @class = "form-control select2", style = "width:100px;", id = "ROWS_LENGTH", name = "ROWS_LENGTH" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownListFor(m => m.COMPLEMENT_SETTUPS[i].TEXTBOX_TYPE, TEXTBOXTYPE.GetComboBoxBySelected("select * from TEXTBOXTYPE where status = 2 order by id desc", "name", "name", Model.COMPLEMENT_SETTUPS[i].TEXTBOX_TYPE.ToString(), true), new { @class = "form-control select2", style = "width:100px;", id = "TEXTBOX_TYPE", name = "TEXTBOX_TYPE" })
+                                    </td>
+
+                                    <td>
+                                        <a class="Update" href="javascript:;">Update</a>
+                                    </td>
+                                    @Html.TextBoxFor(m => m.COMPLEMENT_SETTUPS[i].ID, new { @class = "checkbox-inline", Type = "hidden", name = "ID" })
+                                </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+
+
+                        <table class="table mb-0">
+                            <tr>
+                                <td>
+                                    @Html.TextBoxFor(m => m._SETTUP.CLASS, new { @class = "form-control", type = "SingleLine", placeholder = "CLASS" })
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(m => m._SETTUP.LABEL_NAME, new { @class = "form-control", type = "SingleLine", placeholder = "LABEL NAME" })
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(m => m._SETTUP.PLACEHOLDER, new { @class = "form-control", type = "SingleLine", placeholder = "PLACEHOLDER" })
+                                </td>
+                                @*<td>
+                                        @Html.DropDownListFor(m => m._ControlName.ControlStatus, CMSLIS.Common.Common.GetStatus(), new { @class = "form-control select2", id = "ControlStatus", name = "ControlStatus" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownListFor(m => m._ControlName.LangID, CMSLIS.Common.Common.Getcms_Language(), new { @class = "form-control select2", id = "LangID", name = "LangID" })
+                                    </td>*@
+                                <td>
+                                    <button type="submit" id="SaveListControl" name="submit" value="SaveListControl" class="btn btn-primary" style="width:105px"> <i class="fa fa-save"></i> Lưu</button>
+                                </td>
+
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- End Sorting -->
+
+        </div>
+    </div>
+    <!-- End Content -->
+}
+
+<!-- Begin Page Vendor Js -->
+<script src="/Content/assets/vendors/js/datatables/datatables.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/dataTables.buttons.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/jszip.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/buttons.html5.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/pdfmake.min.js"></script>
+<script src="/Content/assets/vendors/js/datatables/vfs_fonts.js"></script>
+<script src="/Content/assets/vendors/js/tabledit/jquery.tabledit.js"></script>
+<script src="/Content/assets/vendors/js/datatables/buttons.print.min.js"></script>
+<script src="/Content/assets/vendors/js/nicescroll/nicescroll.min.js"></script>
+<script src="/Content/assets/vendors/js/app/app.min.js"></script>
+
+<!-- End Page Vendor Js -->
+<!-- Begin Page Snippets -->
+<script src="/Content/assets/js/components/tables/tables.js"></script>
+<!-- End Page Snippets -->
+
+
+<script type="text/javascript">
+    //To get selected value an text of dropdownlist
+    function SelectedValue(ddlObject) {
+        document.getElementById('cmdSearch').click();
+    }
+
+    $('#example2').Tabledit({
+        editButton: false,
+        deleteButton: false,
+        hideIdentifier: false,
+        columns: {
+            identifier: [0, 'id'],
+            editable: [[1, 'Class'], [2, 'LABEL_NAME'], [4, 'PLACEHOLDER'], [9, 'SQL']]
+        }
+    });
+
+
+    //Update event handler.
+    $("body").on("click", "#example2 .Update", function () {
+        var row = $(this).closest("tr");
+        var cms_ControlName = {};
+        cms_ControlName.menID = row.find(".menID").val();
+        cms_ControlName.id = row.find('input[name="id"]').val();
+        cms_ControlName.ControlID = row.find('input[name="ControlID"]').val();
+        cms_ControlName.ControlName = row.find('input[name="ControlName"]').val();
+        cms_ControlName.ControlDes = row.find('input[name="ControlDes"]').val();
+        cms_ControlName.ControlStatus = row.find('select[id="ControlStatus"]').val();
+        cms_ControlName.LangID = row.find('select[id="LangID"]').val();
+        $.ajax({
+            type: "POST",
+            url: "/System/ListControlUpdate",
+            data: '{ControlNameValue:' + JSON.stringify(cms_ControlName) + '}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        });
+
+        location.reload();
+
+
+    });
+
+
+</script>
+
+

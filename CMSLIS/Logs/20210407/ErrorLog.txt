@@ -1,0 +1,8 @@
+﻿INFO 2021-04-07 04:33:12 – ListNews: System.InvalidCastException: Unable to cast object of type 'System.String' to type 'System.Collections.Generic.List`1[CMS_Core.Entity.cms_News]'.
+   at CMSLIS.Controllers.DictionaryController.AddRelate(String newsId) in D:\__Work__\MED\2021\Month 3\medlatec.vn\Medlatec_new\CMSLIS\Controllers\DictionaryController.cs:line 296
+INFO 2021-04-07 04:33:21 – ListNews: System.InvalidCastException: Unable to cast object of type 'System.String' to type 'System.Collections.Generic.List`1[CMS_Core.Entity.cms_News]'.
+   at CMSLIS.Controllers.DictionaryController.AddRelate(String newsId) in D:\__Work__\MED\2021\Month 3\medlatec.vn\Medlatec_new\CMSLIS\Controllers\DictionaryController.cs:line 296
+INFO 2021-04-07 05:00:43 – ChoiAddRelate: System.NullReferenceException: Object reference not set to an instance of an object.
+   at CMSLIS.Controllers.DictionaryController.ChoseAddRelate(String[] customerIDs, String newid) in D:\__Work__\MED\2021\Month 3\medlatec.vn\Medlatec_new\CMSLIS\Controllers\DictionaryController.cs:line 350
+INFO 2021-04-07 05:26:31 – ListNews:System.InvalidCastException: Unable to cast object of type 'System.String' to type 'System.Collections.Generic.List`1[CMS_Core.Entity.cms_News]'.
+   at CMSLIS.Controllers.DictionaryController.AddRelate(SearchNewsViewModel searchNewsView, String submit) in D:\__Work__\MED\2021\Month 3\medlatec.vn\Medlatec_new\CMSLIS\Controllers\DictionaryController.cs:line 244

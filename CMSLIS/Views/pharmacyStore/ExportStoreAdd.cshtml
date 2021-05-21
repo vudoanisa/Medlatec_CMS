@@ -1,0 +1,346 @@
+﻿@model  CMS_Core.Models.ExportStoreViewModel
+@using CMS_Core.Entity;
+
+@{
+    ViewBag.Title = "Phiếu xuất thuốc";
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBoxClass = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    CMS_Core.Common.ComboBoxFinal<CMS_MEDICINE> ComboBoxCMS_MEDICINE = new CMS_Core.Common.ComboBoxFinal<CMS_MEDICINE>();
+
+}
+
+
+
+<script src="/Content/AdminLTE/js/Customer/jquery.masknumber.js"></script>
+<script src="/Content/AdminLTE/js/Customer/ExportStoreAdd.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ExportStoreAdd", "pharmacyStore", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="box-body">
+            @Html.AntiForgeryToken()
+            @*@Html.ValidationSummary(false, "", new { @class = "text-danger" })*@
+
+            <div class="form-group row ">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Số phiếu:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CMS_MEDICINE_EXPORT_STORE_CODE, new { @class = "form-control", type = "SingleLine", placeholder = "Số phiếu", id = "CMS_MEDICINE_EXPORT_STORE_CODE", disabled = "True" })
+                            @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CMS_MEDICINE_EXPORT_STORE_CODE, new { @class = "checkbox-inline", Type = "hidden" })
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Mã KH:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.EMPLOYEECODE, new { @class = "form-control", type = "SingleLine", placeholder = "Mã khách hàng", id = "EMPLOYEECODE" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;">KH:<span class="required">*</span> </label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_NAME, new { @class = "form-control", type = "SingleLine", placeholder = "Khách hàng", id = "CUSTOMER_NAME" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Giới tính:</label>
+                        <div class="col-xs-8">
+                            @Html.DropDownListFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_GENDER, ComboBoxClass.GetComboBoxBySelected("SELECT   category_name  as idfield,    category_desc as namefield FROM  dm_gioitinh where categorys_status = 2", "idfield", "namefield", Model._MEDICINE_EXPORT_STORE.CUSTOMER_GENDER.ToString(), false), new { @class = "form-control select2", id = "CUSTOMER_GENDER" })
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+            <div class="form-group row ">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Địa chỉ:<span class="required">*</span></label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_ADDRESS, new { @class = "form-control", type = "SingleLine", placeholder = "Địa chỉ", id = "CUSTOMER_ADDRESS" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Mobile:<span class="required">*</span></label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_MOBILE, new { @class = "form-control", type = "number", placeholder = "Số điện thoại", id = "CUSTOMER_MOBILE" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Email:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CUSTOMER_EMAIL, new { @class = "form-control", type = "email", placeholder = "Email", id = "CUSTOMER_EMAIL" })
+                            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;margin-left: -2px;   ">Ghi chú:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.CMS_MEDICINE_EXPORT_STORE_NOTE, new { @class = "form-control", type = "SingleLine", placeholder = "Ghi chú", id = "NOTE" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @Html.TextBoxFor(m => m._MEDICINE_EXPORT_STORE.ID, new { @class = "checkbox-inline", Type = "hidden" })
+
+            <div class="box-header">
+                <h3 class="box-title">Thông tin hàng hóa </h3>
+            </div>
+
+            <div class="form-group row ">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4  text-bold">Tên thuốc:<span class="required">*</span></label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.ID, new { @class = "checkbox-inline", Type = "hidden", id = "DETAIL_ID" })
+                            @Html.DropDownListFor(m => m.MEDICINE_EXPORT_DETAIL.MEDICINE_ID, ComboBoxCMS_MEDICINE.GetComboBoxBySelected("SELECT   ID,    MEDICINE_NAME FROM  CMS_MEDICINE where MEDICINE_STATUS = 2 and (PARTNERID = " + @UserInfo.PARTNERID + " or PARTNERID = 0) order by MEDICINE_NAME asc ", "ID", "MEDICINE_NAME", Model.MEDICINE_EXPORT_DETAIL.MEDICINE_ID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValue(this)", id = "MEDICINE_ID" })
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4  text-bold">Mã thuốc:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.MEDICINE_CODE, new { @class = "form-control", type = "SingleLine", placeholder = "Mã thuốc", disabled = "True", id = "MEDICINE_CODE" })
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.MEDICINE_CODE, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_CODE1" })
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.MEDICINE_NAME, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_NAME" })
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.MEDICINE_UNIT, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_UNIT" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4  text-bold">Số lô:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.LOTMUMBER, new { @class = "form-control", type = "SingleLine", placeholder = "Số lô", id = "LOTMUMBER", disabled = "True" })
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.LOTMUMBER, new { @class = "checkbox-inline", Type = "hidden", id = "LOTMUMBER1" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4  text-bold">Giá bán:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.MEDICINE_PRICE, new { @class = "form-control", type = "text", placeholder = "Giá bán", id = "MEDICINE_PRICE", disabled = "True" })
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.MEDICINE_PRICE, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_PRICE1" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group row ">
+
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4  text-bold">Ngày SX:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.MEDICINE_CREATE_View, new { @class = "form-control", type = "SingleLine", placeholder = "Ngày sản xuất", id = "MEDICINE_CREATE", disabled = "True" })
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.MEDICINE_CREATE_View, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_CREATE1" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4  text-bold">Hạn SD:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.MEDICINE_EXPIRED_View, new { @class = "form-control", type = "SingleLine", placeholder = "Hạn sử dụng", id = "MEDICINE_EXPIRED", disabled = "True" })
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.MEDICINE_EXPIRED_View, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_EXPIRED1" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4  text-bold">Tồn:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.MEDICINE_TOTAL, new { @class = "form-control", type = "text", placeholder = "Tồn", id = "MEDICINE_TOTAL", disabled = "True" })
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.MEDICINE_TOTAL, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_TOTAL1" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4  text-bold">Số lượng:<span class="required">*</span></label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.MEDICINE_AMOUNT_VIEW, new { @class = "form-control", type = "text", placeholder = "Số lượng", id = "MEDICINE_AMOUNT", name = "MEDICINE_AMOUNT" })
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+
+
+            <div class="form-group row ">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-2  text-bold">Ghi chú:</label>
+                        <div class="col-xs-10">
+                            @Html.TextBoxFor(m => m.MEDICINE_EXPORT_DETAIL.NOTE, new { @class = "form-control", type = "SingleLine", placeholder = "Ghi chú" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <button type="submit" name="submit" value="hiddent" id="hiddent" class="btn btn-danger" style="display: none;"></button>
+                        <button type="submit" name="submit" value="SaveExportStoreChoi" id="SaveExportStoreChoi" class="btn btn-danger"><i class="fa fa-save"></i>  Chọn</button>
+                        <button type="submit" name="submit" value="SaveExportStoreDelete" id="SaveExportStoreDelete" class="btn btn-danger"> <i class="fa fa-remove"></i> Xóa</button>
+
+                    </div>
+                </div>
+
+
+
+
+
+
+            </div>
+
+            <div class="box box-info" style="margin-top: 5px;">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <div class="panel-actions">
+                            <a href="#" class="fa fa-caret-down"></a>
+                            <a href="#" class="fa fa-times"></a>
+                        </div>
+
+                        <h2 class="panel-title">
+                            Danh sách thuốc chọn
+                        </h2>
+                    </header>
+
+                    <!-- Begin Content -->
+                    <div class="panel-body">
+
+                        <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                                    <th id="MEDICINE_NAME">Tên thuốc</th>
+                                    <th id="MEDICINE_CODE">Mã thuốc</th>
+                                    <th id="LOTMUMBER">Số lô</th>
+                                    <th id="DATEOFMANUFACTURE">Ngày SX</th>
+                                    <th id="EXPIRYDATE">Hạn SD</th>
+                                    <th id="MEDICINE_AMOUNT">Số lượng</th>
+                                    <th id="MEDICINE_EXPIRED">Giá </th>
+                                    <th id="Total">Tổng tiền </th>
+                                    <th id="Note">Note </th>
+                                    <th id="edit">Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model._MEDICINE_EXPORT_DETAILS != null)
+                                {
+                                    foreach (var data in Model._MEDICINE_EXPORT_DETAILS)
+                                    {
+                                <tr>
+                                    <td><input type="checkbox" name="ID" value="@data.MEDICINE_ID" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                    <td class="MEDICINE_NAME1">@data.MEDICINE_NAME</td>
+                                    <td class="MEDICINE_CODE1">@data.MEDICINE_CODE</td>
+                                    <td class="LOTMUMBER1">@data.LOTMUMBER</td>
+                                    <td class="MEDICINE_CREATE1">@CMSLIS.Common.Common.ReFmtDate(data.MEDICINE_CREATE)</td>
+                                    <td class="MEDICINE_EXPIRED1">@CMSLIS.Common.Common.ReFmtDate(data.MEDICINE_EXPIRED)</td>
+                                    <td class="MEDICINE_AMOUNT1 text-right">@CMSLIS.Common.Common.FmtAmt(data.MEDICINE_AMOUNT)</td>
+                                    <td class="MEDICINE_PRICE1 text-right">@CMSLIS.Common.Common.FmtAmt(data.MEDICINE_PRICE)</td>
+                                    <td class="text-right">@CMSLIS.Common.Common.FmtAmt(Convert.ToDouble(data.MEDICINE_PRICE) * Convert.ToDouble(data.MEDICINE_AMOUNT))</td>
+                                    <td class="Note ">@data.NOTE</td>
+
+                                    <td class="ID1" style="display:none;">@data.ID</td>
+                                    <td class="td-actions">
+                                        <a class="Update" href="javascript:;"><i class="fa fa-edit edit"></i></a>
+                                    </td>
+
+
+                                </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+
+
+                        <div class="em-separator separator-dashed"></div>
+                        <div class="sign-btn text-center">
+
+
+                            <button type="submit" name="submit" value="SaveExportStoreAdd" id="SaveExportStoreAdd" class="btn btn-danger"><i class="fa fa-save"></i> Xuất kho (Alt + S)</button>
+                            <a id="BackListPatients" href="/pharmacyStore/ExportStore" class="btn btn-primary"><i class="fa fa-backward"></i> Quay lại (Alt + Z)</a>
+
+                        </div>
+                    </div>
+
+
+                </section>
+            </div>
+        </div>
+    }
+</div>
+<!-- end Content -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<!-- InputMask -->
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.js"></script>
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.extensions.js"></script>
+
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>

@@ -1,0 +1,167 @@
+﻿@using CMS_Core.Entity;
+@model  CMSLIS.Models.SearchCategoryViewModel
+@{
+    ViewBag.Title = "Danh sách thuốc";
+    var MEDICINES = (List<CMS_MEDICINE>)ViewBag.MEDICINES;
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    CMS_Core.Common.ComboBoxFinal<CMS_PARTNER> ComboBox = new CMS_Core.Common.ComboBoxFinal<CMS_PARTNER>();
+    CMS_Core.Common.ComboBoxFinal<CMS_GROUP_MEDICINE> ComboBoxParent = new CMS_Core.Common.ComboBoxFinal<CMS_GROUP_MEDICINE>();
+
+
+}
+
+<script src="/Content/AdminLTE/js/Customer/ListMedicine.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+<!-- Begin Content -->
+<div class="box box-info">
+
+
+    @using (Html.BeginForm("ListMedicine", "pharmacyStore", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+    {
+    <div class="box-body">
+        <div class="form-group row ">
+            @if (UserInfo.PARTNERID == 1)
+            {
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Đối tác:  </label>
+                        <div class="col-xs-7">
+                            @Html.DropDownListFor(m => m.PARTNERID, ComboBox.GetComboBoxBySelected("SELECT  id,partner_name FROM    cms_partner where PARTNER_STATUS = 2", "id", "partner_name", Model.PARTNERID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                        </div>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.PARTNERID, new { @class = "checkbox-inline", Type = "hidden" })
+            }
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Nhóm cha:  </label>
+                    <div class="col-xs-7">
+                        @Html.DropDownListFor(m => m.parentID, ComboBoxParent.GetComboBoxBySelected("SELECT  id,GROUP_MEDICINE_NAME FROM    CMS_GROUP_MEDICINE where GROUP_MEDICINE_STATUS = 2 and GROUP_MEDICINE_PARENT = 0", "id", "GROUP_MEDICINE_NAME", Model.parentID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Trạng thái:  </label>
+                    <div class="col-xs-7">
+                        @Html.DropDownListFor(m => m.Status, this.ViewBag.GetTypeStatus as List<SelectListItem>, new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group row ">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Tìm theo:  </label>
+                    <div class="col-xs-7">
+                        @Html.DropDownListFor(m => m.TypeKeyword, this.ViewBag.GetTypeKeyword as List<SelectListItem>, new { @class = "form-control select2" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label col-xs-3 control-label-invisible " style="font-weight:bold;  ">Từ khóa:</label>
+                    <div class="col-xs-8">
+                        @Html.TextBoxFor(m => m.keyword, new { @class = "form-control", type = "SingleLine", placeholder = "Từ khóa tìm kiếm" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <button type="submit" id="cmdSearch" name="submit" value="SearchListMedicine" class="btn btn-primary"><i class="fa fa-search"></i>  Tìm kiếm</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        }
+
+        <div class="box box-info" style="margin-top: 5px;">
+            <!-- Sorting -->
+            <section class="panel">
+
+                <!-- Begin Content -->
+                <div class="panel-body">
+                    <div class="row" style="margin-bottom: 5px;margin-left: -5px;">
+                        <a id="ListMedicineNew" href="/pharmacyStore/ListMedicineAdd" class="btn btn-info mr-1 mb-2"><i class="fa fa-plus-square-o"></i> Thêm mới (Ctrl + F1) </a>
+
+                        <button type="button" id="ListMedicineDelete" value="ListMedicineDelete" class="btn btn-danger mr-1 mb-2" style="width:100px;" onclick="return ConfirmDelete();"><i class="fa fa-remove"></i> Xóa </button>
+                        <button type="button" id="ListMedicinePublic" value="ListMedicinePublic" class="btn btn-info mr-1 mb-2" style="width:100px;" onclick="return ConfirmPublic();"><i class="fa fa-check-square-o"></i> Duyệt </button>
+                    </div>
+
+                    <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                                <th id="MEDICINE_NAME">Tên thuốc</th>
+                                <th id="MEDICINE_NAME_EN" style="width:100px;">Tên thuốc EN</th>
+                                <th id="MEDICINE_BARCODE">BARCODE</th>
+                                <th id="MEDICINE_UNIT">ĐVT</th>
+                                <th id="MEDICINE_NOTE" style="width:300px;">Ghi chú</th>
+                                <th id="MEDICINE_USAGE" style="width:300px;">Cách sử dụng</th>
+                                <th id="Status"><span style="width:100px;">Trạng thái</span></th>
+                                <th id="edit">Edit</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (MEDICINES != null)
+                            {
+                                foreach (var data in MEDICINES)
+                                {
+                                    <tr>
+                                        <td><input type="checkbox" name="ID" value="@data.ID" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                        <td>@data.MEDICINE_NAME</td>
+                                        <td>@data.MEDICINE_NAME_EN</td>
+                                        <td>@data.MEDICINE_BARCODE</td>
+                                        <td>@data.MEDICINE_UNIT_NAME</td>
+                                        <td>@data.MEDICINE_NOTE</td>
+                                        <td>@data.MEDICINE_USAGE</td>
+                                        <td style="width: 120px; ">@Html.Raw(CMSLIS.Common.Common.getTypeStatus(data.MEDICINE_STATUS))</td>
+                                        <td class="td-actions">
+                                            <a href="/pharmacyStore/ListMedicineAdd?ID=@data.ID" id="Edit"><i class="fa fa-edit edit"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+                <!-- End Content -->
+            </section>
+            <!-- End Sorting -->
+        </div>
+    </div>
+<!-- End Content -->
+    .
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>

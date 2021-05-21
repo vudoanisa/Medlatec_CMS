@@ -1,0 +1,125 @@
+﻿@model  CMS_Core.Entity.cms_Banner_rows
+@using CMS_Core.Entity;
+
+@{
+    ViewBag.Title = "Nhập quảng cáo";
+    CMS_Core.Common.ComboBoxFinal<cms_Banner_Plans> Banner_Plans = new CMS_Core.Common.ComboBoxFinal<cms_Banner_Plans>();
+}
+
+<script src="/Content/AdminLTE/js/Customer/ListBannerAdd.js"></script>
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ListBannerAdd", "News", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        <div class="box-body">
+
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Tên quảng cáo <span class="required">*</span> </label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.title, new { @class = "form-control", type = "SingleLine", placeholder = "Tên quảng cáo" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Vị trí quảng cáo</label>
+                <div class="col-xs-4">
+                    @Html.DropDownListFor(m => m.planId, Banner_Plans.GetComboBoxBySelected(" select planId, planTitle + ' (width:' + cast( width as nvarchar) + ',height:' + cast (height as nvarchar) +')' as  planTitle   from [dbo].[cms_Banner_Plans] where active = 1", "planId", "planTitle", Model.planId.ToString(), true), new { @class = "form-control select2" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Link quảng cáo<span class="required">*</span> </label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.clickUrl, new { @class = "form-control", type = "SingleLine", placeholder = "Link quảng cáo" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Thứ tự</label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.ord, new { @class = "form-control", type = "number", placeholder = "Thứ tự" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Thời gian bắt đầu </label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.addTimeView, new { @class = "form-control", type = "text", placeholder = "Thời gian bắt đầu" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Thời gian kết thúc</label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.expTimeView, new { @class = "form-control", type = "text", placeholder = "Thời gian kết thúc" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">File</label>
+                <div class="col-xs-6">
+                    <input type="file" name="ImageFile" id="ImageFile" class="form-control" />
+                </div>
+            </div>
+
+
+
+
+
+
+
+            @if (@Model.fileName != null)
+            {
+            <div class="form-group">
+                <Img src='@CMSLIS.Common.Common.GetPathImage(Model.fileName)' height="80px" />
+                @Html.TextBoxFor(m => m.fileName, new { @class = "checkbox-inline", Type = "hidden" })
+                @Html.TextBoxFor(m => m.fileNameWeb, new { @class = "checkbox-inline", Type = "hidden" })
+            </div>
+            }
+
+
+
+            @Html.TextBoxFor(m => m.bannerId, new { Type = "hidden" })
+
+
+
+            <div class="form-group text-center">
+                <div class="col-xs-10">
+                    <button type="submit" name="submit" id="SaveListBannerAdd" value="SaveListBannerAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+                    <a id="BackListBanner" href="/News/ListBanner" class="btn btn-primary"> <i class="fa fa-backward"></i>  Quay lại (Alt + Z) </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<!-- End Form -->
+
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+<script src="/Content/AdminLTE/js/adminlte.js"></script>
+<script src="/Content/AdminLTE/js/init.js"></script>

@@ -1,0 +1,202 @@
+﻿@model  CMS_Core.Models.ListServiceViewModel
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Chọn dịch vụ cho nhóm dịch vụ";
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    float TotalPrice = 0; float a = 0; float b = 0;
+    float TotalPriceInsurance = 0;
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBox = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+}
+
+
+<script src="/Content/AdminLTE/js/Customer/ListGroupServiceAddService.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+    @using (Html.BeginForm("ListGroupServiceAddService", "CatalogSystem", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+
+        <!-- Sorting -->
+    <section class="panel">
+        <header class="panel-heading">
+            <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                <a href="#" class="fa fa-times"></a>
+            </div>
+            <h2 class="panel-title">
+                Danh sách dịch vụ
+
+            </h2>
+        </header>
+
+        <div class="form-group">
+        </div>
+
+        <div class="panel-body">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label col-xs-1" style="font-weight:bold;  ">Dịch vụ:</label>
+                    <div class="col-xs-11">
+                        @Html.ListBoxFor(m => m.mulSERVICEID, ComboBox.GetComboBoxBySelected("select id as idfield, SERVICE_NAME as namefield from CMS_SERVICE where SERVICE_STATUS = 2 and  (PARTNERID = " + UserInfo.PARTNERID + " or PARTNERID = 0)  order by SERVICE_NAME asc", "idfield", "namefield", Model.mulSERVICEID, true), new { @class = "form-control select2 SERVICEID", multiple = "multiple", id = "SERVICEID" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+        <!-- End Sorting -->
+
+
+
+
+        <!-- Start search -->
+        <div class="panel-body">
+
+            <div class="col-sm-3">
+                <div class="form-group" style="margin-left: 0px;">
+                    <label class="control-label col-xs-3" style="font-weight:bold; ">Lần khám:<span class="required">*</span></label>
+
+                    @Html.TextBoxFor(m => m.GroupID, new { @class = "checkbox-inline", Type = "hidden" })
+                    @Html.TextBoxFor(m => m.PARTNERID, new { @class = "checkbox-inline", Type = "hidden" })
+                    @Html.TextBoxFor(m => m.GroupName, new { @class = "checkbox-inline", Type = "hidden" })
+
+                    @Html.DropDownListFor(m => m.Visit_ID, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    name as namefield FROM  CMS_VISIT_PATIENT where STATUS = 2", "idfield", "namefield", Model.Visit_ID.ToString(), false), new { @class = "form-control select2", ID = "Visit_ID" })
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group" style="margin-left: 0px;">
+
+                    <button type="submit" id="SaveListGroupServiceAddService" name="submit" value="SaveListGroupServiceAddService" class="btn btn-danger" style=" margin-left: 5px;"> <i class="fa fa-save"></i> Chọn dịch vụ</button>
+                    <button type="submit" id="DeleteListGroupServiceAddService" name="submit" value="DeleteListGroupServiceAddService" class="btn btn-danger" style=" margin-left: 5px;"> <i class="fa fa-save"></i> Xóa dịch vụ</button>
+                    <a href="/CatalogSystem/ListGroupService" class="btn btn-primary"><i class="fa fa-backward"></i> Quay lại </a>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- end search -->
+        <!-- Sorting -->
+        <section class="panel">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                    <a href="#" class="fa fa-caret-down"></a>
+                    <a href="#" class="fa fa-times"></a>
+                </div>
+
+                <h2 class="panel-title">
+                    Danh sách dịch vụ đã chọn Nhóm dịch vụ : @Model.GroupName.ToUpper()
+                </h2>
+            </header>
+            <!-- Begin Content -->
+            <div class="panel-body">
+                <table id="sorting-table1" class="table table-bordered table-striped dataTable" role="grid">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" title="Trạng thái truy cập" />&nbsp; Trạng thái truy cập</th>
+                            <th>Tên dịch vụ</th>
+                            <th>Lần khám</th>
+                            <th>Mã dịch vụ</th>
+                            <th>Giá tiền</th>
+                            <th>Giá tiền bảo hiểm</th>
+                            <th>Ghi chú</th>
+                            <td style="display:none">
+                            </td>
+                            <td style="display:none"> </td>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.SERVICESBYGROUP != null)
+                        {
+
+                            for (int i = 0; i < Model.SERVICESBYGROUP.Count; i++)
+
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.SERVICESBYGROUP[i].view, new { @class = "checkBox custom-checkbox chkCheckBoxId" })
+                                    </td>
+                                    <td>@Model.SERVICESBYGROUP[i].SERVICE_NAME</td>
+                                    <td>@Model.SERVICESBYGROUP[i].VISIT_PATIENT_NAME</td>
+                                    <td>@Model.SERVICESBYGROUP[i].SERVICE_CODE </td>
+                                    <td>@CMSLIS.Common.Common.FmtAmt(Model.SERVICESBYGROUP[i].SERVICE_PRICE)</td>
+                                    <td>@CMSLIS.Common.Common.FmtAmt(Model.SERVICESBYGROUP[i].SERVICE_PRICE_INSURANCE)</td>
+
+                                    <td>
+                                        @Model.SERVICESBYGROUP[i].SERVICE_NOTE
+                                    </td>
+
+                                    <td style="display:none">
+                                        @(TotalPrice = TotalPrice + (float)(Model.SERVICESBYGROUP[i].SERVICE_PRICE))
+                                    </td>
+                                    <td style="display:none">
+                                        @(TotalPriceInsurance = TotalPriceInsurance + (float)(Model.SERVICESBYGROUP[i].SERVICE_PRICE_INSURANCE))
+                                        @Html.TextBoxFor(m => m.SERVICESBYGROUP[i].ID, new { @class = "checkbox-inline", Type = "hidden" })
+                                    </td>
+
+
+
+
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" style="text-align:right">Tổng:</th>
+                            <th class="TotalPrice">@CMSLIS.Common.Common.FmtAmt(TotalPrice) </th>
+                            <th class="TotalPriceInsurance">@CMSLIS.Common.Common.FmtAmt(TotalPriceInsurance) </th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+        </section>
+        <!-- End Sorting -->
+    }
+
+</div>
+
+
+        <script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+        <script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+        <script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+        <!-- Specific Page Vendor -->
+        <script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+
+
+        <script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+        <script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+        <script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+        <!-- Theme Base, Components and Settings -->
+        <script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+        <!-- Theme Custom -->
+        <script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+        <!-- Theme Initialization Files -->
+        <script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+
+
+        <script type="text/javascript">
+            //To get selected value an text of dropdownlist
+            function SelectedValue(ddlObject) {
+                document.getElementById('cmdSearch').click();
+            }
+        </script>
+
+

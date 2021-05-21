@@ -1,0 +1,117 @@
+﻿@using CMS_Core.Entity;
+@model  CMSLIS.Models.SearchMenuViewModel
+@{
+    ViewBag.Title = "Danh sách phòng khám";
+    var ROOM_CLINICS = (List<CMS_ROOM_CLINIC>)ViewBag.ROOM_CLINICS;
+    CMS_Core.Common.ComboBoxFinal<CMS_DEPARTMENT> ComboBox = new CMS_Core.Common.ComboBoxFinal<CMS_DEPARTMENT>();
+}
+
+<script src="/Content/AdminLTE/js/Customer/ListRoomClinic.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ListRoomClinic", "CatalogSystem", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+    {
+        <div class="box-body">
+            <div class="col-sm-3">
+                <div class="form-group align-content-center">
+                    <label class="control-label col-xs-4" style="font-weight:bold; ">Trạng thái: </label>
+                    <div class="col-xs-8">
+                        @Html.DropDownListFor(m => m.Status, this.ViewBag.GetTypeStatus as List<SelectListItem>, new { @class = "form-control select2", style = "width: 90%;", onchange = "SelectedValue(this)" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group align-content-center">
+                    <label class="control-label col-xs-4" style="font-weight:bold; ">Khoa: </label>
+                    <div class="col-xs-8">
+                        @Html.DropDownListFor(m => m.parentID, ComboBox.GetComboBoxBySelected("SELECT  id,    DEPARTMENT_NAME FROM  CMS_DEPARTMENT where DEPARTMENT_STATUS = 2", "id", "DEPARTMENT_NAME", Model.parentID.ToString(), false), new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <button type="submit" id="cmdSearch" name="submit" value="SearchListRoomClinic" class="btn btn-primary"><i class="fa fa-search"></i> Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="box box-info" style="margin-top: 5px;">
+        <!-- Sorting -->
+        <section class="panel">
+
+
+            <!-- Begin Content -->
+            <div class="panel-body">
+                <div class="row" style="margin-bottom: 5px;margin-left: -5px;">
+                    <a id="ListRoomClinicNew" href="/CatalogSystem/ListRoomClinicAdd" class="btn btn-info mr-1 mb-2"><i class="fa fa-plus-square-o"></i> Thêm mới (Ctrl + F1) </a>
+                    <button type="button" id="ListRoomClinicDelete" value="ListRoomClinicDelete" class="btn btn-danger mr-1 mb-2" style="width:100px;" onclick="return ConfirmDelete();"><i class="fa fa-remove"></i> Xóa </button>
+                    <button type="button" id="ListRoomClinicPublic" value="ListRoomClinicPublic" class="btn btn-info mr-1 mb-2" style="width:100px;" onclick="return ConfirmPublic();"><i class="fa fa-check-square-o"></i> Duyệt </button>
+                </div>
+
+                <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                            <th>Tên phòng</th>
+                            <th>Mô tả</th>
+                            <th>Tên khoa</th>
+                            <th><span style="width:100px;">Trạng thái</span></th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ROOM_CLINICS != null)
+                        {
+                            foreach (var data in ROOM_CLINICS)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" name="ID" value="@data.ID" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                    <td>@data.ROOM_NAME</td>
+                                    <td>@data.ROOM_DESC</td>
+                                    <td>@data.DEPARTMENT_NAME</td>
+
+                                    <td style="width: 120px; ">@Html.Raw(CMSLIS.Common.Common.getTypeStatus(data.STATUS))</td>
+
+                                    <td class="td-actions">
+                                        <a href="/CatalogSystem/ListRoomClinicAdd?ID=@data.ID"><i class="fa fa-edit edit"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+        </section>
+        <!-- End Sorting -->
+    </div>
+</div>
+<!-- End Content -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>

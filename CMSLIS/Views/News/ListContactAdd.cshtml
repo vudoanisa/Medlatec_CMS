@@ -1,0 +1,157 @@
+﻿@model  CMS_Core.Entity.cms_Contact
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Thêm mới liên hệ";
+}
+
+
+
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/js/Customer/ListContactAdd.js"></script>
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<script src="/Content/assets/Themes/ckeditor/ckeditor.js"></script>
+
+
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ListContactAdd", "News", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="box-body">
+
+
+            <!-- Begin left page -->
+
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Họ và tên: </label>
+                <div class="col-xs-4">
+
+                    @Model.FullName
+                </div>
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Email: </label>
+                <div class="col-xs-4">
+
+                    @Model.Email
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Địa chỉ: </label>
+                <div class="col-xs-4">
+
+                    @Model.Address
+                </div>
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Số điện thoại:</label>
+                <div class="col-xs-4">
+
+                    @Model.Phone
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Nội dung câu hỏi: </label>
+                <div class="col-xs-10">
+                    @if (string.IsNullOrEmpty(Model.Content))
+                    {
+                        Model.Content = string.Empty;
+                    }
+                    @Html.Raw(Model.Content)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Ngày hỏi: </label>
+                <div class="col-xs-10">
+                    @CMSLIS.Common.Common.ReFmtTime(Model.DateCreate)
+                </div>
+            </div>
+
+            @if (CMSLIS.Common.Common.ReFmtTime(Model.DateFeedBack).Length > 0)
+            {
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Ngày hỏi: </label>
+                    <div class="col-xs-10">
+                        @CMSLIS.Common.Common.ReFmtTime(Model.DateFeedBack)
+                    </div>
+                </div>
+
+
+            }
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Nội dung FeedBack: </label>
+
+            </div>
+
+
+
+
+            <div class="form-group">
+                <div class="col-lg-12" style="height:405px;">
+                    @Html.TextAreaFor(m => m.ContentFeedBack, new { @class = "form-control", type = "SingleLine", placeholder = " ", rows = "800", id = "content", name = "content" })
+                    <script>
+                        //<![CDATA[
+                        CKEDITOR.replace('content',
+                            {
+                                height: '360px',
+                                filebrowserBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html',
+                                filebrowserImageBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html?type=Images',
+                                filebrowserUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=/archive/',
+                                filebrowserImageUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Images&currentFolder=/cars/'
+                            });
+                                                                                                            //]]>
+                    </script>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+        @Html.TextBoxFor(m => m.contactId, new { Type = "hidden" })
+        @Html.TextBoxFor(m => m.FullName, new { Type = "hidden" })
+        @Html.TextBoxFor(m => m.Email, new { Type = "hidden" })
+
+        <div class="form-group text-center">
+            <div class="col-xs-8">
+                <button type="submit" name="submit" id="SaveListContactAdd" value="SaveListContactAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+                <a id="BackListContact" href="/News/ListContact" class="btn btn-primary"> <i class="fa fa-backward"></i>  Quay lại (Alt + Z) </a>
+            </div>
+        </div>
+
+    }
+</div>
+<!-- End Form -->
+
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+<script src="/Content/AdminLTE/js/adminlte.js"></script>
+<script src="/Content/AdminLTE/js/init.js"></script>

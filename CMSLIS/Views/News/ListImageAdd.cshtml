@@ -1,0 +1,298 @@
+﻿@model  CMS_Core.Entity.cms_Images
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "ListImageAdd";
+    CMS_Core.Common.ComboBoxFinal<cms_ImagesCate> ImagesCate = new CMS_Core.Common.ComboBoxFinal<cms_ImagesCate>();
+
+    var cms_ImagesCate = (List<cms_Images>)ViewBag.cms_ImagesCate;
+}
+
+
+
+<script>
+    var nowTemp = new Date();
+    var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+    var files;
+    var storedFiles = [];
+    var upc = 0;
+
+
+
+    $(function () {
+
+        $(":file").attr('title', '  ');
+        var $loading = $('#loadingDiv').hide();
+
+        $("input[id^='fileToUpload']").change(function (e) {
+            doReCreate(e);
+        });
+
+        selDiv = $("#selectedFiles");
+    });
+
+
+    function doReCreate(e) {
+        upc = upc + 1;
+        handleFileSelect(e);
+
+      //  $("input[id^='fileToUpload']").hide();
+
+        $('<input>').attr({
+            type: 'file',
+            multiple: 'multiple',
+            id: 'fileToUpload' + upc,
+            class: 'fUpload',
+            name: 'fileUpload',
+            style: 'float: left',
+            title: '  ',
+            onchange: "doReCreate(event)"
+
+        }).appendTo('#uploaders');
+    }
+
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#previewHolder').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+
+    function handleFileSelect(e) {
+
+        //selDiv.innerHTML = ""; storedFiles = [];
+        selDiv = document.querySelector("#selectedFiles");
+
+        if (!e.target.files) return;
+
+        //selDiv.innerHTML = "";
+        files = e.target.files;
+
+
+
+        for (var i = 0; i < files.length; i++) {
+
+           var f = files[i];
+
+            selDiv.innerHTML += "<div><span style='display:none;'>" + f.name + "</span><img alt='" + f.name + "'  src='" + window.URL.createObjectURL(f) + "'   width=\"100px\" height=\"100px\" /><a class='badge-text badge-text-small danger' style ='margin-left:10px; color:#ffffff;' onclick='removeAtt(this)'> X </a></div>";
+
+            storedFiles.push(f.name);
+        }
+        $('#@Html.IdFor(i => i.FilesToBeUploaded)').val(storedFiles);
+    }
+
+    function removeAtt(t) {
+        var serEle = $(t).parent().text().slice(0, -4);
+
+        var index = storedFiles.indexOf(serEle);
+        if (index !== -1) {
+            storedFiles.splice(index, 1);
+        }
+        $(t).parent().remove();
+
+        $('#@Html.IdFor(i => i.FilesToBeUploaded)').val(storedFiles);
+
+    }
+</script>
+
+
+
+
+<script src="/Content/AdminLTE/js/Customer/ListImageAdd.js"></script>
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ListImageAdd", "News", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        <div class="box-body">
+
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Tên ảnh<span class="required">*</span> </label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.VideoName, new { @class = "form-control", type = "SingleLine", placeholder = "Tên ảnh" })
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Tiêu đề ảnh <span class="required">*</span></label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.VideoTitle, new { @class = "form-control", type = "SingleLine", placeholder = "Tiêu đề ảnh" })
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Chuyên mục ảnh</label>
+                <div class="col-xs-4">
+                    @Html.DropDownListFor(m => m.vId, ImagesCate.GetComboBoxBySelected("select vid,vName from [dbo].[cms_ImagesCate] where vActive = 1", "vid", "vName", Model.vId.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                </div>
+            </div>
+
+
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Ảnh đại diện</label>
+                <div class="col-xs-6">
+                    <input type="file" name="ImageFile" id="ImageFile" class="form-control" />
+                </div>
+            </div>
+
+
+            @if (@Model.VideoImageThumb != null)
+            {
+                <div class="form-group">
+                    <Img src='@CMSLIS.Common.Common.GetPathImage(Model.VideoImageThumb)' height="40px" width="40px" />
+                    @Html.TextBoxFor(m => m.VideoImageThumb, new { @class = "checkbox-inline", Type = "hidden" })
+                </div>
+            }
+
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Thời gian xuất bản</label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.datepubView, new { @class = "form-control", type = "SingleLine", placeholder = "Thời gian xuất bản" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Mô tả<span class="required">*</span></label>
+                <div class="col-xs-6">
+                    @Html.TextAreaFor(m => m.VideoDescription, new { @class = "form-control", type = "SingleLine", placeholder = "Vắn tắt", rows = "3" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Upload nhiều ảnh</label>
+                <div class="col-xs-6">
+                    <input type="file" id="fileToUpload" name="fileUpload" multiple="multiple" style="float: left;" />
+                </div>
+            </div>
+
+            @Html.HiddenFor(i => i.FilesToBeUploaded)
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Ảnh được chọn</label>
+
+                <div class="col-xs-6">
+                    <div id="selectedFiles"></div>
+                </div>
+
+            </div>
+
+
+
+            @Html.TextBoxFor(m => m.videoId, new { Type = "hidden" })
+
+
+            <div class="form-group text-center">
+                <div class="col-xs-10">
+                    <button type="submit" name="submit" id="SaveListImageAdd" value="SaveListImageAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+                    <a id="BackListImage" href="/News/ListImage" class="btn btn-primary"> <i class="fa fa-backward"></i>  Quay lại (Alt + Z) </a>
+                </div>
+            </div>
+        </div>
+
+
+        if (Model._Images != null)
+        {
+            <div class="box box-info" style="margin-top: 5px;">
+                <div class="panel-body">
+                    <!-- Sorting -->
+
+                    <table id="example2" class="table table-bordered table-striped dataTable" role="grid">
+
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+
+                                <th>Ảnh</th>
+                                <th>Tiêu đề</th>
+                                <th>Mô tả</th>
+                                <th>Thời gian xuất bản</th>
+                                <th><span style="width:100px;">Trạng thái</span></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model._Images != null)
+                            {
+                                for (int i = 0; i < Model._Images.Count; i++)
+
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="ID" value="@Model._Images[i].videoId" class="checkBox custom-checkbox chkCheckBoxId" />
+                                            @Html.TextBoxFor(m => m._Images[i].videoId, new { Type = "hidden" })
+                                        </td>
+                                        <td>
+                                            <a href="@CMSLIS.Common.Common.getImageLink()@Model._Images[i].VideoImageThumb" class="preview">
+                                                <Img src='@CMSLIS.Common.Common.getImageLink()@Model._Images[i].VideoImageThumb' height="30px" width="30px" />
+                                            </a>
+                                        </td>
+                                        <td>
+
+                                            <span class="text-primary">
+                                                @Html.TextBoxFor(m => m._Images[i].VideoTitle, new { @class = "form-control", type = "SingleLine" })
+
+                                                @*@Model._Images[i].VideoTitle*@
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            @Html.TextBoxFor(m => m._Images[i].VideoDescription, new { @class = "form-control", type = "SingleLine" })
+
+
+                                            @*@Model._Images[i].VideoDescription*@
+                                        </td>
+
+                                        <td>@CMSLIS.Common.Common.ReFmtTime(Model._Images[i].DatePublic)</td>
+                                        <td>@Html.Raw(CMSLIS.Common.Common.getTypeStatus(Model._Images[i].VideoActive))</td>
+
+                                        @Html.TextBoxFor(m => m._Images[i].videoParrentID, new { @class = "checkbox-inline", Type = "hidden" })
+                                        @Html.TextBoxFor(m => m._Images[i].VideoName, new { @class = "checkbox-inline", Type = "hidden" })
+                                        @Html.TextBoxFor(m => m._Images[i].DatePublic, new { @class = "checkbox-inline", Type = "hidden" })
+                                        @Html.TextBoxFor(m => m._Images[i].vId, new { @class = "checkbox-inline", Type = "hidden" })
+
+
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+
+                    <button type="button" id="ListImageDelete" value="ListImageDelete" class="btn btn-danger mr-1 mb-2" style="width:100px;" onclick="return ConfirmDelete();"> Xóa </button>
+                    <button type="button" id="ListImagePublic" value="ListImagePublic" class="btn btn-info mr-1 mb-2" style="width:100px;" onclick="return ConfirmPublic();"> Duyệt </button>
+
+
+
+
+                    <!-- End Sorting -->
+
+
+                </div>
+            </div>
+        }
+
+    }
+</div>
+<!-- End Form -->
+
+
+<script src="/Content/AdminLTE/js/adminlte.js"></script>
+<script src="/Content/AdminLTE/js/init.js"></script>

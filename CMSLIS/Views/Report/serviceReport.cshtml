@@ -1,0 +1,689 @@
+﻿@using CMS_Core.Entity;
+@model  CMSNEW.Models.ReportViewModels
+@{
+    ViewBag.Title = "Báo cáo về dịch vụ";
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBox = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+    var CMS_REPORT_SERVICES = (List<CMS_REPORT_SERVICE>)ViewBag.CMS_REPORT_SERVICES;
+    var CMS_REPORT_SERVICES_1 = CMS_REPORT_SERVICES.Where(x => x.SERVICETYPE == 0 && x.SERVICE_GROUP_ID == 0);
+    var CMS_REPORT_SERVICES_2 = CMS_REPORT_SERVICES.Where(x => x.SERVICETYPE == 141 && x.SERVICE_GROUP_ID == 0);
+    var CMS_REPORT_SERVICES_3 = CMS_REPORT_SERVICES.Where(x => x.SERVICETYPE == 142 && x.SERVICE_GROUP_ID == 0);
+    var CMS_REPORT_SERVICES_4 = CMS_REPORT_SERVICES.Where(x => x.SERVICETYPE == 143 && x.SERVICE_GROUP_ID == 0);
+    var CMS_REPORT_SERVICES_5 = CMS_REPORT_SERVICES.Where(x => x.SERVICETYPE == 144 && x.SERVICE_GROUP_ID == 0);
+    var CMS_REPORT_SERVICES_6 = CMS_REPORT_SERVICES.Where(x => x.SERVICETYPE == 145 && x.SERVICE_GROUP_ID == 0);
+    var CMS_REPORT_SERVICES_7 = CMS_REPORT_SERVICES.Where(x => x.SERVICETYPE == 146 && x.SERVICE_GROUP_ID == 0);
+
+    var CMS_REPORT_SERVICES_8 = CMS_REPORT_SERVICES.Where(x => x.SERVICE_GROUP_ID != 0);
+
+
+    int STT = 0;
+    float total = 0;
+    int Count = 0;
+
+    float totalAll = 0;
+    int CountAll = 0;
+
+}
+
+<script src="/Content/AdminLTE/js/Customer/serviceReport.js"></script>
+
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("serviceReport", "Report", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="box-body">
+            <div class="form-group row ">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-3 " style="font-weight:bold;  ">Từ ngày: </label>
+                        <div class="col-xs-7">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.startdate, new { @class = "form-control", placeholder = "Từ ngày", id = "date", name = "date" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-3 " style="font-weight:bold;  ">Đến ngày: </label>
+                        <div class="col-xs-7">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.enddate, new { @class = "form-control", placeholder = "Đến ngày", id = "dateDenngay", name = "dateDenngay" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Dịch vụ: </label>
+                        <div class="col-xs-7">
+                            @*@if (UserInfo.ISADMIN == 1)
+                                {*@
+                            @Html.DropDownListFor(m => m.SERVICETYPE, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    name as namefield FROM  CMS_SERVICE_TYPE where STATUS = 2    order by id asc", "idfield", "namefield", Model.SERVICETYPE.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValueDOCTOR(this)" })
+                            @*}
+                                else
+                                {
+                                    @Html.DropDownListFor(m => m.DOCTOR_ID, ComboBox.GetComboBoxBySelected("SELECT   ACCOUNTID  as idfield,    HOTEN as namefield FROM  CMS_ACCOUNT where STATUS = 2 and ACCOUNTID = " + UserInfo.accountid + "   order by HOTEN asc", "idfield", "namefield", Model.DOCTOR_ID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValueDOCTOR(this)" })
+                                }*@
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <button type="submit" id="Search" name="submit" value="SearchserviceReport" class="btn btn-primary   "><i class="fa fa-search"></i>  Tìm kiếm</button>
+
+
+
+                        @*<button type="submit" id="ExportserviceReport" name="submit" value="ExportserviceReport" class="btn btn-primary   "><i class="fa fa-print"></i> Export</button>*@
+                        @*<a class="btn btn-primary" target="_blank" href="/Report/serviceExportToExcel?startdate=@Model.startdate.Replace("/","")&enddate=@Model.enddate.Replace("/","")&DOCTOR_ID=@Model.DOCTOR_ID&Token=@CMSLIS.Common.Common.generalKeyPrivate(Model.startdate.Replace("/",""), Model.enddate.Replace("/",""))"> <i class="fa fa-print"></i> ExportToExcel   </a>*@
+
+
+                        <a class="btn btn-primary" target="_blank" href="/Report/serviceReportPrint?startdate=@Model.startdate.Replace("/","")&enddate=@Model.enddate.Replace("/","")&SERVICETYPE=@Model.SERVICETYPE&Token=@CMSLIS.Common.Common.generalKeyPrivate(Model.startdate.Replace("/",""), Model.enddate.Replace("/",""))" style="width:105px; "> <i class="fa fa-print"></i> Báo cáo </a>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    }
+
+    <div class="box box-info" style="margin-top: 5px;">
+        <!-- Sorting -->
+        <section class="panel">
+
+            @if (CMS_REPORT_SERVICES_1 != null)
+            {
+                if (CMS_REPORT_SERVICES_1.Count() > 0)
+                {
+                    <!-- Begin Content -->
+                    <div class="panel-body">
+                        <label class="control-label col-xs-12 text-left " style="font-weight:bold; font-size:18px; ">Loại dịch vụ: khám bệnh</label>
+                        <table id="sorting-table" class="table table-bordered table-striped mb-none">
+                            <thead>
+                                <tr>
+
+                                    <th id="STT" width="80px">STT</th>
+                                    <th id="SERVICETYPE_NAME" class="text-center" width="300px">Tên dịch vụ</th>
+                                    <th id="Count_Service" class="text-center" width="100px">Số ca</th>
+                                    <th id="Total_Price" class="text-center">Thành tiền</th>
+                                    <th id="Note" class="text-center">Ghi chú</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (CMS_REPORT_SERVICES_1 != null)
+                                {
+                                    foreach (var data in CMS_REPORT_SERVICES_1)
+                                    {
+                                        <tr>
+                                            <td>@STT</td>
+                                            <td style="font-weight:bold;">@data.SERVICE_NAME</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Count_Service)</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Total_Price)</td>
+                                            <td class="text-right"></td>
+                                            <span style="display:none">
+                                                @(STT = STT + 1)
+                                                @(total = total + data.Total_Price);
+                                                @(Count = Count + data.Count_Service);
+                                                @(totalAll = totalAll + data.Total_Price);
+                                                @(CountAll = CountAll + data.Count_Service);
+                                            </span>
+                                        </tr>
+                                    }
+                                }
+
+
+                                <tr>
+                                    <td colspan="2" style="font-weight:bold;">Tổng</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(Count)</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(total) (VNĐ)</td>
+                                    <td class="text-right"></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- End Content -->
+                }
+            }
+
+
+            @if (CMS_REPORT_SERVICES_2 != null)
+            {
+                if (CMS_REPORT_SERVICES_2.Count() > 0)
+                {
+                    <!-- Begin Content -->
+                    <div class="panel-body">
+                        <label class="control-label col-xs-12 text-left " style="font-weight:bold; font-size:18px; ">Loại dịch vụ: Siêu âm</label>
+                        <span style="display:none">
+                            @(STT = 0)
+                            @(total = 0);
+                            @(Count = 0);
+
+                        </span>
+
+                        <table id="sorting-table" class="table table-bordered table-striped mb-none">
+                            <thead>
+                                <tr>
+
+                                    <th id="STT" width="80px">STT</th>
+                                    <th id="SERVICETYPE_NAME" class="text-center" width="300px">Tên dịch vụ</th>
+                                    <th id="Count_Service" class="text-center" width="100px">Số ca</th>
+                                    <th id="Total_Price" class="text-center">Thành tiền</th>
+                                    <th id="Note" class="text-center">Ghi chú</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (CMS_REPORT_SERVICES_2 != null)
+                                {
+                                    foreach (var data in CMS_REPORT_SERVICES_2)
+                                    {
+                                        <tr>
+                                            <td>@STT</td>
+                                            <td style="font-weight:bold;">@data.SERVICE_NAME</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Count_Service)</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Total_Price)  </td>
+                                            <td class="text-right"></td>
+                                            <span style="display:none">
+                                                @(STT = STT + 1)
+                                                @(total = total + data.Total_Price);
+                                                @(Count = Count + data.Count_Service);
+                                                @(totalAll = totalAll + data.Total_Price);
+                                                @(CountAll = CountAll + data.Count_Service);
+                                            </span>
+                                        </tr>
+                                    }
+                                }
+
+
+                                <tr>
+
+                                    <td colspan="2" style="font-weight:bold;">Tổng</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(Count)</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(total) (VNĐ)</td>
+                                    <td class="text-right"></td>
+
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- End Content -->
+
+                }
+            }
+
+            @if (CMS_REPORT_SERVICES_3 != null)
+            {
+                if (CMS_REPORT_SERVICES_3.Count() > 0)
+                {
+                    <!-- Begin Content -->
+                    <div class="panel-body">
+                        <label class="control-label col-xs-12 text-left " style="font-weight:bold;font-size:18px;  ">Loại dịch vụ: Nội soi</label>
+                        <span style="display:none">
+                            @(STT = 0)
+                            @(total = 0);
+                            @(Count = 0);
+
+                        </span>
+
+                        <table id="sorting-table" class="table table-bordered table-striped mb-none">
+                            <thead>
+                                <tr>
+
+                                    <th id="STT" width="80px">STT</th>
+                                    <th id="SERVICETYPE_NAME" class="text-center" width="300px">Tên dịch vụ</th>
+                                    <th id="Count_Service" class="text-center" width="100px">Số ca</th>
+                                    <th id="Total_Price" class="text-center">Thành tiền</th>
+                                    <th id="Note" class="text-center">Ghi chú</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (CMS_REPORT_SERVICES_3 != null)
+                                {
+                                    foreach (var data in CMS_REPORT_SERVICES_3)
+                                    {
+                                        <tr>
+                                            <td>@STT</td>
+                                            <td style="font-weight:bold;">@data.SERVICE_NAME</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Count_Service)</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Total_Price)  </td>
+                                            <td class="text-right"></td>
+                                            <span style="display:none">
+                                                @(STT = STT + 1)
+                                                @(total = total + data.Total_Price);
+                                                @(Count = Count + data.Count_Service);
+                                                @(totalAll = totalAll + data.Total_Price);
+                                                @(CountAll = CountAll + data.Count_Service);
+                                            </span>
+                                        </tr>
+                                    }
+                                }
+
+
+                                <tr>
+
+                                    <td colspan="2" style="font-weight:bold;">Tổng</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(Count)</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(total) (VNĐ)</td>
+                                    <td class="text-right"></td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- End Content -->
+                }
+            }
+
+            @if (CMS_REPORT_SERVICES_4 != null)
+            {
+                if (CMS_REPORT_SERVICES_4.Count() > 0)
+                {
+                    <!-- Begin Content -->
+                    <div class="panel-body">
+                        <label class="control-label col-xs-12 text-left " style="font-weight:bold; font-size:18px; ">Loại dịch vụ: Xét nghiệm</label>
+                        <span style="display:none">
+                            @(STT = 0)
+                            @(total = 0);
+                            @(Count = 0);
+
+                        </span>
+
+                        <table id="sorting-table" class="table table-bordered table-striped mb-none">
+                            <thead>
+                                <tr>
+
+                                    <th id="STT" width="80px">STT</th>
+                                    <th id="SERVICETYPE_NAME" class="text-center" width="300px">Tên dịch vụ</th>
+                                    <th id="Count_Service" class="text-center" width="100px">Số ca</th>
+                                    <th id="Total_Price" class="text-center">Thành tiền</th>
+                                    <th id="Note" class="text-center">Ghi chú</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (CMS_REPORT_SERVICES_4 != null)
+                                {
+                                    foreach (var data in CMS_REPORT_SERVICES_4)
+                                    {
+                                        <tr>
+                                            <td>@STT</td>
+                                            <td style="font-weight:bold;">@data.SERVICE_NAME</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Count_Service)</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Total_Price)</td>
+                                            <td class="text-right"></td>
+                                            <span style="display:none">
+                                                @(STT = STT + 1)
+                                                @(total = total + data.Total_Price);
+                                                @(Count = Count + data.Count_Service);
+                                                @(totalAll = totalAll + data.Total_Price);
+                                                @(CountAll = CountAll + data.Count_Service);
+                                            </span>
+                                        </tr>
+                                    }
+                                }
+
+
+                                <tr>
+
+                                    <td colspan="2" style="font-weight:bold;">Tổng</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(Count)</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(total) (VNĐ)</td>
+                                    <td class="text-right"></td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- End Content -->
+                }
+            }
+
+            @if (CMS_REPORT_SERVICES_5 != null)
+            {
+                if (CMS_REPORT_SERVICES_5.Count() > 0)
+                {
+                    <!-- Begin Content -->
+                    <div class="panel-body">
+                        <label class="control-label col-xs-12 text-left " style="font-weight:bold; font-size:18px; ">Loại dịch vụ: X Quang</label>
+                        <span style="display:none">
+                            @(STT = 0)
+                            @(total = 0);
+                            @(Count = 0);
+
+                        </span>
+
+                        <table id="sorting-table" class="table table-bordered table-striped mb-none">
+                            <thead>
+                                <tr>
+
+                                    <th id="STT" width="80px">STT</th>
+                                    <th id="SERVICETYPE_NAME" class="text-center" width="300px">Tên dịch vụ</th>
+                                    <th id="Count_Service" class="text-center" width="100px">Số ca</th>
+                                    <th id="Total_Price" class="text-center">Thành tiền</th>
+                                    <th id="Note" class="text-center">Ghi chú</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (CMS_REPORT_SERVICES_5 != null)
+                                {
+                                    foreach (var data in CMS_REPORT_SERVICES_5)
+                                    {
+                                        <tr>
+                                            <td>@STT</td>
+                                            <td style="font-weight:bold;">@data.SERVICE_NAME</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Count_Service)</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Total_Price)</td>
+                                            <td class="text-right"></td>
+                                            <span style="display:none">
+                                                @(STT = STT + 1)
+                                                @(total = total + data.Total_Price);
+                                                @(Count = Count + data.Count_Service);
+                                                @(totalAll = totalAll + data.Total_Price);
+                                                @(CountAll = CountAll + data.Count_Service);
+                                            </span>
+                                        </tr>
+                                    }
+                                }
+
+
+                                <tr>
+
+                                    <td colspan="2" style="font-weight:bold;">Tổng</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(Count)</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(total) (VNĐ)</td>
+                                    <td class="text-right"></td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- End Content -->
+                }
+            }
+
+            @if (CMS_REPORT_SERVICES_6 != null)
+            {
+                if (CMS_REPORT_SERVICES_6.Count() > 0)
+                {
+                    <!-- Begin Content -->
+                    <div class="panel-body">
+                        <label class="control-label col-xs-12 text-left " style="font-weight:bold; font-size:18px; ">Loại dịch vụ: Phụ khoa</label>
+                        <span style="display:none">
+                            @(STT = 0)
+                            @(total = 0);
+                            @(Count = 0);
+
+                        </span>
+
+                        <table id="sorting-table" class="table table-bordered table-striped mb-none">
+                            <thead>
+                                <tr>
+
+                                    <th id="STT" width="80px">STT</th>
+                                    <th id="SERVICETYPE_NAME" class="text-center" width="300px">Tên dịch vụ</th>
+                                    <th id="Count_Service" class="text-center" width="100px">Số ca</th>
+                                    <th id="Total_Price" class="text-center">Thành tiền</th>
+                                    <th id="Note" class="text-center">Ghi chú</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (CMS_REPORT_SERVICES_6 != null)
+                                {
+                                    foreach (var data in CMS_REPORT_SERVICES_6)
+                                    {
+                                        <tr>
+                                            <td>@STT</td>
+                                            <td style="font-weight:bold;">@data.SERVICE_NAME</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Count_Service)</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Total_Price)</td>
+                                            <td class="text-right"></td>
+                                            <span style="display:none">
+                                                @(STT = STT + 1)
+                                                @(total = total + data.Total_Price);
+                                                @(Count = Count + data.Count_Service);
+                                                @(totalAll = totalAll + data.Total_Price);
+                                                @(CountAll = CountAll + data.Count_Service);
+                                            </span>
+                                        </tr>
+                                    }
+                                }
+
+
+                                <tr>
+
+                                    <td colspan="2" style="font-weight:bold;">Tổng</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(Count)</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(total) (VNĐ)</td>
+                                    <td class="text-right"></td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- End Content -->
+                }
+            }
+
+            @if (CMS_REPORT_SERVICES_7 != null)
+            {
+                if (CMS_REPORT_SERVICES_7.Count() > 0)
+                {
+                    <!-- Begin Content -->
+                    <div class="panel-body">
+                        <label class="control-label col-xs-12 text-left " style="font-weight:bold; font-size:18px; ">Loại dịch vụ: Thủ thuật</label>
+                        <span style="display:none">
+                            @(STT = 0)
+                            @(total = 0);
+                            @(Count = 0);
+
+                        </span>
+
+                        <table id="sorting-table" class="table table-bordered table-striped mb-none">
+                            <thead>
+                                <tr>
+
+                                    <th id="STT" width="80px">STT</th>
+                                    <th id="SERVICETYPE_NAME" class="text-center" width="300px">Tên dịch vụ</th>
+                                    <th id="Count_Service" class="text-center" width="100px">Số ca</th>
+                                    <th id="Total_Price" class="text-center">Thành tiền</th>
+                                    <th id="Note" class="text-center">Ghi chú</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (CMS_REPORT_SERVICES_7 != null)
+                                {
+                                    foreach (var data in CMS_REPORT_SERVICES_7)
+                                    {
+                                        <tr>
+                                            <td>@STT</td>
+                                            <td style="font-weight:bold;">@data.SERVICE_NAME</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Count_Service)</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Total_Price)</td>
+                                            <td class="text-right"></td>
+                                            <span style="display:none">
+                                                @(STT = STT + 1)
+                                                @(total = total + data.Total_Price);
+                                                @(Count = Count + data.Count_Service);
+                                                @(totalAll = totalAll + data.Total_Price);
+                                                @(CountAll = CountAll + data.Count_Service);
+                                            </span>
+                                        </tr>
+                                    }
+                                }
+
+
+                                <tr>
+
+                                    <td colspan="2" style="font-weight:bold;">Tổng</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(Count)</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(total) (VNĐ)</td>
+                                    <td class="text-right"></td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- End Content -->
+                }
+            }
+
+
+            @if (CMS_REPORT_SERVICES_8 != null)
+            {
+                if (CMS_REPORT_SERVICES_8.Count() > 0)
+                {
+                    <!-- Begin Content -->
+                    <div class="panel-body">
+                        <label class="control-label col-xs-12 text-left " style="font-weight:bold; font-size:18px; ">Khám bệnh theo gói</label>
+                        <span style="display:none">
+                            @(STT = 0)
+                            @(total = 0);
+                            @(Count = 0);
+
+                        </span>
+
+                        <table id="sorting-table" class="table table-bordered table-striped mb-none">
+                            <thead>
+                                <tr>
+
+                                    <th id="STT" width="80px">STT</th>
+                                    <th id="SERVICE_GROUP_NAME" class="text-center">Tên gói</th>
+                                    <th id="SERVICETYPE_NAME" class="text-center" width="300px">Tên dịch vụ</th>
+                                    <th id="Count_Service" class="text-center" width="100px">Số ca</th>
+                                    <th id="Total_Price" class="text-center">Thành tiền</th>
+                                    <th id="Note" class="text-center">Ghi chú</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (CMS_REPORT_SERVICES_8 != null)
+                                {
+                                    foreach (var data in CMS_REPORT_SERVICES_8)
+                                    {
+                                        <tr>
+                                            <td>@STT</td>
+                                            <td style="font-weight:bold;">@data.SERVICE_GROUP_NAME</td>
+                                            <td style="font-weight:bold;">@data.SERVICE_NAME</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Count_Service)</td>
+                                            <td class="text-right">@CMSLIS.Common.Common.FmtAmt(data.Total_Price)</td>
+                                            <td class="text-right"></td>
+                                            <span style="display:none">
+                                                @(STT = STT + 1)
+                                                @(total = total + data.Total_Price);
+                                                @(Count = Count + data.Count_Service);
+                                                @(totalAll = totalAll + data.Total_Price);
+                                                @(CountAll = CountAll + data.Count_Service);
+                                            </span>
+                                        </tr>
+                                    }
+                                }
+
+
+                                <tr>
+
+                                    <td colspan="3" style="font-weight:bold;">Tổng</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(Count)</td>
+                                    <td class="text-right" style="font-weight:bold;">@CMSLIS.Common.Common.FmtAmt(total) (VNĐ)</td>
+                                    <td class="text-right"></td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- End Content -->
+                }
+            }
+            <div class="panel-body">
+                <div class="form-group row ">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label  " style="font-weight:bold;font-size:20px;  ">Tổng số dịch vụ: @CMSLIS.Common.Common.FmtAmt(CountAll) </label>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label  " style="font-weight:bold; font-size:20px; ">Tổng số tiền: @CMSLIS.Common.Common.FmtAmt(totalAll) </label>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+        </section>
+        <!-- End Sorting -->
+    </div>
+</div>
+<!-- End Content -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+

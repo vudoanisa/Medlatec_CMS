@@ -1,0 +1,201 @@
+﻿@model  CMSNEW.Models.pharmacyStoreViewModels
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Hoàn tiền thuốc";
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBoxClass = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+    CMS_Core.Common.ComboBoxFinal<CMS_PARTNER> ComboBox = new CMS_Core.Common.ComboBoxFinal<CMS_PARTNER>();
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    var CMS_MEDICINE_REFUND_STORES = (List<CMS_MEDICINE_REFUND_STORE>)ViewBag.CMS_MEDICINE_REFUND_STORES;
+}
+
+
+
+<script src="/Content/AdminLTE/js/Customer/REFUNDStore.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<!-- Begin Content -->
+<div class="box box-info">
+
+
+    @using (Html.BeginForm("REFUNDStore", "pharmacyStore", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+    {
+        <div class="box-body">
+
+            <div class="form-group row ">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Từ ngày: </label>
+                        <div class="col-xs-7">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.startdate, new { @class = "form-control", placeholder = "Từ ngày", id = "date", name = "date" })
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Đến ngày: </label>
+                        <div class="col-xs-7">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.enddate, new { @class = "form-control", placeholder = "Đến ngày", id = "dateDenngay", name = "dateDenngay" })
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Trạng thái:  </label>
+                        <div class="col-xs-7">
+                            @Html.DropDownListFor(m => m.Status, this.ViewBag.GetTypeStatus as List<SelectListItem>, new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                        </div>
+                    </div>
+                </div>
+
+                @if (UserInfo.PARTNERID == 1)
+                {
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Đối tác:  </label>
+                            <div class="col-xs-7">
+                                @Html.DropDownListFor(m => m.PARTNERID, ComboBox.GetComboBoxBySelected("SELECT  id,partner_name FROM    cms_partner where PARTNER_STATUS = 2", "id", "partner_name", Model.PARTNERID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.TextBoxFor(m => m.PARTNERID, new { @class = "checkbox-inline", Type = "hidden" })
+                }
+            </div>
+            <div class="form-group row ">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-2 " style="font-weight:bold;  ">Số phiếu:  </label>
+                        <div class="col-xs-10">
+                            @Html.TextBoxFor(m => m.pharmacyStoreCode, new { @class = "form-control", type = "SingleLine", placeholder = "Số phiếu", style = "width: 96%;margin-left: -3px;" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <button type="submit" id="cmdSearch" name="submit" value="SearchREFUNDStore" class="btn btn-primary"><i class="fa fa-search"></i>  Tìm kiếm</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+
+    <div class="box box-info" style="margin-top: 5px;">
+        <section class="panel">
+
+
+            <!-- Begin Content -->
+            <div class="panel-body">
+
+                <div class="row" style="margin-bottom: 6px;margin-left: -5px;">
+                    <a id="REFUNDStoreNew" href="/pharmacyStore/REFUNDStoreAdd" class="btn btn-info mr-1 mb-2"><i class="fa fa-plus-square-o"></i> Thêm mới (Ctrl + F1) </a>
+
+                    <button type="button" id="REFUNDStoreDelete" value="REFUNDStoreDelete" class="btn btn-danger mr-1 mb-2" style="width:100px;" onclick="return ConfirmDelete();"><i class="fa fa-remove"></i> Xóa </button>
+                    <button type="button" id="REFUNDStorePublic" value="REFUNDStorePublic" class="btn btn-info mr-1 mb-2" style="width:100px;" onclick="return ConfirmPublic();"> <i class="fa fa-check-square-o"></i> Duyệt </button>
+
+                </div>
+
+
+                <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                            <th style="width:90px" id="MEDICINE_RECEIPT_STORE_CODE">Số phiếu</th>
+                            <th style="width:100px ;" id="CUSTOMER_NAME">Tên khách hàng</th>
+                            <th style="width:90px" id="CUSTOMER_MOBILE">Mobile</th>
+                            <th id="CUSTOMER_EMAIL">Email</th>
+                            <th id="TOTAL_PRICE">Tổng tiền</th>
+                            <th id="CREATEDATE">Ngày tạo</th>
+                            <th id="MEDICINE_NOTE">Ghi chú</th>
+                            <th id="STATUS">Trạng thái</th>
+                            <th id="Edit">Edit</th>
+                            <th id="Print">Print</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (CMS_MEDICINE_REFUND_STORES != null)
+                        {
+                            foreach (var data in CMS_MEDICINE_REFUND_STORES)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" name="ID" value="@data.ID" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                    <td style="width:90px">@data.CMS_MEDICINE_EXPORT_STORE_CODE</td>
+                                    <td style="width:120px ;">@data.CUSTOMER_NAME</td>
+                                    <td style="width:100px">@data.CUSTOMER_MOBILE</td>
+                                    <td>@data.CUSTOMER_EMAIL</td>
+                                    <td>@CMSLIS.Common.Common.FmtAmt(data.TOTAL_PRICE_REFUND)</td>
+                                    <td>@CMSLIS.Common.Common.ReFmtDate(data.CREATEDATE)</td>
+                                    <td>@data.NOTE</td>
+                                    <td style="width: 120px; ">@Html.Raw(CMSLIS.Common.Common.getTypeStatus(data.STATUS))</td>
+                                    <td class="td-actions">
+                                        <a href="/pharmacyStore/REFUNDStoreAdd?ID=@data.ID" id="Edit"><i class="fa fa-edit edit"></i></a>
+                                    </td>
+                                    <td class="td-actions">
+                                        <a href="/pharmacyStore/REFUNDStorePrint?ID=@data.ID&Token=@CMSLIS.Common.Common.generalKeyPrivate(data.ID.ToString())" target="_blank" id="View"><i class="fa fa-print "></i></a>
+                                    </td> 
+
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+
+
+
+            </div>
+            <!-- End Content -->
+
+        </section>
+        <!-- End Sorting -->
+    </div>
+</div>
+<!-- End Content -->
+    .
+
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>

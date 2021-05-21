@@ -1,0 +1,287 @@
+﻿@model  CMS_Core.Models.MedicalExaminationViewModel
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Kết quả khám";
+
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+
+    Layout = null;
+    if (string.IsNullOrEmpty(Model.PATIENTINFO.PATIENTNAME))
+    {
+        Response.Redirect("/account/login");
+    }
+}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+<link href="/Content/AdminLTE/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/Content/AdminLTE/css/font-awesome.min.css" rel="stylesheet" />
+<link href="/Content/AdminLTE/css/AdminLTE.css" rel="stylesheet" />
+
+<script src="/Content/AdminLTE/js/jquery-2.1.1.min.js"></script>
+<script src="/Content/AdminLTE/js/bootstrap.min.js"></script>
+
+
+<!-- Specific Page Vendor CSS -->
+<link rel="stylesheet" href="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+
+<!-- Theme CSS -->
+<link rel="stylesheet" href="/Content/AdminLTE/stylesheets/theme.css" />
+
+
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<style>
+    .content-wrapper {
+        background-color: white !important
+    }
+
+    .wrapper {
+        background-color: white !important
+    }
+
+    .content-body {
+        background-color: white !important
+    }
+</style>
+<!-- Begin Content -->
+
+<body class="hold-transition   " style="background-color: white !important;width:100%">
+
+    <section class="content-body" style="background-color:#ffffff; min-height: 100%;font-size:20px;   width:100%">
+
+        <div class="row" style="background-color:#ffffff; margin-left:15px; margin-right:15px;min-height: 100%; ">
+            <div class="form-group row ">
+                <div class="col-sm-12" style="height:220px;">
+
+                </div>
+
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-left " style="font-weight:bold;  ">Mã KCB: @Model.SID - Mã BN: @Model.PATIENTINFO.PID  </label>
+                    </div>
+                </div>
+                <div class="col-sm-12" style="height:10px;">
+
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <div class="col-xs-8">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;  ">Họ tên BN: @Model.PATIENTINFO.PATIENTNAME.ToUpper()  </label>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold ">Giới tính: @CMSLIS.Common.Common.GetGENDERName(Model.PATIENTINFO.SEX.ToString())     </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12" style="height:4px;">
+
+            </div>
+           
+            <div class="form-group row ">
+                <div class="col-xs-8">
+                    <div class="form-group">
+                        <label class="control-label   " style="font-weight:bold;  ">Tuổi: @Model.PATIENTINFO.AGE </label>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label class="control-label   " style="font-weight:bold; ">Mobile: @Model.PATIENTINFO.PHONE </label>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-sm-12" style="height:4px;">
+
+            </div>
+            <div class="form-group row ">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;   ">Địa chỉ:  @Model.PATIENTINFO.ADDRESS</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Begin Content -->
+            @if (Model.PATIENT_SERVICE_RESULT != null)
+            {
+                <div class="form-group row ">
+
+
+                    <table class="table mb-0" id="table_history" style="margin-bottom: -1px !important;font-size:20px !important;">
+
+                        <tbody id="sorting-table-history">
+
+
+                            @if (!string.IsNullOrEmpty(Model.PATIENT_SERVICE_RESULT.EXAMINATION_CONTENT) && Model.PATIENT_SERVICE_RESULT.SERVICETYPE == CMSLIS.Common.Constant.typeServiceSA)
+                            {
+                                <tr style="border: 1px solid #e1e8ed;">
+                                    <th style="border: 1px solid #e1e8ed;" class="  text-center">KẾT QUẢ @Model.PATIENT_SERVICE_RESULT.SERVICE_NAME.ToUpper()</th>
+                                </tr>
+
+                            }
+                            else if (!string.IsNullOrEmpty(Model.PATIENT_SERVICE_RESULT.EXAMINATION_CONTENT) && Model.PATIENT_SERVICE_RESULT.SERVICETYPE == CMSLIS.Common.Constant.typeServiceXN)
+                            {
+                                
+                            }
+                            else if (!string.IsNullOrEmpty(Model.PATIENT_SERVICE_RESULT.EXAMINATION_CONTENT) && Model.PATIENT_SERVICE_RESULT.SERVICETYPE == CMSLIS.Common.Constant.typeServiceXQ)
+                            {
+                                <tr style="border: 1px solid #e1e8ed;">
+                                    <th style="border: 1px solid #e1e8ed;" class="col-xs-2 text-center" colspan="2">KẾT QUẢ @Model.PATIENT_SERVICE_RESULT.SERVICE_NAME.ToUpper()</th>
+                                </tr>
+                            }
+                            else if (!string.IsNullOrEmpty(Model.PATIENT_SERVICE_RESULT.EXAMINATION_CONTENT) && Model.PATIENT_SERVICE_RESULT.SERVICETYPE == CMSLIS.Common.Constant.typeServiceNS)
+                            {
+                                <tr style="border: 1px solid #e1e8ed;">
+                                    <th style="border: 1px solid #e1e8ed;" class="col-xs-2 text-center" colspan="2">KẾT QUẢ @Model.PATIENT_SERVICE_RESULT.SERVICE_NAME.ToUpper()</th>
+                                </tr>
+                            }
+                            else if (!string.IsNullOrEmpty(Model.PATIENT_SERVICE_RESULT.EXAMINATION_CONTENT) )
+                            {
+                                <tr style="border: 1px solid #e1e8ed;">
+                                    <th style="border: 1px solid #e1e8ed;" class="col-xs-2 text-center" colspan="2">KẾT QUẢ @Model.PATIENT_SERVICE_RESULT.SERVICE_NAME.ToUpper()</th>
+                                </tr>
+                            }
+
+                            <tr style="border: 1px solid #e1e8ed;">
+                                <th style="border: 1px solid #e1e8ed;margin-left:5px;margin-right:5px;" class=" text-left">@Html.Raw(Model.PATIENT_SERVICE_RESULT.EXAMINATION_CONTENT)</th>
+                            </tr>
+                            @if (!string.IsNullOrEmpty(Model.PATIENT_SERVICE_RESULT.SERVICE_RESULT))
+                            {
+                                <tr style="border: 1px solid #e1e8ed;">
+                                    <th style="border: 1px solid #e1e8ed;margin-left:5px;margin-right:5px;" class=" text-left">@Html.Raw(Model.PATIENT_SERVICE_RESULT.SERVICE_RESULT)</th>
+                                </tr>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.PATIENT_SERVICE_RESULT.SERVICE_ADVICE))
+                            {
+                                if (Model.PATIENT_SERVICE_RESULT.SERVICE_ADVICE.Length > 1)
+                                {
+                                    <tr style="border: 1px solid #e1e8ed;">
+                                        <th style="border: 1px solid #e1e8ed;margin-left:5px;margin-right:5px;" class=" text-left">@Model.PATIENT_SERVICE_RESULT.SERVICE_ADVICE</th>
+                                    </tr>
+                                }
+                            }
+
+
+                            @*@if (!string.IsNullOrEmpty(Model.PATIENT_SERVICE_RESULT.SERVICE_NOTE))
+                            {
+                                if (Model.PATIENT_SERVICE_RESULT.SERVICE_NOTE.Length > 1)
+                                {
+                                    <tr style="border: 1px solid #e1e8ed;">
+                                        <th style="border: 1px solid #e1e8ed;margin-left:5px;margin-right:5px;" class=" text-left">@Model.PATIENT_SERVICE_RESULT.SERVICE_NOTE</th>
+                                    </tr>
+                                }
+                            }*@
+
+                        </tbody>
+                    </table>
+
+                </div>
+                <!-- End Content -->
+
+                <div class="row">
+                    <div class="col-xs-6 form-group text-center">
+                        <b>&nbsp;</b>
+
+                        @if (Model.PATIENT_SERVICE_RESULT.SERVICETYPE == CMSLIS.Common.Constant.typeServiceXN)
+                        {
+                            <br />
+                            <span style="font-weight:bold; font-size:17px;">  Bác sỹ chỉ định</span>
+                             
+
+                        }
+
+                    </div>
+
+                    <div class="col-xs-6 form-group text-center">
+                        <span style="font-weight:bold; font-size:15px;">  Ngày @DateTime.Now.ToString("dd/MM/yyyy")</span>
+
+
+                        @if (Model.PATIENT_SERVICE_RESULT.SERVICETYPE == CMSLIS.Common.Constant.typeServiceSA && UserInfo.accountid != 521)
+                        {
+                            <div style="height:4px;">
+
+                            </div>
+                            <span style="font-weight:bold; font-size:16px;">  Bác sỹ siêu âm</span>
+                            <div style="height:8px;">
+
+                            </div>
+                            <span style="font-weight:bold"> BS CKI: Trần Lệ Dung</span>
+                            <div style="height:8px;">
+
+                            </div>
+                            <span style="font-weight:bold"> (0912.466.129)</span>
+                        }
+                        else if (Model.PATIENT_SERVICE_RESULT.SERVICETYPE == CMSLIS.Common.Constant.typeServiceSA && UserInfo.accountid == 521)
+                        {
+                        <div style="height:4px;">
+
+                        </div>
+                        <span style="font-weight:bold; font-size:16px;">  Bác sỹ siêu âm</span>
+                        <div style="height:8px;">
+
+                        </div>
+                        <span style="font-weight:bold"> BS : Phạm Mạnh Hùng</span>
+                        
+                        
+
+                        }
+
+                        else if (Model.PATIENT_SERVICE_RESULT.SERVICETYPE == CMSLIS.Common.Constant.typeServiceXN)
+                        {
+                        <div style="height:4px;">
+
+                        </div>
+
+                        <span style="font-weight:bold; font-size:17px;">  KTV xét nghiệm</span>
+
+
+                        }
+                        else if (Model.PATIENT_SERVICE_RESULT.SERVICETYPE == CMSLIS.Common.Constant.typeServicePK && Model.PATIENT_SERVICE_RESULT.SERVICE_ID == 1016)
+                        {
+                        <div style="height:4px;">
+
+                        </div>
+                        <span style="font-weight:bold; font-size:16px;">  Bác sỹ chuyên khoa</span>
+                        <div style="height:8px;">
+
+                        </div>
+                        <span style="font-weight:bold"> BS CKI: Đinh Kim Phượng</span>
+                        }
+                        else
+                        {
+                        <br />
+                        <span style="font-weight:bold; font-size:17px;">  Bác sỹ chỉ định</span>
+                        }
+
+
+                    </div>
+
+                </div>
+            }
+
+
+        </div>
+    </section>
+    <!-- End Content -->
+
+
+</body>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+

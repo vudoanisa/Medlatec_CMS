@@ -1,0 +1,132 @@
+﻿@using CMS_Core.Entity;
+@model  CMSLIS.Models.CategoryDynamicViewModel
+
+
+@{
+    ViewBag.Title = "Thêm mới danh mục động";
+
+}
+
+<script src="/Content/AdminLTE/js/Customer/Category.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+
+
+
+    <!-- Sorting -->
+    <section class="panel">
+
+        <!-- Begin Content -->
+        <div class="panel-body">
+
+            <div class="row" style="margin-bottom: 5px;margin-left: -5px;">
+                <a id="CategoryNew" href="/CatalogSystem/CategoryDynamicAdd?CATE_ID=@Model.parentID" class="btn btn-info mr-1 mb-2"><i class="fa fa-plus-square-o"></i> Thêm mới (Ctrl + F1) </a>                
+                <button type="button" id="CategoryDelete" value="CategoryDelete" class="btn btn-danger mr-1 mb-2" style="width:100px;" onclick="return ConfirmDelete();"><i class="fa fa-remove"></i> Xóa </button>
+                <button type="button" id="CategoryPublic" value="CategoryPublic" class="btn btn-info mr-1 mb-2" style="width:100px;" onclick="return ConfirmPublic();"><i class="fa fa-check-square-o"></i> Duyệt </button>
+            </div>
+
+            <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                        <th id="CATEGORY_NAME">Tên</th>
+                        <th id="CATEGORY_DESC">Mô tả</th>
+                        <th id="CATEGORY_ORDER">Vị trí</th>
+                        @if (Model.SETTUPS != null)
+                        {
+                            foreach (var setup in Model.SETTUPS)
+                            {
+                                <th id="@setup.FIELD_NAME">@setup.LABEL_NAME</th>
+                            }
+                        }
+
+                        <th id="Status"><span style="width:100px;">Trạng thái</span></th>
+                        <th id="edit">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.cms_Categories != null)
+                    {
+                        foreach (var data in Model.cms_Categories)
+                        {
+                            <tr>
+                                <td><input type="checkbox" name="ID" value="@data.ID" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                <td>@data.CATEGORY_NAME</td>
+                                <td>@data.CATEGORY_DESC</td>
+                                <td>@data.CATEGORY_ORDER</td>
+
+                                @if (Model.SETTUPS != null)
+                                {
+                                    if (Model.SETTUPS.Count > 0)
+                                    {
+                                        for (int i = 0; i < Model.SETTUPS.Count; i++)
+                                        {
+                                            if (i < data._COMPLEMENTS.Count)
+                                            {
+                                                if (Model.SETTUPS[i].TYPEDATAINPUT == CMS_Core.Common.Constant.TypeDataNumber)
+                                                {
+                                                    <td>@CMSLIS.Common.Common.FmtAmt(data._COMPLEMENTS[i].CATEGORY_COMPLEMENT_VALUE)</td>
+                                                }
+                                                else if (Model.SETTUPS[i].TYPEDATAINPUT == CMS_Core.Common.Constant.TypeDataDate)
+                                                {
+                                                    <td>@CMSLIS.Common.Common.ReFmtTime(data._COMPLEMENTS[i].CATEGORY_COMPLEMENT_VALUE)</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>@data._COMPLEMENTS[i].CATEGORY_COMPLEMENT_VALUE</td>
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                <td> </td>
+                                            }
+                                        }
+                                    }
+                                }
+                                <td style="width: 120px; ">@Html.Raw(CMSLIS.Common.Common.getTypeStatus(data.CATEGORYS_STATUS))</td>
+                                <td class="td-actions">
+                                    <a href="/CatalogSystem/CategoryDynamicAdd?ID=@data.ID&CATE_ID=@Model.parentID" id="Edit"><i class="fa fa-edit edit"></i></a>
+                                </td>
+
+
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+
+
+
+        </div>
+    </section>
+    <!-- End Sorting -->
+
+</div>
+<!-- End Content -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>

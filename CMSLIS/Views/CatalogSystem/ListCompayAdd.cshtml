@@ -1,0 +1,168 @@
+﻿@model  CMS_Core.Entity.tbl_Map
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Thêm mới bệnh viện và trụ sở";
+}
+
+
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/js/Customer/ListCompayAdd.js"></script>
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ListCompayAdd", "CatalogSystem", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        <div class="box-body">
+
+
+            <!-- Begin left page -->
+            <div class="col-md-12">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Tên phòng khám <span class="required">*</span> </label>
+                    <div class="col-xs-10">
+                        @Html.TextBoxFor(m => m.TenPK, new { @class = "form-control", type = "SingleLine", placeholder = "Tên phòng khám" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Giám đốc <span class="required">*</span> </label>
+                    <div class="col-xs-10">
+                        @Html.TextBoxFor(m => m.Giamdoc, new { @class = "form-control", type = "SingleLine", placeholder = "Giám đốc" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Địa chỉ <span class="required">*</span> </label>
+                    <div class="col-xs-10">
+                        @Html.TextBoxFor(m => m.Diachi, new { @class = "form-control", type = "SingleLine", placeholder = "Địa chỉ" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Hotline <span class="required">*</span> </label>
+                    <div class="col-xs-10">
+                        @Html.TextBoxFor(m => m.Hotline, new { @class = "form-control", type = "SingleLine", placeholder = "Hotline" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Trụ sở <span class="required">*</span></label>
+                    <div class="col-xs-10">
+                        @Html.TextBoxFor(m => m.Truso, new { @class = "form-control", type = "SingleLine", placeholder = "Trụ sở" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Website <span class="required">*</span></label>
+                    <div class="col-xs-10">
+                        @Html.TextBoxFor(m => m.Website, new { @class = "form-control", type = "SingleLine", placeholder = "Website" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Thông số</label>
+                    <div class="col-xs-10">
+                        @Html.TextBoxFor(m => m.Thongso, new { @class = "form-control", type = "SingleLine", placeholder = "Thông số" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Fanpage <span class="required">*</span></label>
+                    <div class="col-xs-10">
+                        @Html.TextBoxFor(m => m.Fanpage, new { @class = "form-control", type = "SingleLine", placeholder = "Fanpage" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Kinh độ</label>
+                    <div class="col-xs-10">
+                        @Html.TextBoxFor(m => m.Lo, new { @class = "form-control", type = "SingleLine", placeholder = "Kinh độ" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Vĩ độ</label>
+                    <div class="col-xs-10">
+                        @Html.TextBoxFor(m => m.Lu, new { @class = "form-control", type = "SingleLine", placeholder = "Vĩ độ" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Loại trụ sở</label>
+                    <div class="col-xs-10">
+                        @Html.DropDownListFor(m => m.type, this.ViewBag.GetTypeCompany as List<SelectListItem>, new { @class = "form-control select2" })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Vùng miền</label>
+                    <div class="col-xs-10">
+                        @Html.DropDownListFor(m => m.Khuvuc, this.ViewBag.GetTypeLocaltion as List<SelectListItem>, new { @class = "form-control select2" })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Ảnh đại diện (320px x 240px) <span class="required">*</span> </label>
+                    <div class="col-xs-10">
+                        <input type="file" name="ImageFile" id="ImageFile" class="form-control" />
+                        @if (@Model.Img != null)
+                        {
+                            <Img src='@CMSLIS.Common.Common.GetPathImage(Model.Img)' height="40px" width="40px" />
+                            @Html.TextBoxFor(m => m.Img, new { @class = "checkbox-inline", Type = "hidden" })
+                        }
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+            @Html.TextBoxFor(m => m.ID, new { Type = "hidden" })
+
+            <div class="form-group text-center">
+                <div class="col-xs-8">
+                    <button type="submit" name="submit" id="SaveListCompayAdd" value="SaveListCompayAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+                    <a id="BacListCompayAdd" href="/CatalogSystem/Slider" class="btn btn-primary"> <i class="fa fa-backward"></i>  Quay lại (Alt + Z) </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<!-- End Form -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+<script src="/Content/AdminLTE/js/adminlte.js"></script>
+<script src="/Content/AdminLTE/js/init.js"></script>
+
+

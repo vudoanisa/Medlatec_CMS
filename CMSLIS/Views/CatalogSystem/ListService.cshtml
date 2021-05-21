@@ -1,0 +1,218 @@
+﻿@using CMS_Core.Entity;
+@model  CMS_Core.Entity.CMS_SERVICE
+@{
+    ViewBag.Title = "Danh sách dịch vụ";
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    var SERVICES = (List<CMS_SERVICE>)ViewBag.SERVICES;
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBox = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+    CMS_Core.Common.ComboBoxFinal<CMS_PARTNER> ComboBoxPARTNER = new CMS_Core.Common.ComboBoxFinal<CMS_PARTNER>();
+
+}
+
+
+<script src="/Content/AdminLTE/js/Customer/ListService.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ListService", "CatalogSystem", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="box-body">
+        <div class="col-sm-3">
+            <div class="form-group" style="margin-left: 0px;">
+                @Html.TextBoxFor(m => m.SERVICE_CODE, new { @class = "form-control  ", type = "SingleLine", placeholder = "Mã dịch vụ", autocomplete = "off", id = "SERVICE_CODE" })
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.SERVICE_NAME, new { @class = "form-control  ", type = "SingleLine", placeholder = "Tên dịch vụ", autocomplete = "off", id = "SERVICE_NAME" })
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.SERVICE_NAME_ENG, new { @class = "form-control  ", type = "SingleLine", placeholder = "Tên tiếng anh", autocomplete = "off", id = "SERVICE_NAME_ENG" })
+            </div>
+        </div>
+
+
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label class="control-label col-xs-4" style="font-weight:bold; ">Đơn vị: </label>
+                <div class="col-xs-8">
+                    @Html.DropDownListFor(m => m.SERVICE_UNIT, ComboBox.GetComboBoxBySelected("SELECT id as idfield,  CATEGORY_DESC as namefield  FROM   dm_donvitinh where categorys_status = 2", "idfield", "namefield", Model.SERVICE_UNIT.ToString(), true), new { @class = "form-control select2", id = "SERVICE_UNIT", onchange = "SelectedValue(this)" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+        </div>
+
+
+        <div class="col-sm-3">
+            <div class="form-group" style="margin-left: 0px;">
+                @Html.TextBoxFor(m => m.SERVICE_PRICE, new { @class = "form-control", type = "number", placeholder = "Giá tiền", id = "SERVICE_PRICE", name = "SERVICE_PRICE" })
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.SERVICE_PRICE_INSURANCE, new { @class = "form-control", type = "number", placeholder = "Giá tiền bảo hiểm", id = "SERVICE_PRICE_INSURANCE" })
+
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.SERVICE_RETURN_DATE, new { @class = "form-control", type = "SingleLine", placeholder = "Thời gian trả kết quả", autocomplete = "true", id = "SERVICE_RETURN_DATE" })
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.SERVICE_NOTE, new { @class = "form-control", type = "SingleLine", placeholder = "Ghi chú", autocomplete = "true", id = "SERVICE_NOTE" })
+            </div>
+        </div>
+        <div class="form-group">
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label class="control-label col-xs-4" style="font-weight:bold; ">Loại dịch vụ: </label> 
+                <div class="col-xs-8">
+                    @Html.DropDownListFor(m => m.SERVICETYPE, ComboBox.GetComboBoxBySelected("SELECT id as idfield,  name as namefield  FROM   CMS_SERVICE_TYPE where status = 2", "idfield", "namefield", Model.SERVICETYPE.ToString(), true), new { @class = "form-control select2", id = "SERVICETYPE", onchange = "SelectedValue1(this)" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group">
+                <button type="submit" name="submit" value="hiddent" id="hiddent" class="btn btn-danger" style="display: none;"></button>
+
+                <button type="submit" id="SaveListService" name="submit" value="SaveListService" class="btn btn-danger mr-1 mb-2" style="width:105px; "><i class="fa fa-save"></i> Lưu</button>
+                @if (UserInfo.PARTNERID != 1)
+                {
+                <button type="submit" id="cmdSearch" name="submit" value="SearchListService" class="btn btn-primary"><i class="fa fa-search"></i> Tìm kiếm</button>
+                }
+            </div>
+        </div>
+        @Html.TextBoxFor(m => m.ID, new { @class = "checkbox-inline", Type = "hidden" })
+    </div>
+
+
+
+        if (UserInfo.PARTNERID == 1)
+        {
+
+        <div class="box-body">
+            <div class="col-sm-3">
+                <div class="form-group align-content-center">
+                    <label class="control-label col-xs-4" style="font-weight:bold; ">Đối tác: </label>
+                    <div class="col-xs-8">
+                        @Html.DropDownListFor(m => m.PARTNERID, ComboBoxPARTNER.GetComboBoxBySelected("SELECT  id,partner_name FROM    cms_partner where PARTNER_STATUS = 2", "id", "partner_name", Model.PARTNERID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedSearch(this)" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <button type="submit" id="cmdSearch" name="submit" value="SearchListService" class="btn btn-primary"><i class="fa fa-search"></i> Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+        }
+        else
+        {
+        @Html.TextBoxFor(m => m.PARTNERID, new { @class = "checkbox-inline", Type = "hidden" })
+        }
+
+        <div class="box box-info" style="margin-top: 5px;">
+            <!-- Sorting -->
+            <section class="panel">
+
+                <!-- Begin Content -->
+                <div class="panel-body">
+                    <table id="sorting-table" class="table table-bordered table-striped mb-none">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                                <th id="SERVICE_NAME">Tên dịch vụ</th>
+                                <th id="SERVICE_NAME">Tên dịch vụ tiếng anh</th>
+                                <th id="SERVICE_CODE">Mã dịch vụ</th>
+                                <th id="SERVICE_UNIT">Đơn vị</th>
+                                <th id="SERVICE_PRICE">Giá tiền</th>
+                                <th id="SERVICE_PRICE_INSURANCE">Giá tiền bảo hiểm</th>
+                                <th id="SERVICE_RETURN_DATE">Thời gian trả kết quả</th>
+                                <th id="Status"><span style="width:100px;">Trạng thái</span></th>
+                                <th id="edit">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (SERVICES != null)
+                            {
+                                foreach (var data in SERVICES)
+                                {
+                                    <tr>
+                                        <td><input type="checkbox" name="ID" value="@data.ID" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                        <td>@data.SERVICE_NAME</td>
+                                        <td>@data.SERVICE_NAME_ENG</td>
+                                        <td>@data.SERVICE_CODE</td>
+                                        <td>@data.UnitName</td>
+                                        <td>@CMSLIS.Common.Common.FmtAmt(data.SERVICE_PRICE)</td>
+                                        <td>@CMSLIS.Common.Common.FmtAmt(data.SERVICE_PRICE_INSURANCE)</td>
+                                        <td>@data.SERVICE_RETURN_DATE</td>
+                                        <td style="width: 120px; ">@Html.Raw(CMSLIS.Common.Common.getTypeStatus(data.SERVICE_STATUS))</td>
+                                        <td class="td-actions">
+                                            <a href="/CatalogSystem/ListService?id=@data.ID" id="Edit"><i class="fa fa-edit edit"></i></a>
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                    @*<button type="button" id="ListServiceNew" class="btn btn-info mr-1 mb-2" onclick="location.href='@Url.Action("ListServiceAdd", "CatalogSystem")'">Thêm mới</button>*@
+                    <button type="button" id="ListServiceDelete" value="ListServiceDelete" class="btn btn-danger mr-1 mb-2" style="width:100px;" onclick="return ConfirmDelete();"><i class="fa fa-remove"></i> Xóa </button>
+                    <button type="button" id="ListServicePublic" value="ListServicePublic" class="btn btn-info mr-1 mb-2" style="width:100px;" onclick="return ConfirmPublic();"><i class="fa fa-check-square-o"></i> Duyệt </button>
+
+
+
+                </div>
+            </section>
+            <!-- End Sorting -->
+        </div>
+        }
+
+    </div>
+<!-- End Content -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+
+<!-- InputMask -->
+@*<script src="/Content/AdminLTE/js/plugins/input-mask/jquery.inputmask.js"></script>
+    <script src="/Content/AdminLTE/js/plugins/input-mask/jquery.inputmask.extensions.js"></script>*@
+
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>

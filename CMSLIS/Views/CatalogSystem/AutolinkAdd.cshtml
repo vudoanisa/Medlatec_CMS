@@ -1,0 +1,98 @@
+﻿@model  CMS_Core.Entity.Autolink
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "AutolinkAdd";
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBoxClass = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+}
+
+
+<script src="/Content/AdminLTE/js/Customer/AutolinkAdd.js"></script>
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("AutolinkAdd", "CatalogSystem", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+    <div class="box-body">
+
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="form-group">
+            <label class="control-label col-xs-2" style="font-weight:bold; ">Keyword<span class="required">*</span></label>
+            <div class="col-xs-6">
+                @Html.TextBoxFor(m => m.Keyword, new { @class = "form-control", type = "SingleLine", placeholder = "từ khóa" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-2" style="font-weight:bold; ">Link<span class="required">*</span></label>
+            <div class="col-xs-6">
+                @Html.TextBoxFor(m => m.URL, new { @class = "form-control", type = "SingleLine", placeholder = "URL" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <label class="control-label col-xs-2" style="font-weight:bold; ">Thứ tự xuất hiện</label>
+            <div class="col-xs-6">
+                @Html.TextBoxFor(m => m.SortOrder, new { @class = "form-control", type = "number", placeholder = "Thứ tự xuất hiện" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <label class="control-label col-xs-2" style="font-weight:bold; ">Số lần xuất hiện<span class="required">*</span></label>
+            <div class="col-xs-6">
+                @Html.TextBoxFor(m => m.MaxReplacements, new { @class = "form-control", type = "number", placeholder = "Số lần xuất hiện" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-2" style="font-weight:bold; ">Vị trí xuất hiện</label>
+            <div class="col-xs-6">
+                @Html.DropDownListFor(m => m.TypeStart, ComboBoxClass.GetComboBoxBySelected("SELECT   id  as idfield,    name as namefield FROM  TypeAutolink where status = 2   order by id asc", "idfield", "namefield", Model.TypeStart.ToString(), true), new { @class = "form-control " })
+            </div>
+        </div>
+
+
+        @Html.TextBoxFor(m => m.ID, new { @class = "checkbox-inline", Type = "hidden" })
+
+
+
+        <div class="form-group text-center">
+            <div class="col-xs-10">
+                <button type="submit" name="submit" id="SaveAutolinkAdd" value="SaveAutolinkAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+                <a id="BackAutolink" href="/CatalogSystem/Autolink" class="btn btn-primary"> <i class="fa fa-backward"></i>  Quay lại (Alt + Z) </a>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+<!-- End Form -->
+
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+<script src="/Content/AdminLTE/js/adminlte.js"></script>
+<script src="/Content/AdminLTE/js/init.js"></script>

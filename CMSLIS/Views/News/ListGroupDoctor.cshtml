@@ -1,0 +1,146 @@
+﻿@using CMS_Core.Entity;
+@model  CMS_Core.Models.SearchNewsViewModel
+@{
+    ViewBag.Title = "Danh sách nhóm bác sỹ";
+    var Group_Doctors = (List<cms_Group_Doctor>)ViewBag.Group_Doctors;
+}
+
+<script src="/Content/AdminLTE/js/Customer/ListGroupDoctor.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+<style>
+
+    /*  */
+
+    #preview {
+        position: absolute;
+        border: 1px solid #ccc;
+        background: #333;
+        padding: 5px;
+        display: none;
+        color: #fff;
+    }
+
+    /*  */
+</style>
+
+
+<div class="box box-info">
+    @*@using (Html.BeginForm("ListGroupDoctor", "News", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="box-body">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4" style="font-weight:bold; ">Nhóm bác sỹ:  </label>
+                        <div class="col-xs-7">
+                            @Html.DropDownListFor(m => m.ParrenId, Group_Doctor.GetComboBoxBySelected("select id, name from [dbo].[cms_Group_Doctor] where Active = 1 order by name asc", "id", "name", Model.ParrenId.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <button type="submit" id="cmdSearch" name="submit" value="SearchCategory" class="btn btn-primary"><i class="fa fa-search"></i>  Tìm kiếm</button>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        }*@
+
+    <div class="box box-info" style="margin-top: 5px;">
+        <section class="panel">
+            <!-- Begin Content -->
+            <div class="panel-body">
+                <div class="row" style="margin-bottom: 5px;margin-left: -5px;">
+                    <button type="button" id="ListGroupDoctorrAdd" value="ListGroupDoctorAdd" class="btn btn-info mr-1 mb-2" onclick="return ConfirmAdd();"><i class="fa fa-plus-square-o"></i> Thêm mới (Ctrl + F1) </button>
+                    <button type="button" id="ListGroupDoctorDelete" value="ListGroupDoctorDelete" class="btn btn-danger mr-1 mb-2" style="width:100px;" onclick="return ConfirmDelete();"><i class="fa fa-remove"></i> Xóa </button>
+                    <button type="button" id="ListGroupDoctorPublic" value="ListGroupDoctorPublic" class="btn btn-info mr-1 mb-2" style="width:100px;" onclick="return ConfirmPublic();"><i class="fa fa-check-square-o"></i> Duyệt </button>
+                </div>
+
+                <!-- Sorting -->
+                <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                            <th>Ảnh</th>
+                            <th>Tên nhóm</th>
+                            <th>Từ khóa</th>
+                            <th>Số thứ tự</th>
+                            <th><span style="width:100px;">Trạng thái</span></th>
+
+                            <th id="edit">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Group_Doctors != null)
+                        {
+                            foreach (var data in Group_Doctors)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" name="ID" value="@data.id" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+
+                                    <td>
+                                        <a href="@CMSLIS.Common.Common.getImageLink()@data.Image" class="preview">
+                                            <Img src='@CMSLIS.Common.Common.getImageLink()@data.Image' height="30px" width="30px" />
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                        <span class="text-primary">
+                                            @data.Name
+                                        </span>
+                                    </td>
+
+                                    <td>@data.keyword</td>
+                                    <td>@data.ord</td>
+
+                                    <td>@Html.Raw(CMSLIS.Common.Common.getTypeStatus(data.Active))</td>
+                                    <td class="td-actions">
+                                        <a href="/News/ListGroupDoctorAdd?Id=@data.id"><i class="fa fa-edit edit"></i></a>
+                                    </td>
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+
+                <!-- End Sorting -->
+
+            </div>
+            <!-- End Content -->
+
+        </section>
+    </div>
+</div>
+
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+<script src="/Content/AdminLTE/js/adminlte.js"></script>
+<script src="/Content/AdminLTE/js/init.js"></script>

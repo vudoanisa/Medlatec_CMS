@@ -1,0 +1,131 @@
+﻿
+@*@using DevExpress.Web.Mvc.UI;
+@using DevExpress.XtraReports.Web.WebDocumentViewer;*@
+
+@{
+                /**/
+
+                ViewBag.Title = "Báo cáo đặt lịch khám";
+}
+
+
+@*@Html.DevExpress().WebDocumentViewer(settings => {
+        settings.Name = "WebDocumentViewer";
+    }).Bind(new CachedReportSourceWeb(new XtraReport2()).GetHtml()*@
+
+
+
+
+@*<section role="main" class="content-body">
+
+
+
+    <div class="row">
+        <div class="col-xs-3 form-group">
+            <span style="font-size:14px;margin-left:5px; "> MEDAZ</span>
+        </div>
+        <div class="col-xs-7 form-group center" style="text-align:center;">
+            <span style="font-size:22px;text-align:center;"> <b> BÁO CÁO BÁN HÀNG THEO NHÓM</b></span>
+        </div>
+
+    </div>
+    <div class="row" style="text-align:center;">
+
+        <div class="col-xs-3 form-group">
+
+        </div>
+        <div class="col-xs-7 form-group center" style="text-align:center;">
+            <span style="font-size:14px;text-align:center;">   Từ ngày: @Model.Tungay.ToString() 00:00:00  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Đến ngày:  @Model.Denngay.ToString() 23:59:59 </span>
+        </div>
+
+
+    </div>
+
+
+
+    <!-- start: page -->
+    <div class="row">
+
+        <section class="panel">
+            <div class="panel-body">
+
+                <div class="table-responsive" style="border-collapse: collapse;">
+
+                    <table width="100%" id="datatable-details">
+                        <tr>
+                            <th style="border: 1px solid black; font-weight:bold; ">STT</th>
+                            <th style="border: 1px solid black;font-weight:bold;  ">Chi nhánh</th>
+                            <th style="border: 1px solid black;font-weight:bold; ">Tên nhóm</th>
+                            <th style="border: 1px solid black ;font-weight:bold; ">Tổng nhập</th>
+                            <th style="border: 1px solid black;font-weight:bold; ">Tổng bán</th>
+                            <th style="border: 1px solid black;font-weight:bold; ">Tỷ lệ lãi suất</th>
+                        </tr>
+                        <tbody>
+                            @if (DataReport != null)
+                            {
+                                foreach (var data in DataReport)
+                                {
+                                    <tr>
+                                        <td style="border: 1px solid black;">@index </td>
+                                        <td style="border: 1px solid black;">@data.TENKHOLE </td>
+                                        <td style="border: 1px solid black;">@data.TENNHOM</td>
+                                        <td style="border: 1px solid black;">
+                                            @WebPharma.Common.Common.FmtAmt(data.tongnhap)
+                                        </td>
+                                        <td style="border: 1px solid black;">@WebPharma.Common.Common.FmtAmt(data.tongban)</td>
+                                        <td style="border: 1px solid black;">@data.tylelaisuat</td>
+
+                                    </tr>
+                                    index = index + 1;
+                                }
+                            }
+
+                        </tbody>
+
+                        <tr>
+                            <th style="border: 1px solid black; font-weight:bold; "></th>
+                            <th style="border: 1px solid black;font-weight:bold;  "></th>
+                            <th style="border: 1px solid black;font-weight:bold; ">Tổng tiền:</th>
+                            <th style="border: 1px solid black ;font-weight:bold; "></th>
+                            <th style="border: 1px solid black;font-weight:bold; "></th>
+                            <th style="border: 1px solid black;font-weight:bold; "></th>
+
+
+                        </tr>
+
+                    </table>
+                </div>
+
+
+
+            </div>
+        </section>
+
+
+    </div>
+    <!-- end: page -->
+
+
+    <div class="row">
+        <span style="float:right; margin-right:30px;"> <i> Hà nội, Ngày: @DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</i> </span>
+    </div>
+    <div class="row">
+        &nbsp;
+    </div>
+    <div class="row">
+
+        <div class="col-xs-5 form-group">
+
+        </div>
+        <div class="col-xs-2 form-group">
+            <b>PT kho dược</b>
+        </div>
+        <div class="col-xs-2 form-group">
+            <b> Thủ kho</b>
+        </div>
+        <div class="col-xs-2 form-group center">
+            <b> Kế toán kho</b>
+        </div>
+    </div>
+
+</section>*@

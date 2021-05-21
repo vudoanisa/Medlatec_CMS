@@ -1,0 +1,226 @@
+﻿@model  CMS_Core.Models.ExportStoreViewModel
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Thông tin phiếu xuất";
+
+    int count = 1;
+}
+
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<!-- Begin: page -->
+<div class="box box-info">
+    <div class="box-body">
+
+        <div class="form-group row ">
+            <div class="col-xs-2" style="margin-left:3px;">
+                <div class="form-group">
+                    <img src="~/Content/AdminLTE/images/logo.jpg" width="90px" style="margin-left:3px;" />
+                </div>
+            </div>
+            <div class="col-xs-9">
+                <div style="height:10px;">
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-12 text-center " style="font-weight:bold;font-size:16px;  ">PHÒNG KHÁM ĐA KHOA DUNG CHÂU</label>
+                    <label class="control-label col-xs-12 text-center " style="font-weight:bold;font-size:16px;  ">ĐT: 0210. 3816. 196</label>
+                    <div style="height:16px;">
+
+                    </div>
+
+
+                </div>
+                <div style="height:10px;">
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-12 text-center " style="font-weight:bold;font-size:18px;  ">PHIẾU XUẤT THUỐC: @Model._MEDICINE_EXPORT_STORE.CMS_MEDICINE_EXPORT_STORE_CODE</label>
+
+
+                </div>
+                <div style="height:10px;">
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-12 text-center " style="font-weight:bold;font-size:18px;  ">NGÀY XUẤT: @Model._MEDICINE_EXPORT_STORE.CREATEDATE.ToString("dd/MM/yyyy HH:mm") </label>
+
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+        @*<div class="form-group row ">
+
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 text-center " style="font-weight:bold;  ">PHIẾU XUẤT THUỐC: @Model._MEDICINE_EXPORT_STORE.CMS_MEDICINE_EXPORT_STORE_CODE  </label>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 text-center " style="font-weight:bold;  ">NGÀY XUẤT: @Model._MEDICINE_EXPORT_STORE.CREATEDATE.ToString("dd/MM/yyyy HH:mm")  </label>
+                </div>
+            </div>
+
+        </div>*@
+    <div class="panel-body">
+        <div class="form-group row ">
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 " style="font-weight:bold;  ">Mã KH: @Model._MEDICINE_EXPORT_STORE.EMPLOYEECODE  </label>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 " style="font-weight:bold;">Khách hàng: @Model._MEDICINE_EXPORT_STORE.CUSTOMER_NAME.ToUpper() </label>
+
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label col-xs-5 " style="font-weight:bold;  ">Giới tính: @CMSLIS.Common.Common.GetGENDERName(Model._MEDICINE_EXPORT_STORE.CUSTOMER_GENDER.ToString())  </label>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row ">
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 " style="font-weight:bold;  ">Địa chỉ: @Model._MEDICINE_EXPORT_STORE.CUSTOMER_ADDRESS  </label>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 " style="font-weight:bold;">Điện thoại: @Model._MEDICINE_EXPORT_STORE.CUSTOMER_MOBILE </label>
+
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label col-xs-5 " style="font-weight:bold;  ">Email: @Model._MEDICINE_EXPORT_STORE.CUSTOMER_EMAIL  </label>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row ">
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 " style="font-weight:bold;  ">Tổng tiền: @CMSLIS.Common.Common.FmtAmt(Model._MEDICINE_EXPORT_STORE.TOTAL_PRICE) (VNĐ) </label>
+                </div>
+            </div>
+
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 " style="font-weight:bold;  ">Ghi chú: @Model._MEDICINE_EXPORT_STORE.CMS_MEDICINE_EXPORT_STORE_NOTE  </label>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+            <div class="form-group row ">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-center " style="font-weight:bold;  "> DANH SÁCH THUỐC</label>
+                        @if (@ViewBag.StatusMessage != null)
+                        {
+                            <span class="text-danger justify-content-lg-end">
+                                &nbsp;&nbsp;&nbsp;&nbsp;  @ViewBag.StatusMessage
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Begin Content -->
+            <div class="panel-body">
+                <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th id="MEDICINE_NAME">Tên thuốc</th>
+                            @*<th id="DATEOFMANUFACTURE">Ngày SX</th>
+                            <th id="EXPIRYDATE">Hạn SD</th>*@
+                            <th id="MEDICINE_AMOUNT">Số lượng</th>
+                            <th id="MEDICINE_EXPIRED">Giá </th>
+                            <th id="Total">Tổng tiền </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model._MEDICINE_EXPORT_DETAILS != null)
+                        {
+                            foreach (var data in Model._MEDICINE_EXPORT_DETAILS)
+                            {
+                                <tr>
+                                    <td>@(count++) </td>
+                                    <td class="MEDICINE_NAME1 " style="font-weight:bold;">@data.MEDICINE_NAME</td>
+                                    @*<td class="MEDICINE_CREATE1">@CMSLIS.Common.Common.ReFmtDate(data.MEDICINE_CREATE)</td>
+                                    <td class="MEDICINE_EXPIRED1">@CMSLIS.Common.Common.ReFmtDate(data.MEDICINE_EXPIRED)</td>*@
+                                    <td class="MEDICINE_AMOUNT1 text-right">@CMSLIS.Common.Common.FmtAmt(data.MEDICINE_AMOUNT)</td>
+                                    <td class="MEDICINE_PRICE1 text-right">@CMSLIS.Common.Common.FmtAmt(data.MEDICINE_PRICE)</td>
+                                    <td class="text-right">@CMSLIS.Common.Common.FmtAmt(Convert.ToDouble(data.MEDICINE_PRICE) * Convert.ToDouble(data.MEDICINE_AMOUNT))</td>
+                                </tr>
+
+                            }
+                        }
+
+                    </tbody>
+                </table>
+
+
+                <div class="em-separator separator-dashed"></div>
+                <div class="sign-btn text-center">
+
+                    <a href="/pharmacyStore/ExportStoreViewPrint?ID=@Model._MEDICINE_EXPORT_STORE.ID&Token=@CMSLIS.Common.Common.generalKeyPrivate(Model._MEDICINE_EXPORT_STORE.ID.ToString())" class="btn btn-danger"> <i class="fa fa-print"></i> In phiếu (F9)</a>
+                    <a href="/pharmacyStore/ExportStore" class="btn btn-primary"> <i class="fa fa-backward"></i> Back </a>
+
+                </div>
+            </div>
+            <!-- End Content -->
+
+
+
+        </div>
+
+
+    </div>
+    <!-- end: page -->
+
+
+    <script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+    <script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+    <script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+    <!-- Specific Page Vendor -->
+    <script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+    <script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+    <script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+    <!-- Theme Base, Components and Settings -->
+    <script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+    <!-- Theme Custom -->
+    <script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+    <!-- Theme Initialization Files -->
+    <script src="/Content/AdminLTE/javascripts/theme.init.js"></script>

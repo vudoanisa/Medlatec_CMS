@@ -1,0 +1,379 @@
+﻿@model  CMS_Core.Models.ReceiptStoreViewModel
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Nhập thuốc";
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBoxClass = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    CMS_Core.Common.ComboBoxFinal<CMS_MEDICINE> ComboBoxCMS_MEDICINE = new CMS_Core.Common.ComboBoxFinal<CMS_MEDICINE>();
+}
+
+
+<script src="/Content/AdminLTE/js/Customer/jquery.masknumber.js"></script>
+<script src="/Content/AdminLTE/js/Customer/ReceiptStoreAdd.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ReceiptStoreAdd", "pharmacyStore", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="box-body">
+            @Html.AntiForgeryToken()
+            @*@Html.ValidationSummary(false, "", new { @class = "text-danger" })*@
+
+            <div class="form-group row ">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Số phiếu:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m._MEDICINE_RECEIPT_STORE.MEDICINE_RECEIPT_STORE_CODE, new { @class = "form-control", type = "SingleLine", placeholder = "Số phiếu", id = "MEDICINE_RECEIPT_STORE_CODE", disabled = "True" })
+                            @Html.TextBoxFor(m => m._MEDICINE_RECEIPT_STORE.MEDICINE_RECEIPT_STORE_CODE, new { @class = "checkbox-inline", Type = "hidden" })
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Số HĐ:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m._MEDICINE_RECEIPT_STORE.CONTRACT, new { @class = "form-control", type = "SingleLine", placeholder = "Số hợp đồng", id = "CONTRACT" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Ngày HĐ:</label>
+                        <div class="col-xs-8">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m._MEDICINE_RECEIPT_STORE.CONTRACT_DATE_VIEW, new { @class = "form-control", type = "text", id = "date", name = "date" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Nhà CC:</label>
+                        <div class="col-xs-8">
+                            @Html.DropDownListFor(m => m._MEDICINE_RECEIPT_STORE.MEDICINE_SUPPLIER_ID, ComboBoxClass.GetComboBoxBySelected("SELECT   id  as idfield,    category_desc as namefield FROM  DM_NHACUNGCAP where categorys_status = 2 and PARTNERID = " + @UserInfo.PARTNERID + " order by category_desc asc", "idfield", "namefield", Model._MEDICINE_RECEIPT_STORE.MEDICINE_SUPPLIER_ID.ToString(), true), new { @class = "form-control select2", id = "MEDICINE_SUPPLIER_ID" })
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <div class="form-group row ">
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-2 " style="font-weight:bold;   ">Ghi chú:</label>
+                        <div class="col-xs-10">
+                            @Html.TextBoxFor(m => m._MEDICINE_RECEIPT_STORE.NOTE, new { @class = "form-control", type = "SingleLine", placeholder = "Ghi chú", id = "NOTE" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            @Html.TextBoxFor(m => m._MEDICINE_RECEIPT_STORE.ID, new { @class = "checkbox-inline", Type = "hidden" })
+
+            <div class="box-header">
+                <h3 class="box-title">Thông tin hàng hóa </h3>
+            </div>
+
+            <div class="form-group row ">
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Tên thuốc:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_RECEIPT_DETAIL.ID, new { @class = "checkbox-inline", Type = "hidden", id = "DETAIL_ID" })
+                            @Html.DropDownListFor(m => m.MEDICINE_RECEIPT_DETAIL.MEDICINE_ID, ComboBoxCMS_MEDICINE.GetComboBoxBySelected("SELECT   ID,    MEDICINE_NAME FROM  CMS_MEDICINE where MEDICINE_STATUS = 2 and (PARTNERID = " + @UserInfo.PARTNERID + " or PARTNERID = 0) order by MEDICINE_NAME asc ", "ID", "MEDICINE_NAME", Model.MEDICINE_RECEIPT_DETAIL.MEDICINE_ID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValue(this)", id = "MEDICINE_ID" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Mã thuốc:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_RECEIPT_DETAIL.MEDICINE_CODE, new { @class = "form-control", type = "SingleLine", placeholder = "Mã thuốc", disabled = "True", id = "MEDICINE_CODE" })
+                            @Html.TextBoxFor(m => m.MEDICINE_RECEIPT_DETAIL.MEDICINE_CODE, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_CODE1" })
+                            @Html.TextBoxFor(m => m.MEDICINE_RECEIPT_DETAIL.MEDICINE_NAME, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_NAME" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Đơn vị:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_RECEIPT_DETAIL.MEDICINE_UNIT_NAME, new { @class = "form-control", type = "SingleLine", placeholder = "Mã thuốc", disabled = "True", id = "MEDICINE_UNIT_NAME" })
+                            @Html.TextBoxFor(m => m.MEDICINE_RECEIPT_DETAIL.MEDICINE_UNIT, new { @class = "checkbox-inline", Type = "hidden", id = "MEDICINE_UNIT" })
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Nhà sản xuất:</label>
+                        <div class="col-xs-8">
+                            @Html.DropDownListFor(m => m.MEDICINE_RECEIPT_DETAIL.MANUFACTUREID, ComboBoxClass.GetComboBoxBySelected("SELECT   id  as idfield,    category_desc as namefield FROM  DM_NHASANXUAT where categorys_status = 2 and PARTNERID =  " + @UserInfo.PARTNERID + " order by category_desc asc", "idfield", "namefield", Model.MEDICINE_RECEIPT_DETAIL.MANUFACTUREID.ToString(), true), new { @class = "form-control select2", id = "PROVIDEDID" })
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="form-group row ">
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Số lượng:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_RECEIPT_DETAIL.AMOUNT_VIEW, new { @class = "form-control", type = "text", placeholder = "Số lượng", id = "AMOUNT", name = "AMOUNT" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Giá nhập:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_RECEIPT_DETAIL.IMPORTPRICE_VIEW, new { @class = "form-control", type = "text", placeholder = "Giá nhập", id = "IMPORTPRICE" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Giáp bán:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_RECEIPT_DETAIL.EXPORTPRICE_VIEW, new { @class = "form-control", type = "text", placeholder = "Giá bán", id = "EXPORTPRICE" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">VAT:</label>
+                        <div class="col-xs-8">
+                            @Html.DropDownListFor(m => m.MEDICINE_RECEIPT_DETAIL.VAT, ComboBoxClass.GetComboBoxBySelected("SELECT   category_name  as idfield,    category_desc as namefield FROM  DM_UUDAI where categorys_status = 2  ", "idfield", "namefield", Model.MEDICINE_RECEIPT_DETAIL.VAT.ToString(), true), new { @class = "form-control select2", id = "VAT" })
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+            <div class="form-group row ">
+
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Ngày SX:</label>
+                        <div class="col-xs-8">
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.MEDICINE_RECEIPT_DETAIL.DATEOFMANUFACTURE_View, new { @class = "form-control", type = "text", id = "nsx", name = "nsx", })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Hạn SD:</label>
+                        <div class="col-xs-8">
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.MEDICINE_RECEIPT_DETAIL.EXPIRYDATE_View, new { @class = "form-control", type = "text", id = "hsd", name = "hsd" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Số lô:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_RECEIPT_DETAIL.LOTMUMBER, new { @class = "form-control", type = "SingleLine", placeholder = "Số lô", id = "LOTMUMBER" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Số HĐ:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.MEDICINE_RECEIPT_DETAIL.REGISTRATIONNUMBER, new { @class = "form-control", type = "SingleLine", placeholder = "Số hợp đồng", id = "REGISTRATIONNUMBER" })
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+            </div>
+
+            <div class="form-group row ">
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-2 " style="font-weight:bold;  ">Ghi chú:</label>
+                        <div class="col-xs-10">
+                            @Html.TextBoxFor(m => m.MEDICINE_RECEIPT_DETAIL.NOTE, new { @class = "form-control", type = "SingleLine", placeholder = "Ghi chú", id = "NOTEDETAIL" })
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <button type="submit" name="submit" value="hiddent" id="hiddent" class="btn btn-danger" style="display: none;"></button>
+                        <button type="submit" name="submit" value="SaveReceiptStoreChoi" id="SaveReceiptStoreChoi" class="btn btn-danger"><i class="fa fa-save"></i> Chọn</button>
+                        <button type="submit" name="submit" value="SaveReceiptStoreDelete" id="SaveReceiptStoreDelete" class="btn btn-danger"> <i class="fa fa-remove"></i> Xóa</button>
+
+                    </div>
+                </div>
+
+
+ 
+
+
+            </div>
+
+            <!-- Sorting -->
+            <section class="panel">
+
+
+                <!-- Begin Content -->
+                <div class="panel-body">
+                    <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                        <thead>
+                            <tr>
+                                <th id="CATEGORY_NAME" style="display:none;"></th>
+
+                                <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                                <th id="CATEGORY_NAME">Tên thuốc</th>
+                                <th id="CATEGORY_DESC">Mã thuốc</th>
+                                <th id="CATEGORY_ORDER">Số lô</th>
+                                <th id="CATEGORY_ORDER">Số hợp đồng</th>
+                                <th id="CATEGORY_ORDER">Số lượng</th>
+                                <th id="CATEGORY_ORDER">Giá nhập</th>
+                                <th id="CATEGORY_ORDER">Giá bán</th>
+                                <th id="CATEGORY_ORDER">Ngày SX</th>
+                                <th id="CATEGORY_ORDER">Hạn SD</th>
+                                <th id="CATEGORY_NAME" style="display:none;"></th>
+                                <th id="CATEGORY_NAME" style="display:none;"></th>
+                                <th id="CATEGORY_NAME" style="display:none;"></th>
+                                <th id="edit">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model._MEDICINE_RECEIPT_DETAILS != null)
+                            {
+                                foreach (var data in Model._MEDICINE_RECEIPT_DETAILS)
+                                {
+                            <tr>
+                                <td class="ID1" style="display:none;">@data.ID</td>
+
+                                <td><input type="checkbox" name="ID" value="@data.MEDICINE_ID" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                <td class="MEDICINE_NAME1">@data.MEDICINE_NAME</td>
+                                <td class="MEDICINE_CODE1">@data.MEDICINE_CODE</td>
+                                <td class="LOTMUMBER1">@data.LOTMUMBER</td>
+                                <td class="REGISTRATIONNUMBER1">@data.REGISTRATIONNUMBER</td>
+                                <td class="AMOUNT1">@CMSLIS.Common.Common.FmtAmt(data.AMOUNT)</td>
+                                <td class="IMPORTPRICE1">@CMSLIS.Common.Common.FmtAmt(data.IMPORTPRICE)</td>
+                                <td class="EXPORTPRICE1">@CMSLIS.Common.Common.FmtAmt(data.EXPORTPRICE)</td>
+                                <td class="DATEOFMANUFACTURE1">@data.DATEOFMANUFACTURE_View</td>
+                                <td class="EXPIRYDATE1">@data.EXPIRYDATE_View</td>
+
+                                <td class="VAT1" style="display:none;">@data.VAT</td>
+                                <td class="PROVIDEDID1" style="display:none;">@data.PROVIDEDID</td>
+                                <td class="NOTE1" style="display:none;">@data.NOTE</td>
+                               
+
+                                <td class="td-actions">
+                                    <a class="Update" href="javascript:;"><i class="fa fa-edit edit"></i></a>
+                                </td>
+
+
+                            </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+
+
+                    <div class="em-separator separator-dashed"></div>
+                    <div class="sign-btn text-center">
+
+
+                        <button type="submit" name="submit" value="SaveReceiptStoreAdd" id="SaveReceiptStoreAdd" class="btn btn-danger"><i class="fa fa-save"></i> Lưu nhập kho (Alt + S)</button>
+                        <a id="BackReceiptStore" href="/pharmacyStore/ReceiptStore" class="btn btn-primary"><i class="fa fa-backward"></i> Quay lại (Alt + Z) </a>
+                    </div>
+                </div>
+                <!-- End Content -->
+
+            </section>
+        </div>
+
+    }
+</div>
+<!-- end Content -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<!-- InputMask -->
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.js"></script>
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.extensions.js"></script>
+
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>

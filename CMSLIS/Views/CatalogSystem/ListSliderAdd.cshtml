@@ -1,0 +1,104 @@
+﻿@model  CMS_Core.Entity.tbl_slider
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Thêm mới slider";
+}
+
+
+
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/js/Customer/ListSliderAdd.js"></script>
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ListSliderAdd", "CatalogSystem", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        <div class="box-body">
+
+
+            <!-- Begin left page -->
+            <div class="col-md-12">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Tiêu đề slider <span class="required">*</span> </label>
+                    <div class="col-xs-10">
+                        @Html.TextBoxFor(m => m.sliderTitle, new { @class = "form-control", type = "SingleLine", placeholder = "Tiêu đề slider" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Url slider <span class="required">*</span> </label>
+                    <div class="col-xs-10">
+                        @Html.TextBoxFor(m => m.sliderUrl, new { @class = "form-control", type = "SingleLine", placeholder = "Url slider" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Ảnh đại diện (650px x 480px) <span class="required">*</span> </label>
+                    <div class="col-xs-10">
+                        <input type="file" name="ImageFile" id="ImageFile" class="form-control" />
+                        @if (@Model.sliderImage != null)
+                        {
+                            <Img src='@CMSLIS.Common.Common.GetPathImage(Model.sliderImage)' height="40px" width="40px" />
+                            @Html.TextBoxFor(m => m.sliderImage, new { @class = "checkbox-inline", Type = "hidden" })
+                            @Html.TextBoxFor(m => m.sliderImageWeb , new { @class = "checkbox-inline", Type = "hidden" })
+                        }
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    
+                </div>
+
+
+            </div>
+
+
+           
+
+
+            @Html.TextBoxFor(m => m.ID, new { Type = "hidden" })
+            
+            <div class="form-group text-center">
+                <div class="col-xs-8">
+                    <button type="submit" name="submit" id="SaveListSliderAdd" value="SaveListSliderAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+                    <a id="BackListSliderAdd" href="/CatalogSystem/Slider" class="btn btn-primary"> <i class="fa fa-backward"></i>  Quay lại (Alt + Z) </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<!-- End Form -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+<script src="/Content/AdminLTE/js/adminlte.js"></script>
+<script src="/Content/AdminLTE/js/init.js"></script>
+
+
+

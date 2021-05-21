@@ -1,0 +1,149 @@
+﻿@model  CMS_Core.Models.ReceiptStoreViewModel
+@using CMS_Core.Entity;
+
+@{
+    ViewBag.Title = "Thông tin phiếu nhập kho";
+    int count = 1;
+}
+
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<!-- Begin Content -->
+<div class="box box-info">
+    <div class="box-body">
+
+        <div class="form-group row ">
+
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 text-center " style="font-weight:bold;  ">PHIẾU NHẬP THUỐC: @Model._MEDICINE_RECEIPT_STORE.MEDICINE_RECEIPT_STORE_CODE  </label>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 text-center " style="font-weight:bold;  ">NGÀY XUẤT: @Model._MEDICINE_RECEIPT_STORE.CREATEDATE.ToString("dd/MM/yyyy HH:mm")  </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group row ">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 " style="font-weight:bold;  ">Số hợp đồng: @Model._MEDICINE_RECEIPT_STORE.CONTRACT  </label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 " style="font-weight:bold;">Ngày hợp đồng: @Model._MEDICINE_RECEIPT_STORE.CONTRACT_DATE_VIEW </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row ">
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 " style="font-weight:bold;  ">Nhà cung cấp: @Model._MEDICINE_RECEIPT_STORE.MEDICINE_SUPPLIER_NAME  </label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 " style="font-weight:bold;">Ghi chú: @Model._MEDICINE_RECEIPT_STORE.NOTE </label>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group row ">
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 " style="font-weight:bold;  ">Tổng tiền: @CMSLIS.Common.Common.FmtAmt(Model._MEDICINE_RECEIPT_STORE.TOTAL_PAYMENTS) (VNĐ) </label>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+        <div class="form-group row ">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 text-center " style="font-weight:bold;  "> DANH SÁCH THUỐC </label>
+                    @if (@ViewBag.StatusMessage != null)
+                    {
+                        <span class="text-danger justify-content-lg-end">
+                            &nbsp;&nbsp;&nbsp;&nbsp;  @ViewBag.StatusMessage
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Begin Content -->
+        <div class="panel-body">
+            <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th id="CATEGORY_NAME">Tên thuốc</th>
+                        <th id="CATEGORY_DESC">Mã thuốc</th>
+                        <th id="CATEGORY_ORDER">Số lô</th>
+                        <th id="CATEGORY_ORDER">Số hợp đồng</th>
+                        <th id="CATEGORY_ORDER">Số lượng</th>
+                        <th id="CATEGORY_ORDER">Giá nhập</th>
+                        <th id="CATEGORY_ORDER">Giá bán</th>
+                        <th id="CATEGORY_ORDER">Ngày SX</th>
+                        <th id="CATEGORY_ORDER">Hạn SD</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model._MEDICINE_RECEIPT_DETAILS != null)
+                    {
+                        foreach (var data in Model._MEDICINE_RECEIPT_DETAILS)
+                        {
+                    <tr>
+                        <td>@(count++) </td>
+                        <td class="MEDICINE_NAME1">@data.MEDICINE_NAME</td>
+                        <td class="MEDICINE_CODE1">@data.MEDICINE_CODE</td>
+                        <td class="LOTMUMBER1">@data.LOTMUMBER</td>
+                        <td class="REGISTRATIONNUMBER1">@data.REGISTRATIONNUMBER</td>
+                        <td class="AMOUNT1">@CMSLIS.Common.Common.FmtAmt(data.AMOUNT)</td>
+                        <td class="IMPORTPRICE1">@CMSLIS.Common.Common.FmtAmt(data.IMPORTPRICE)</td>
+                        <td class="EXPORTPRICE1">@CMSLIS.Common.Common.FmtAmt(data.EXPORTPRICE)</td>
+                        <td class="DATEOFMANUFACTURE1">@data.DATEOFMANUFACTURE_View</td>
+                        <td class="EXPIRYDATE1">@data.EXPIRYDATE_View</td>
+                        <td class="VAT1" style="display:none;">@data.VAT</td>
+                        <td class="PROVIDEDID1" style="display:none;">@data.PROVIDEDID</td>
+                        <td class="NOTE1" style="display:none;">@data.NOTE</td>
+
+
+                    </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+
+
+            <div class="em-separator separator-dashed"></div>
+            <div class="sign-btn text-center">
+                <a target="_blank" href="/pharmacyStore/ReceiptStoreViewPrint?ID=@Model._MEDICINE_RECEIPT_STORE.ID&Token=@CMSLIS.Common.Common.generalKeyPrivate(Model._MEDICINE_RECEIPT_STORE.ID.ToString())" class="btn btn-danger"> <i class="fa fa-print"></i> In phiếu (F9) </a>
+              
+                <a href="/pharmacyStore/ReceiptStore" class="btn btn-primary"> <i class="fa fa-backward"></i> Back </a>
+            </div>
+        </div>
+        <!-- End Content -->
+
+
+
+    </div>
+
+</div>
+<!-- End Content -->

@@ -1,0 +1,119 @@
+﻿@model  CMS_Core.Entity.CMS_GROUP_MEDICINE
+@using CMS_Core.Entity;
+
+@{
+    ViewBag.Title = "Thêm mới nhóm thuốc";
+    CMS_Core.Common.ComboBoxFinal<CMS_PARTNER> ComboBox = new CMS_Core.Common.ComboBoxFinal<CMS_PARTNER>();
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    CMS_Core.Common.ComboBoxFinal<CMS_GROUP_MEDICINE> ComboBoxPARRENT = new CMS_Core.Common.ComboBoxFinal<CMS_GROUP_MEDICINE>();
+
+}
+
+
+
+<script src="/Content/AdminLTE/js/Customer/ListGroupMedicineAdd.js"></script>
+
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ListGroupMedicineAdd", "pharmacyStore", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="box-body">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Tên nhóm thuốc:<span class="required">*</span></label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.GROUP_MEDICINE_NAME, new { @class = "form-control", type = "SingleLine", placeholder = "Tên nhóm thuốc" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Chuyên mục cha:</label>
+                <div class="col-xs-4">
+                    @if (UserInfo.PARTNERID == 1)
+                    {
+                        @Html.DropDownListFor(m => m.GROUP_MEDICINE_PARENT, ComboBoxPARRENT.GetComboBoxBySelected("SELECT  id,GROUP_MEDICINE_NAME FROM    CMS_GROUP_MEDICINE where GROUP_MEDICINE_STATUS = 2 and GROUP_MEDICINE_PARENT = 0", "id", "GROUP_MEDICINE_NAME", Model.GROUP_MEDICINE_PARENT.ToString(), true), new { @class = "form-control select2" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.GROUP_MEDICINE_PARENT, ComboBoxPARRENT.GetComboBoxBySelected("SELECT  id,GROUP_MEDICINE_NAME FROM    CMS_GROUP_MEDICINE where GROUP_MEDICINE_STATUS = 2 and GROUP_MEDICINE_PARENT = 0 PARTNERID = " + UserInfo.PARTNERID, "id", "GROUP_MEDICINE_NAME", Model.GROUP_MEDICINE_PARENT.ToString(), true), new { @class = "form-control select2" })
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-2" style="font-weight:bold; ">Mô tả: </label>
+                <div class="col-xs-6">
+                    @Html.TextBoxFor(m => m.GROUP_MEDICINE_DESC, new { @class = "form-control", type = "SingleLine", placeholder = "Mô tả" })
+                </div>
+            </div>
+
+
+            @if (UserInfo.PARTNERID == 1)
+            {
+                <div class="form-group">
+                    <label class="control-label col-xs-2" style="font-weight:bold; ">Đối tác: </label>
+                    <div class="col-xs-4">
+                        @if (Model.ID != 0)
+                        {
+                            @Html.DropDownListFor(m => m.PARTNERID, ComboBox.GetComboBoxBySelected("SELECT  id,partner_name FROM    cms_partner where PARTNER_STATUS = 2", "id", "partner_name", Model.PARTNERID.ToString(), true), new { @class = "form-control select2", disabled = "True" })
+                            @Html.TextBoxFor(m => m.PARTNERID, new { @class = "checkbox-inline", Type = "hidden" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m => m.PARTNERID, ComboBox.GetComboBoxBySelected("SELECT  id,partner_name FROM    cms_partner where PARTNER_STATUS = 2", "id", "partner_name", Model.PARTNERID.ToString(), true), new { @class = "form-control select2" })
+                        }
+
+                    </div>
+                </div>
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.PARTNERID, new { @class = "checkbox-inline", Type = "hidden" })
+            }
+
+
+
+            @Html.TextBoxFor(m => m.ID, new { @class = "checkbox-inline", Type = "hidden" })
+
+            <div class="form-group text-center">
+                <div class="col-xs-8">
+                    <button type="submit" name="submit" id="SaveListGroupMedicineAdd" value="SaveListGroupMedicineAdd" class="btn btn-danger"><i class="fa fa-save"></i> Lưu (Alt + S)</button>
+                    <a id="BackListGroupMedicine" href="/pharmacyStore/ListGroupMedicine" class="btn btn-primary"><i class="fa fa-backward"></i>  Quay lại (Alt + Z) </a>
+                </div>
+
+            </div>
+
+        </div>
+    }
+</div>
+<!-- End Form -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+<script>
+
+
+    $(document).ready(function () {
+        $('.select2').select2()
+    });
+</script>

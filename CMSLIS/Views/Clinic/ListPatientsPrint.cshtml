@@ -1,0 +1,227 @@
+﻿@using CMS_Core.Entity;
+@model  CMS_Core.Entity.CMS_PATIENTINFO
+
+@{
+    ViewBag.Title = "Thông tin bệnh nhân";
+    Layout = null;
+}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+<link href="/Content/AdminLTE/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/Content/AdminLTE/css/font-awesome.min.css" rel="stylesheet" />
+<link href="/Content/AdminLTE/css/AdminLTE.css" rel="stylesheet" />
+
+<script src="/Content/AdminLTE/js/jquery-2.1.1.min.js"></script>
+<script src="/Content/AdminLTE/js/bootstrap.min.js"></script>
+
+
+<!-- Specific Page Vendor CSS -->
+<link rel="stylesheet" href="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+
+<!-- Theme CSS -->
+<link rel="stylesheet" href="/Content/AdminLTE/stylesheets/theme.css" />
+
+
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<style>
+    .content-wrapper {
+        background-color: white !important
+    }
+</style>
+
+<!-- Begin Content -->
+
+<body class="hold-transition" style="background-color: white !important;">
+
+    <section role="main" class="content-body" style="background-color:#ffffff;">
+
+        <div class="row" style="background-color:#ffffff; margin-left:5px; margin-right:5px;">
+
+            <div class="col-sm-12" style="height:10px;">
+
+            </div>
+
+
+            <div class="form-group row ">
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-left " style="font-weight:bold;font-size:18px;  ">PHÒNG KHÁM ĐA KHOA DUNG CHÂU</label>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-left " style="font-weight:bold;font-size:16px;  ">ĐT: 0210. 3816. 196</label>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-center" style="font-weight:bold;font-size:18px;">MÃ ĐĂNG KÝ MÃ KHÁCH HÀNG: @Model.PID</label>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-center " style="font-weight:bold;  ">Ngày @DateTime.Now.Day Tháng @DateTime.Now.Month Năm @DateTime.Now.Year </label>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="form-group row ">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 " style="font-weight:bold;">I. Hồ sơ cá nhân</label>
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold; ">Họ tên: @Model.PATIENTNAME  </label>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;">Giới tính: @Model.sexname  </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row ">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold; ">Tuổi: @Model.AGE</label>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;">Địa chỉ: @Model.ADDRESS </label>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            @*<div class="invoice-details" style="margin-left:10px;">
+                    <div class="row" style="display:block; margin-top:40px;">
+                        <div class=" text-center">
+                            <label class="form-control-label" style="  text-align:center; ">@Model.PID</label>
+                        </div>
+                    </div>
+
+                    <div class="invoice-image">
+                        @if (!string.IsNullOrEmpty(Model.PATIENTIMAGE))
+                        {
+                            <img src="/@Model.PATIENTIMAGE" alt="logo" class="logo-big" style="width:90px;">
+                        }
+                        else
+                        {
+                            <img src="~/Content/assets/img/User.jpg" alt="logo" class="logo-big" style="width:90px;">
+                        }
+                    </div>
+
+
+                </div>*@
+
+
+            <div class="form-group row ">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold; ">Số điện thoại di động:  @Model.PHONE </label>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;">Số điện thoại cố định:  @Model.PHONE1 </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold; ">Email:  @Model.EMAILADDRESS</label>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold; ">Số CMT/CCCD:  @Model.IDENTIFICATION </label>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;">Ngày cấp:  @CMSLIS.Common.Common.ReFmtDate(Model.IDENTIFICATION_DATE)     Nơi cấp:  @Model.IDENTIFICATION_ISSUED</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold; ">Số hộ chiếu:  @Model.PASSPORT </label>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;">Ngày cấp:  @CMSLIS.Common.Common.ReFmtDate(Model.PASSPORT_DATE)     Nơi cấp:  @Model.PASSPORT_ISSUED</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group row ">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold; ">Số thẻ bảo hiểm:  @Model.INSURANCE_CARD</label>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;">Nơi đăng ký:  @Model.INSURANCE_CARD_PLACE</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold; ">Hạn sử dụng từ:  @CMSLIS.Common.Common.ReFmtDate(Model.INSURANCE_CARD_START) đến @CMSLIS.Common.Common.ReFmtDate(Model.INSURANCE_CARD_END)</label>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </section>
+</body>
+    <!-- End Content -->
+    .
+    <!-- Begin Page Vendor Js -->
+    <script src="/Content/assets/vendors/js/datatables/datatables.min.js"></script>
+    <script src="/Content/assets/vendors/js/datatables/dataTables.buttons.min.js"></script>
+    <script src="/Content/assets/vendors/js/datatables/jszip.min.js"></script>
+    <script src="/Content/assets/vendors/js/datatables/buttons.html5.min.js"></script>
+    <script src="/Content/assets/vendors/js/datatables/pdfmake.min.js"></script>
+    <script src="/Content/assets/vendors/js/datatables/vfs_fonts.js"></script>
+    <script src="/Content/assets/vendors/js/datatables/buttons.print.min.js"></script>
+    <script src="/Content/assets/vendors/js/nicescroll/nicescroll.min.js"></script>
+    <script src="/Content/assets/vendors/js/app/app.min.js"></script>
+
+    <!-- End Page Vendor Js -->
+    <!-- Begin Page Snippets -->
+    <script src="/Content/assets/js/components/tables/tables.js"></script>
+    <!-- End Page Snippets -->

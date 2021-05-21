@@ -1,0 +1,136 @@
+﻿@using CMS_Core.Entity;
+@model  CMS_Core.Models.ListServiceChoiseViewModel
+@{
+    ViewBag.Title = "Chọn dịch vụ cho khác hàng";
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    var SERVICES = (List<CMS_SERVICE>)ViewBag.SERVICES;
+    var SERVICESCHOISE = (List<CMS_SERVICE>)ViewBag.SERVICESCHOISE;
+}
+
+<script src="/Content/assets/js/ListPatientsByService.js"></script>
+
+
+@using (Html.BeginForm("ListPatientsByService", "Clinic", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <!-- Sorting -->
+    <div class="widget has-shadow">
+        <div class="widget-body">
+
+            <div class="table-responsive">
+                @*<button type="button" id="ListServiceNew" class="btn btn-info mr-1 mb-2" onclick="location.href='@Url.Action("ListServiceAdd", "CatalogSystem")'">Thêm mới</button>*@
+                <button type="button" id="ChoiListPatientsByService" value="ChoiListPatientsByService" class="btn btn-info mr-1 mb-2" style="width:100px;"><i class="fa fa-plus-square-o"></i> Chọn  </button>
+                <button type="button" id="DeleListPatientsByService" value="DeleListPatientsByService" class="btn btn-danger mr-1 mb-2" style="width:100px;"><i class="fa fa-remove"></i> Xóa </button>
+                <button type="button" id="CloseListPatientsByService" value="CloseListPatientsByService" class="btn btn-info mr-1 mb-2" style="width:100px;"> Đóng </button>
+
+                @if (!string.IsNullOrEmpty(Model.PatientName))
+                {
+                    <p class="text-success">Chọn dịch vụ cho bệnh nhân: @Model.PatientName.ToUpper()</p>
+                }
+
+                <p class="text-success">Danh sách dịch vụ</p>
+                <table id="sorting-table" class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                            <th id="SERVICE_NAME">Tên dịch vụ</th>
+                            <th id="SERVICE_NAME">Tên dịch vụ tiếng anh</th>
+                            <th id="SERVICE_CODE">Mã dịch vụ</th>
+                            <th id="SERVICE_UNIT">Đơn vị</th>
+                            <th id="SERVICE_PRICE">Giá tiền</th>
+                            <th id="SERVICE_PRICE_INSURANCE">Giá tiền bảo hiểm</th>
+                            <th id="SERVICE_RETURN_DATE">Thời gian trả kết quả</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (SERVICES != null)
+                        {
+                            foreach (var data in SERVICES)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" name="ID" value="@data.ID" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                    <td>@data.SERVICE_NAME</td>
+                                    <td>@data.SERVICE_NAME_ENG</td>
+                                    <td>@data.SERVICE_CODE</td>
+                                    <td>@data.UnitName</td>
+                                    <td>@CMSLIS.Common.Common.FmtAmt(data.SERVICE_PRICE)</td>
+                                    <td>@CMSLIS.Common.Common.FmtAmt(data.SERVICE_PRICE_INSURANCE)</td>
+                                    <td>@data.SERVICE_RETURN_DATE</td>
+
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+
+
+                <p class="text-success">Danh sách dịch vụ chọn</p>
+                <table id="sorting-table1" class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                            <th id="SERVICE_NAME">Tên dịch vụ</th>
+                            <th id="SERVICE_NAME">Tên dịch vụ tiếng anh</th>
+                            <th id="SERVICE_CODE">Mã dịch vụ</th>
+                            <th id="SERVICE_UNIT">Đơn vị</th>
+                            <th id="SERVICE_PRICE">Giá tiền</th>
+                            <th id="SERVICE_PRICE_INSURANCE">Giá tiền bảo hiểm</th>
+                            <th id="SERVICE_RETURN_DATE">Thời gian trả kết quả</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (SERVICESCHOISE != null)
+                        {
+                            foreach (var data in SERVICESCHOISE)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" name="ID" value="@data.ID" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                    <td>@data.SERVICE_NAME</td>
+                                    <td>@data.SERVICE_NAME_ENG</td>
+                                    <td>@data.SERVICE_CODE</td>
+                                    <td>@data.UnitName</td>
+                                    <td>@CMSLIS.Common.Common.FmtAmt(data.SERVICE_PRICE)</td>
+                                    <td>@CMSLIS.Common.Common.FmtAmt(data.SERVICE_PRICE_INSURANCE)</td>
+                                    <td>@data.SERVICE_RETURN_DATE</td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" style="text-align:right">Tổng:</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+
+                </table>
+
+
+            </div>
+
+        </div>
+    </div>
+    <!-- End Sorting -->
+}
+    <!-- Begin Page Vendor Js -->
+    <script src="/Content/assets/vendors/js/datatables/datatables.min.js"></script>
+    <script src="/Content/assets/vendors/js/datatables/dataTables.buttons.min.js"></script>
+    <script src="/Content/assets/vendors/js/datatables/jszip.min.js"></script>
+    <script src="/Content/assets/vendors/js/datatables/buttons.html5.min.js"></script>
+    <script src="/Content/assets/vendors/js/datatables/pdfmake.min.js"></script>
+    <script src="/Content/assets/vendors/js/datatables/vfs_fonts.js"></script>
+    <script src="/Content/assets/vendors/js/datatables/buttons.print.min.js"></script>
+    <script src="/Content/assets/vendors/js/nicescroll/nicescroll.min.js"></script>
+    <script src="/Content/assets/vendors/js/app/app.min.js"></script>
+
+    <!-- End Page Vendor Js -->
+    <!-- Begin Page Snippets -->
+    <script src="/Content/assets/js/components/tables/tables.js"></script>
+    <!-- End Page Snippets -->

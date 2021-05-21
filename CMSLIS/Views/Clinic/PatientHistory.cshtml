@@ -1,0 +1,294 @@
+﻿@model   CMS_Core.Models.PatientHistoryViewModel
+@using CMS_Core.Entity;
+@{
+    ViewBag.Title = "Khám bệnh";
+
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBox = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+
+
+    if (string.IsNullOrEmpty(Model.PATIENTINFO.PATIENTNAME))
+    {
+        Response.Redirect("/account/login");
+    }
+
+}
+
+
+<script src="/Content/AdminLTE/js/Customer/medicalExamination.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+<script src="/Content/AdminLTE/ckeditor/ckeditor.js"></script>
+
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+
+
+
+
+
+    @*@Html.ValidationSummary(false, "", new { @class = "text-danger" })*@
+
+
+
+    @using (Html.BeginForm("medicalExamination", "Clinic", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+    {
+
+   
+        @Html.AntiForgeryToken()
+        <!-- Main content -->
+        <section class="content">
+            <div class="col-md-12">
+
+
+
+                <ul class="widget-header nav nav-tabs nav-fill" role="tablist">
+                    <li class="nav-item active ">
+                        <a class="nav-link" id="just-tab-1" data-toggle="tab" href="#j-tab-1" role="tab" aria-controls="j-tab-1" aria-selected="true"> <i class="fa fa-heart"></i> Thông tin bệnh nhân</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="just-tab-2" data-toggle="tab" href="#j-tab-2" role="tab" aria-controls="j-tab-2" aria-selected="false"><i class="fa fa-h-square"></i>  Lịch sử khám bệnh</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="just-tab-3" data-toggle="tab" href="#j-tab-3" role="tab" aria-controls="j-tab-3" aria-selected="false"><i class="fa fa-warning"></i> Danh sách đơn thuốc</a>
+                    </li>
+                     
+                   
+
+
+                </ul>
+
+
+                <div class="tab-content" style="min-height: 530px;">
+
+                    <div class="tab-pane active " id="j-tab-1" role="tabpanel" aria-labelledby="base-tab-1">
+                        <div class="col-12 ml-auto" style="margin-top: -10px;margin-bottom: -5px;">
+                            <div class="section-title mt-3 mb-3">
+                                <h4>1. Thông tin bệnh nhân</h4>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Họ tên: @Model.PATIENTINFO.PATIENTNAME</label>
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Giới tính: @Model.PATIENTINFO.sexname</label>
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Cân nặng: @Model.PATIENTINFO.weight (kg)</label>
+
+
+                        </div>
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Ngày Sinh: @CMSLIS.Common.Common.ReFmtDate(Model.PATIENTINFO.BIRTHDAY)</label>
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Tuổi: @Model.PATIENTINFO.AGE</label>
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Tỉnh: @Model.PATIENTINFO.CITY_NAME</label>
+
+
+
+                        </div>
+
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Huyện: @Model.PATIENTINFO.DISTRICT_NAME</label>
+                            <label class="col-lg-8 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Địa chỉ: @Model.PATIENTINFO.ADDRESS</label>
+                        </div>
+
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Di động: @Model.PATIENTINFO.PHONE</label>
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Cố định: @Model.PATIENTINFO.PHONE1</label>
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Email: @Model.PATIENTINFO.EMAILADDRESS</label>
+                        </div>
+
+
+
+
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Số CMT: @Model.PATIENTINFO.IDENTIFICATION</label>
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Ngày cấp: @Model.PATIENTINFO.IDENTIFICATION_DATEVIEW</label>
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Nơi cấp: @Model.PATIENTINFO.IDENTIFICATION_ISSUED</label>
+
+                        </div>
+
+                        <div class="form-group row " style="border: 1px solid #e1e8ed;">
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Hộ chiếu: @Model.PATIENTINFO.PASSPORT</label>
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Ngày cấp: @Model.PATIENTINFO.PASSPORT_DATEVIEW</label>
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Nơi cấp: @Model.PATIENTINFO.PASSPORT_ISSUED</label>
+
+                        </div>
+
+
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+                            <label class="col-lg-12 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Thông tin phụ huynh: @Model.PATIENTINFO.PARENTS_INFO</label>
+
+                        </div>
+
+
+                        <div class="col-12 ml-auto" style=" margin-bottom: -5px;">
+                            <div class="section-title mt-3 mb-3">
+                                <h4>2. Thông tin BHYT</h4>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" style="border: 1px solid #e1e8ed;">
+                            <label class="col-lg-3 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Số thẻ: @Model.PATIENTINFO.INSURANCE_CARD</label>
+                            <label class="col-lg-4 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Nơi đăng ký: @Model.PATIENTINFO.INSURANCE_CARD_PLACE</label>
+                            <label class="col-lg-5 control-label text-bold text-left" style="border: 1px solid #e1e8ed;">Hạn SD: @Model.PATIENTINFO.INSURANCE_CARD_STARTVIEW  Đến: @Model.PATIENTINFO.INSURANCE_CARD_ENDVIEW</label>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="tab-pane" id="j-tab-2" role="tabpanel" aria-labelledby="base-tab-2">
+
+
+                        <div class="row">
+
+                            <div class="box box-primary">
+
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Lịch sử khám:</h3>
+                                </div>
+
+                                <!-- Sorting -->
+                                <div class="widget has-shadow">
+                                    <div class="widget-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped dataTable" role="grid" id="table_history">
+                                                <thead>
+                                                    <tr>
+                                                        <th id="SICKNAME">Ngày khám</th>
+                                                        <th id="SICKYEAR">Lý do khám</th>
+                                                        <th id="SICKYEAR">Khoa khám</th>
+                                                        <th id="HISTORIENOTE">Ghi chú</th>
+                                                        <th id="edit">Xem</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="sorting-table-history">
+                                                    @if (Model.PATIENTS != null)
+                                                    {
+                                                        foreach (var data in Model.PATIENTS)
+                                                        {
+                                                            <tr>
+                                                                <td>@CMSLIS.Common.Common.ReFmtTime(data.DATEIN)</td>
+                                                                <td><span>@data.REASON</span></td>
+                                                                <td>@data.DEPARTMENT_NAME</td>
+                                                                <td>@data.GHICHU</td>
+                                                                <td>
+                                                                    <a href="/Clinic/medicalExaminationResult?sid=@data.SID&pid=@data.PID&Token=@CMSLIS.Common.Common.generalKeyPrivate(data.SID.ToString(), data.PID.ToString())" target="_blank" id="Edit"><i class="fa fa-eye"></i></a>
+                                                                </td>
+
+
+                                                            </tr>
+                                                        }
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Sorting -->
+
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="tab-pane" id="j-tab-3" role="tabpanel" aria-labelledby="base-tab-3">
+
+
+                        <div class="row">
+
+                            <div class="box box-primary">
+
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Danh sách đơn thuốc :</h3>
+                                </div>
+
+                                <!-- Sorting -->
+                                <div class="widget has-shadow">
+                                    <div class="widget-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped dataTable" role="grid" id="table_history">
+                                                <thead>
+                                                    <tr>
+                                                        <th id="SICKNAME">Ngày khám</th>
+                                                        <th id="SICKYEAR">Lý do khám</th>
+                                                        <th id="SICKYEAR">Khoa khám</th>
+                                                        <th id="HISTORIENOTE">Ghi chú</th>
+                                                        <th id="edit">Đơn thuốc</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="sorting-table-history">
+                                                    @if (Model.PATIENTS_PRESCRIPTION != null)
+                                                    {
+                                                        foreach (var data in Model.PATIENTS_PRESCRIPTION)
+                                                        {
+                                                            <tr>
+                                                                <td>@CMSLIS.Common.Common.ReFmtTime(data.DATEIN)</td>
+                                                                <td><span>@data.REASON</span></td>
+                                                                <td>@data.DEPARTMENT_NAME</td>
+                                                                <td>@data.GHICHU</td>
+                                                                <td>
+                                                                    <a href="/Clinic/medicalExaminationPrescription?sid=@data.SID&pid=@data.PID&Token=@CMSLIS.Common.Common.generalKeyPrivate(data.SID.ToString(), data.PID.ToString())" target="_blank" id="Edit"><i class="fa fa-eye"></i></a>
+                                                                </td>
+
+
+                                                            </tr>
+                                                        }
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Sorting -->
+
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+    }
+</div>
+<!-- End Content -->
+<!-- End Row -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<!-- InputMask -->
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.js"></script>
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="/Content/AdminLTE/vendor/input-mask/jquery.inputmask.extensions.js"></script>
+
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>

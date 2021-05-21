@@ -1,0 +1,110 @@
+﻿@model  CMS_Core.Entity.tbl_Vote
+@using CMS_Core.Entity;
+
+@{
+    ViewBag.Title = "Thêm mới vote";
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBox = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+}
+
+
+
+
+<script src="/Content/AdminLTE/js/Customer/ListVoteAdd.js"></script>
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<!-- Begin Form -->
+<div class="box box-info">
+
+    @using (Html.BeginForm("ListVoteAdd", "CatalogSystem", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+    <div class="box-body">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Chọn chuyên mục: <span class="required">*</span></label>
+            <div class="col-xs-3">
+                @Html.DropDownListFor(m => m.VoteCateID, ComboBox.GetComboBoxBySelected("SELECT   ID  as idfield,    VoteCate as namefield FROM  tbl_VoteCate where status = 2 order by ID desc  ", "idfield", "namefield", Model.VoteCateID.ToString(), true), new { @class = "form-control select2" })
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Tên vote :<span class="required">*</span> </label>
+            <div class="col-xs-6">
+                @Html.TextBoxFor(m => m.VoteName, new { @class = "form-control", @title = "Tên vote " })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Mô tả Vote :  </label>
+            <div class="col-xs-6">
+                @Html.TextAreaFor(m => m.VoteDesc, new { @class = "form-control", @title = "Mô tả Vote ", rows = "10" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Câu trả lời :<span class="required">*</span> </label>
+            <div class="col-xs-6">
+                @Html.TextBoxFor(m => m.VoteAnswer, new { @class = "form-control", @title = "Câu trả lời ", type = "number" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Link tham khảo :  </label>
+            <div class="col-xs-6">
+                @Html.TextBoxFor(m => m.linkExample, new { @class = "form-control", @title = "Link tham khảo " })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3" style="font-weight:bold; ">Loại Vote: <span class="required">*</span></label>
+            <div class="col-xs-3">
+                @Html.DropDownListFor(m => m.TypeVote, ComboBox.GetComboBoxBySelected("SELECT   ID  as idfield,    TypeVote as namefield FROM  tbl_TypeVote where status = 2 order by ID asc  ", "idfield", "namefield", Model.TypeVote.ToString(), true), new { @class = "form-control select2" })
+
+            </div>
+        </div>
+
+
+        @Html.TextBoxFor(m => m.ID, new { @class = "checkbox-inline", Type = "hidden" })
+
+        <div class="form-group text-center">
+
+            <button type="submit" name="submit" id="SaveListVoteAdd" value="SaveListVoteAdd" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu (Alt + S)</button>
+            <a id="BackListVote" href="/CatalogSystem/ListVote" class="btn btn-primary"><i class="fa fa-backward"></i> Quay lại (Alt + Z) </a>
+        </div>
+
+
+
+    </div>
+    }
+</div>
+<!-- End Form -->
+
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+
+<script src="/Content/AdminLTE/js/adminlte.js"></script>
+<script src="/Content/AdminLTE/js/init.js"></script>
+

@@ -1,0 +1,185 @@
+﻿@using CMS_Core.Entity;
+@model  CMS_Core.Models.SearchNewsViewModel
+@{
+    ViewBag.Title = "ListBanner";
+    var Banner_Rows = (List<cms_Banner_rows>)ViewBag.Banner_Rows;
+    CMS_Core.Common.ComboBoxFinal<cms_Banner_Plans> Banner_Plans = new CMS_Core.Common.ComboBoxFinal<cms_Banner_Plans>();
+}
+
+
+<script src="/Content/AdminLTE/js/Customer/ListBanner.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+<style>
+
+    /*  */
+
+    #preview {
+        position: absolute;
+        border: 1px solid #ccc;
+        background: #333;
+        padding: 5px;
+        display: none;
+        color: #fff;
+    }
+
+    /*  */
+</style>
+
+
+<div class="box box-info">
+    @using (Html.BeginForm("ListBanner", "News", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+    {
+
+
+        @Html.AntiForgeryToken()
+        <div class="box-body">
+
+            <div class="form-group row ">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="control-label col-xs-2 " style="font-weight:bold;  ">Từ ngày:</label>
+                        <div class="col-xs-4">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.tungay, new { @class = "form-control", placeholder = "Từ ngày", id = "date", name = "date" })
+                            </div>
+                        </div>
+
+                        <label class="control-label col-xs-2 " style="font-weight:bold;  ">Đến ngày:</label>
+                        <div class="col-xs-4">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.denngay, new { @class = "form-control", placeholder = "Đến ngày", id = "dateDenngay", name = "dateDenngay" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="control-label col-xs-3 control-label-invisible " style="font-weight:bold; ">Vị trí quảng cáo:  </label>
+                        <div class="col-xs-3">
+                            @Html.DropDownListFor(m => m.ParrenId, Banner_Plans.GetComboBoxBySelected("select planId, planTitle from [dbo].[cms_Banner_Plans] where active = 1", "planId", "planTitle", Model.ParrenId.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                        </div>
+                   
+                        <label class="control-label col-xs-2 control-label-invisible " style="font-weight:bold; ">Từ khóa:  </label>
+                        <div class="col-xs-4">
+                            @Html.TextBoxFor(m => m.keyword, new { @class = "form-control", type = "SingleLine", placeholder = "Từ khóa tìm kiếm" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <button type="submit" id="cmdSearch" name="submit" value="SearchListBanner" class="btn btn-primary"><i class="fa fa-search"></i>  Tìm kiếm</button>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    }
+
+    <div class="box box-info" style="margin-top: 5px;">
+        <section class="panel">
+            <!-- Begin Content -->
+            <div class="panel-body">
+                <div class="row" style="margin-bottom: 5px;margin-left: -5px;">
+                    <button type="button" id="ListBannerAdd" value="ListBannerAdd" class="btn btn-info mr-1 mb-2" onclick="return ConfirmAdd();"><i class="fa fa-plus-square-o"></i> Thêm mới (Ctrl + F1) </button>
+                    <button type="button" id="ListBannerDelete" value="ListBannerDelete" class="btn btn-danger mr-1 mb-2" style="width:100px;" onclick="return ConfirmDelete();"><i class="fa fa-remove"></i> Xóa </button>
+                    <button type="button" id="ListBannerPublic" value="ListBannerPublic" class="btn btn-info mr-1 mb-2" style="width:100px;" onclick="return ConfirmPublic();"><i class="fa fa-check-square-o"></i> Duyệt </button>
+                </div>
+
+                <!-- Sorting -->
+                <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                    <thead>
+                        <tr>
+
+                            <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                            <th>Tiêu quảng cáo</th>
+                            <th>File quảng cáo</th>
+                            <th>Link quảng cáo</th>
+                            <th>Thời gian bắt đầu</th>
+                            <th>Thời gian kết thúc</th>
+                            <th>Vị trí</th>
+                            <th>Số click</th>
+                            <th><span style="width:100px;">Trạng thái</span></th>
+                            <th id="edit">Edit</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Banner_Rows != null)
+                        {
+                            foreach (var data in Banner_Rows)
+                            {
+                        <tr>
+                            <td><input type="checkbox" name="ID" value="@data.bannerId" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                            <td>
+                                <span class="text-primary">
+                                    @data.title
+                                </span>
+                            </td>
+
+                            <td>@data.fileName</td>
+                            <td>@data.clickUrl</td>
+
+                            <td>@CMSLIS.Common.Common.ReFmtTime(data.addTime)</td>
+                            <td>@CMSLIS.Common.Common.ReFmtTime(data.expTime)</td>
+                            <td>@data.ord</td>
+                            <td>@CMSLIS.Common.Common.FmtAmt( data.hit)</td>
+                            <td>@Html.Raw(CMSLIS.Common.Common.getTypeStatus(data.active))</td>
+                            <td class="td-actions">
+                                <a href="/News/ListBannerAdd?bannerId=@data.bannerId"><i class="fa fa-edit edit"></i></a>
+                            </td>
+
+                        </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+
+                <!-- End Sorting -->
+
+            </div>
+            <!-- End Content -->
+
+        </section>
+    </div>
+</div>
+
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+<script src="/Content/AdminLTE/js/adminlte.js"></script>
+<script src="/Content/AdminLTE/js/init.js"></script>

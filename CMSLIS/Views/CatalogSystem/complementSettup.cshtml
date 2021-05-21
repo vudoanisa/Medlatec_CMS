@@ -1,0 +1,135 @@
+﻿@using CMS_Core.Entity;
+@model  CMSLIS.Models.SearchCategoryViewModel
+
+@{
+    ViewBag.Title = "Danh sách bổ xung chuyên mục";
+    var SETTUPS = (List<COMPLEMENT_SETTUP>)ViewBag.SETTUP;
+
+    CMS_Core.Common.ComboBoxFinal<cms_Category> ComboBox = new CMS_Core.Common.ComboBoxFinal<cms_Category>();
+
+}
+
+<script src="/Content/AdminLTE/js/Customer/complementSettup.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<!-- Begin Content -->
+<div class="box box-info">
+    @using (Html.BeginForm("complementSettup", "CatalogSystem", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+    {
+        <div class="widget has-shadow">
+            <div class="form-group row d-flex align-items-center mb-5">
+                @if (@ViewBag.TextErr != null)
+                {
+                    <span class="text-danger justify-content-lg-end" style="margin-left: 22px;">
+                        @ViewBag.TextErr
+                    </span>
+                }
+            </div>
+            <div class="form-group row d-flex align-items-center mb-5  ">
+                <label class="col-lg-2 form-control-label d-flex justify-content-lg-end">Chuyên mục </label>
+                <div class="col-lg-2">
+                    @Html.DropDownListFor(m => m.parentID, ComboBox.GetComboBoxBySelected("SELECT  id,category_name FROM    categorys where categorys_status = 2  and category_parrent = 0", "id", "category_name", Model.parentID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                </div>
+                <label class="col-lg-1 form-control-label d-flex justify-content-lg-end">Trạng thái  </label>
+                <div class="col-lg-2">
+                    @Html.DropDownListFor(m => m.Status, this.ViewBag.GetTypeStatus as List<SelectListItem>, new { @class = "form-control select2", onchange = "SelectedValue(this)" })
+                </div>
+                <button type="submit" id="cmdSearch" name="submit" value="SearchcomplementSettup" class="btn btn-primary">Tìm kiếm</button>
+            </div>
+            <div class="form-group row d-flex align-items-center mb-5">
+            </div>
+        </div>
+    }
+
+    <div class="box box-info" style="margin-top: 5px;">
+        <!-- Sorting -->
+        <section class="panel">
+
+
+            <!-- Begin Content -->
+            <div class="panel-body">
+
+                <div class="row" style="margin-bottom: 5px;margin-left: -5px;">
+                    <a id="complementSettupNew" href="/CatalogSystem/complementSettupAdd" class="btn btn-info mr-1 mb-2"><i class="fa fa-plus-square-o"></i> Thêm mới (Ctrl + F1) </a>
+                    <button type="button" id="complementSettupDelete" value="complementSettupDelete" class="btn btn-danger mr-1 mb-2" style="width:100px;" onclick="return ConfirmDelete();"><i class="fa fa-remove"></i> Xóa </button>
+                    <button type="button" id="complementSettupPublic" value="complementSettupPublic" class="btn btn-info mr-1 mb-2" style="width:100px;" onclick="return ConfirmPublic();"><i class="fa fa-check-square-o"></i> Duyệt </button>
+                </div>
+
+                <table id="sorting-table" class="table table-bordered table-striped dataTable" role="grid">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>
+                            <th id="FIELD_NAME">Tên trường</th>
+                            <th id="LABEL_NAME">Tên hiển thị</th>
+                            <th id="CLASS">Class</th>
+                            <th id="PLACEHOLDER">Placeholder</th>
+                            <th id="REQUIRED">Required</th>
+                            <th id="DISPLAYORDER">Vị trí </th>
+                            <th id="FIELDTYPE">Loại thẻ nhập</th>
+                            <th id="TEXTBOX_TYPE">Loại dữ liệu</th>
+                            <th id="COLS_LENGTH">Số cột</th>
+                            <th id="ROWS_LENGTH">Số hàng</th>
+                            <th id="Status"><span style="width:100px;">Trạng thái</span></th>
+                            <th id="edit">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (SETTUPS != null)
+                        {
+                            foreach (var data in SETTUPS)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" name="ID" value="@data.ID" class="checkBox custom-checkbox chkCheckBoxId" /></td>
+                                    <td>@data.FIELD_NAME</td>
+                                    <td>@data.LABEL_NAME</td>
+                                    <td>@data.CLASS</td>
+                                    <td>@data.PLACEHOLDER</td>
+                                    <td>@data.REQUIRED</td>
+                                    <td>@data.DISPLAYORDER</td>
+                                    <td>@data.FIELDTYPE_NAME</td>
+                                    <td>@data.TEXTBOX_TYPE</td>
+                                    <td>@data.COLS_LENGTH</td>
+                                    <td>@data.ROWS_LENGTH</td>
+                                    <td style="width: 120px; ">@Html.Raw(CMSLIS.Common.Common.getTypeStatus(data.COMPLEMENT_STATUS))</td>
+                                    <td class="td-actions">
+                                        <a href="/CatalogSystem/complementSettupAdd?ID=@data.ID&CATE_ID=@data.CATEGORYS_ID" id="Edit"><i class="la la-edit edit"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+                @Html.TextBoxFor(m => m.parentID, new { @class = "checkbox-inline", Type = "hidden" })
+
+
+            </div>
+            <!-- End Content -->
+        </section>
+        <!-- End Sorting -->
+    </div>
+</div>
+<!-- End Content -->
+    .
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>

@@ -1,0 +1,254 @@
+﻿@using CMS_Core.Entity;
+@model  CMS_Core.Models.PatientViewModel
+@{
+    ViewBag.Title = "Danh sách chờ khám";
+    var PATIENTINFO_TOTALS = (List<CMS_PATIENTINFO_TOTAL>)ViewBag.PATIENTINFO_TOTALS;
+    var UserInfo = ((cms_Account)Session["UserInfo"]);
+
+    CMS_Core.Common.ComboBoxFinal<ClassComboBox> ComboBox = new CMS_Core.Common.ComboBoxFinal<ClassComboBox>();
+
+}
+
+<script src="/Content/AdminLTE/js/Customer/ListPatientWaitingForMedical.js"></script>
+<!-- Head Libs -->
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+
+
+<!-- Begin Content -->
+<div class="box box-info">
+    @using (Html.BeginForm("ListPatientWaitingForMedical", "Clinic", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+    {
+        <div class="box-body">
+            <div class="form-group row ">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Từ ngày :  </label>
+                        <div class="col-xs-7">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.tungay, new { @class = "form-control", placeholder = "Từ ngày", id = "date", name = "date" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 " style="font-weight:bold;  ">Đến ngày :  </label>
+                        <div class="col-xs-7">
+                            <div class="input-group date" data-plugin-datepicker data-date-format="dd/mm/yyyy">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                @Html.TextBoxFor(m => m.denngay, new { @class = "form-control", placeholder = "Đến ngày", id = "dateDenngay", name = "dateDenngay" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Phòng khám:  </label>
+                        <div class="col-xs-7">
+                            @if (Model.channel == 141)
+                            {
+                                @Html.DropDownListFor(m => m.LOCATIONID, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    ROOM_NAME as namefield FROM  CMS_ROOM_CLINIC where STATUS = 2 and PARTNERID = " + UserInfo.PARTNERID + " and SERVICETYPE = 141  order by ROOM_NAME asc", "idfield", "namefield", Model.LOCATIONID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValueDEPARTMENTSID(this)", ID = "phong", name = "phong" })
+                            }
+                            else if (Model.channel == 142)
+                            {
+                                @Html.DropDownListFor(m => m.LOCATIONID, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    ROOM_NAME as namefield FROM  CMS_ROOM_CLINIC where STATUS = 2 and PARTNERID = " + UserInfo.PARTNERID + " and SERVICETYPE = 142  order by ROOM_NAME asc", "idfield", "namefield", Model.LOCATIONID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValueDEPARTMENTSID(this)", ID = "phong", name = "phong" })
+                            }
+                            else if (Model.channel == 143)
+                            {
+                                @Html.DropDownListFor(m => m.LOCATIONID, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    ROOM_NAME as namefield FROM  CMS_ROOM_CLINIC where STATUS = 2 and PARTNERID = " + UserInfo.PARTNERID + " and SERVICETYPE = 143  order by ROOM_NAME asc", "idfield", "namefield", Model.LOCATIONID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValueDEPARTMENTSID(this)", ID = "phong", name = "phong" })
+                            }
+                            else if (Model.channel == 144)
+                            {
+                                @Html.DropDownListFor(m => m.LOCATIONID, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    ROOM_NAME as namefield FROM  CMS_ROOM_CLINIC where STATUS = 2 and PARTNERID = " + UserInfo.PARTNERID + " and SERVICETYPE = 144  order by ROOM_NAME asc", "idfield", "namefield", Model.LOCATIONID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValueDEPARTMENTSID(this)", ID = "phong", name = "phong" })
+                            }
+                            else if (Model.channel == 145)
+                            {
+                                @Html.DropDownListFor(m => m.LOCATIONID, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    ROOM_NAME as namefield FROM  CMS_ROOM_CLINIC where STATUS = 2 and PARTNERID = " + UserInfo.PARTNERID + " and SERVICETYPE = 145  order by ROOM_NAME asc", "idfield", "namefield", Model.LOCATIONID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValueDEPARTMENTSID(this)", ID = "phong", name = "phong" })
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(m => m.LOCATIONID, ComboBox.GetComboBoxBySelected("SELECT   id  as idfield,    ROOM_NAME as namefield FROM  CMS_ROOM_CLINIC where STATUS = 2 and PARTNERID = " + UserInfo.PARTNERID + " and SERVICETYPE = 0  order by ROOM_NAME asc", "idfield", "namefield", Model.LOCATIONID.ToString(), true), new { @class = "form-control select2", onchange = "SelectedValueDEPARTMENTSID(this)", ID = "phong", name = "phong" })
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group row ">
+
+
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label col-xs-4 control-label-invisible " style="font-weight:bold;  ">Tìm theo:  </label>
+                        <div class="col-xs-7">
+                            @Html.DropDownListFor(m => m.TypeKeyword, this.ViewBag.GetTypeKeyword as List<SelectListItem>, new { @class = "form-control select2" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label col-xs-3 control-label-invisible " style="font-weight:bold;  ">Từ khóa:</label>
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(m => m.keyword, new { @class = "form-control", type = "SingleLine", placeholder = "Từ khóa tìm kiếm" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.channel, new { @class = "checkbox-inline", Type = "hidden" })
+                        <button type="submit" id="cmdSearch" name="submit" value="SearchListPatientWaitingForMedical" class="btn btn-primary   "><i class="fa fa-search"></i>  Tìm kiếm</button>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    }
+
+    <div class="box box-info" style="margin-top: 5px;">
+        <!-- Sorting -->
+        <section class="panel">
+
+            <!-- Begin Content -->
+            <div class="panel-body">
+
+                <table id="sorting-table" class="table table-bordered table-striped mb-none">
+                    <thead>
+                        <tr>
+                            @*<th><input type="checkbox" id="checkBoxAll" class="custom-checkbox" /></th>*@
+                            <th id="SID">In hóa đơn</th>
+                            <th id="SID">In chỉ định</th>
+                            @*<th id="SID">Xem bệnh</th>*@
+                            <th id="SID">Mã KCB</th>
+                            <th id="patientname">Họ và tên</th>
+                            <th id="gender">Giới tính</th>
+                            <th id="age">Tuổi</th>
+                            <th id="mobile">SĐT</th>
+                            <th id="TypeCustormer">Phân loại KH</th>
+                            <th id="ObjectID">Đối tượng</th>
+                            <th id="DateIn">Ngày khám</th>
+                            <th id="address">Địa chỉ</th>
+                            <th id="PID">PID</th>
+                            <th id="Price">Tổng Tiền (VNĐ)</th>
+                            <th id="Price">Tiền chưa TT (VNĐ)</th>
+
+                            <th id="edit">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (PATIENTINFO_TOTALS != null)
+                        {
+                            foreach (var data in PATIENTINFO_TOTALS)
+                            {
+                        <tr>
+                            @*<td><input type="checkbox" name="ID" value="@data.SID" class="checkBox custom-checkbox chkCheckBoxId" /></td>*@
+                            <td>
+                                <a href="/Clinic/ListPatientPrint?sid=@data.SID&pid=@data.PID&Token=@CMSLIS.Common.Common.generalKeyPrivate(data.SID.ToString(),data.PID.ToString())" target="_blank" id="Edit"><i class="fa fa-print"></i></a>
+
+                            </td>
+                            <td>
+
+                                <a href="/Clinic/ListPatientNOPayPrint?sid=@data.SID&pid=@data.PID&Token=@CMSLIS.Common.Common.generalKeyPrivate(data.SID.ToString(),data.PID.ToString())" target="_blank" id="Edit"><i class="fa fa-print"></i></a>
+                            </td>
+                            @if (data.SUMMONEYPAY >= 0)
+                            {
+                                <td>
+
+                                    <a href="/Clinic/medicalExamination?sid=@data.SID&channel=@Model.channel&queueid=0">
+                                        @data.SID
+                                    </a>
+
+                                </td>
+                                <td>
+                                    <a href="/Clinic/medicalExamination?sid=@data.SID&channel=@Model.channel&queueid=0">
+                                        @data.PATIENTNAME
+                                    </a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>  @data.SID   </td>
+                                <td>  @data.PATIENTNAME  </td>
+                            }
+
+                            <td>@CMSLIS.Common.Common.GetGENDERName(data.SEX.ToString())</td>
+                            <td>@data.AGE</td>
+                            <td>@data.PHONE</td>
+                            <td>@data.TYPECUSTOMER_NAME</td>
+                            <td>@data.OBJECT_NAME</td>
+                            <td>@CMSLIS.Common.Common.ReFmtDate(data.DATEIN)</td>
+                            <td>@data.ADDRESS</td>
+                            <td>@data.PID</td>
+                            @if (!"323".Equals(data.OBJECTID))
+                            {
+                                <td>@CMSLIS.Common.Common.FmtAmt(data.SUMMONEY) </td>
+
+                                <td>@CMSLIS.Common.Common.FmtAmt(data.totalPay) </td>
+                            }
+                            else
+                            {
+                                <td>0 </td>
+
+                                <td>0</td>
+                            }
+
+                            <td class="td-actions">
+                                @if (data.totalPay != 0)
+                                {
+                                    <a href="/Clinic/ListPatientsCreateOrder?sid=@data.SID" id="Edit"><i class="fa fa-edit edit"></i></a>
+                                }
+                            </td>
+                        </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+                @*<button type="button" id="ListPatientWaitingForMedicalPrint" class="btn btn-info mr-1 mb-2"><i class="fa fa-print"></i> In hóa đơn</button>*@
+                @*<button type="button" id="ListPatientWaitingForMedicalView" class="btn btn-info mr-1 mb-2"><i class="fa fa-heart"></i> Xem bệnh</button>*@
+                @*<button type="button" id="medicalExamination" class="btn btn-info mr-1 mb-2"><i class="fa fa-stethoscope"></i> Khám bệnh</button>*@
+            </div>
+            <!-- End Content -->
+        </section>
+        <!-- End Sorting -->
+    </div>
+</div>
+<!-- End Content -->
+
+<script src="/content/AdminLTE/vendor/nanoscroller/nanoscroller.js"></script>
+
+<script src="/content/AdminLTE/vendor/magnific-popup/magnific-popup.js"></script>
+<script src="/content/AdminLTE/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+
+<!-- Specific Page Vendor -->
+<script src="/Content/AdminLTE/vendor/select2/select2.js"></script>
+<script src="/Content/AdminLTE/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+<script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+<!-- Theme Base, Components and Settings -->
+<script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+<!-- Theme Custom -->
+<script src="/Content/AdminLTE/javascripts/theme.custom.js"></script>
+
+<!-- Theme Initialization Files -->
+<script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+
+

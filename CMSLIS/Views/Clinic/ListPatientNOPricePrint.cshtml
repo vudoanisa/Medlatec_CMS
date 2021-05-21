@@ -1,0 +1,251 @@
+﻿@model  CMS_Core.Models.PatientPrintViewModel
+@using CMS_Core.Entity;
+
+@{
+    ViewBag.Title = "In phiếu khám";
+    int count = 1;
+    float sumTotal = 0;
+    Layout = null;
+}
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+<link href="/Content/AdminLTE/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/Content/AdminLTE/css/font-awesome.min.css" rel="stylesheet" />
+<link href="/Content/AdminLTE/css/AdminLTE.css" rel="stylesheet" />
+
+<script src="/Content/AdminLTE/js/jquery-2.1.1.min.js"></script>
+<script src="/Content/AdminLTE/js/bootstrap.min.js"></script>
+
+
+<!-- Specific Page Vendor CSS -->
+<link rel="stylesheet" href="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+
+<!-- Theme CSS -->
+<link rel="stylesheet" href="/Content/AdminLTE/stylesheets/theme.css" />
+
+
+<script src="/Content/AdminLTE/vendor/modernizr/modernizr.js"></script>
+
+<style>
+    .content-wrapper {
+        background-color: white !important
+    }
+</style>
+
+<body class="hold-transition" style="background-color: white !important;">
+    <!-- Begin Content -->
+    <section role="main" class="content-body" style="background-color:#ffffff; ">
+        <div class="row" style="background-color:#ffffff; margin-left:5px; margin-right:5px;">
+
+            <div class="col-sm-12" style="height:10px;">
+
+            </div>
+
+            <div class="form-group row ">
+
+
+                <div class="form-group row ">
+                    <div class="col-xs-2" style="margin-left:3px;">
+                        <div class="form-group">
+                            <img src="~/Content/AdminLTE/images/logo.jpg" width="90px" style="margin-left:3px;" />
+                        </div>
+                    </div>
+                    <div class="col-xs-9">
+                        <div style="height:10px;">
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 text-center " style="font-weight:bold;font-size:16px;  ">PHÒNG KHÁM ĐA KHOA DUNG CHÂU</label>
+                            <label class="control-label col-xs-12 text-center " style="font-weight:bold;font-size:16px;  ">ĐT: 0210. 3816. 196</label>
+                            <div style="height:16px;">
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-center " style="font-weight:bold;font-size:18px;  ">PHIẾU DỊCH VỤ KỸ THUẬT  </label>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-center " style="font-weight:bold;  ">@DateTime.Now.Hour:@DateTime.Now.Minute - Ngày @DateTime.Now.Day tháng @DateTime.Now.Month năm @DateTime.Now.Year  </label>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-center " style="font-weight:bold; font-size:15px;  ">Mã KCB: @Model.PATIENTINFO.SID  </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;font-size:15px; ">Họ tên BN: @Model.PATIENTINFO.PATIENTNAME.ToUpper()  </label>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;font-size:15px;">Giới tính: @CMSLIS.Common.Common.GetGENDERName(Model.PATIENTINFO.SEX.ToString())   </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;font-size:15px; ">Tuổi: @Model.PATIENTINFO.AGE</label>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;font-size:15px;">Cân nặng: @Model.PATIENTINFO.weight (kg) </label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group row ">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;font-size:15px;  ">Địa chỉ:  @Model.PATIENTINFO.ADDRESS</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold;font-size:15px; ">Số điện thoại: @Model.PATIENTINFO.PHONE  </label>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold; font-size:15px;  ">Đối tượng KCB: @Model.PATIENTINFO.OBJECT_NAME</label>
+                    </div>
+                </div>
+
+            </div>
+
+            
+
+            <div class="form-group row ">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 " style="font-weight:bold; font-size:15px;  ">Lý do khám:  @Model.PATIENTINFO.REASON</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group row ">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 text-center " style="font-weight:bold;"> DANH SÁCH DỊCH VỤ</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Begin Content -->
+            <div class="form-group row ">
+                <table id="sorting-table" class="table table-bordered table-striped mb-none">
+                    <thead>
+                        <tr>
+                            <th style="border: 1px solid black;font-weight:bold; ">STT</th>
+                            <th style="border: 1px solid black;font-weight:bold; " id="SERVICE_NAME">Tên dịch vụ</th>
+                            <th style="border: 1px solid black;font-weight:bold;min-width:80px; " id="SERVICE_NOTE">Ghi chú</th>
+                            <th style="border: 1px solid black;font-weight:bold;min-width:90px; " id="amount">Số lượng</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody style="border: 1px solid black; font-weight:bold; ">
+                        @if (Model.CMS_PATIENT_SERVICES != null)
+                        {
+                            foreach (var data in Model.CMS_PATIENT_SERVICES)
+                            {
+                                <tr style="border: 1px solid black; font-weight:bold; ">
+                                    <td style="border: 1px solid black;">@(count++) </td>
+                                    <td style="border: 1px solid black;">@data.SERVICE_NAME</td>
+                                    <td style="border: 1px solid black;">@data.SERVICE_NOTE</td>
+                                    <td style="border: 1px solid black;text-align:right;">@data.COUNT</td>
+
+                                </tr>
+
+
+                            }
+                        }
+
+                    </tbody>
+
+
+
+                </table>
+
+
+
+            </div>
+            <!-- End Content -->
+
+
+
+        </div>
+
+
+
+
+        <div class="row">
+            &nbsp;
+        </div>
+        <div class="row">
+            <div class="col-xs-6 form-group text-center">
+                <span style="font-weight:bold;font-size:16px;">Khách hàng</span>
+
+                <div style="height:4px;">
+
+                </div>
+                (Ký, ghi rõ họ tên)
+            </div>
+
+            <div class="col-xs-6 form-group text-center">
+                <span style="font-weight:bold;font-size:16px;">BS. Chỉ định</span>
+
+                <div style="height:4px;">
+
+                </div>
+                (Ký, ghi rõ họ tên)
+            </div>
+
+        </div>
+
+    </section>
+    <!-- End Content -->
+    </body>
+    <script src="/Content/AdminLTE/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+    <script src="/Content/AdminLTE/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="/Content/AdminLTE/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+    <!-- Theme Base, Components and Settings -->
+    <script src="/Content/AdminLTE/javascripts/theme.js"></script>
+
+
+    <!-- Theme Initialization Files -->
+    <script src="/Content/AdminLTE/javascripts/theme.init.js"></script>
+
+
+
+
