@@ -63,6 +63,7 @@ namespace CMS_Core.Entity
         [DataInfo]
         public string Keyword { get; set; }
 
+
         [DataInfo]
         public DateTime DateCreated { get; set; }
 
@@ -81,6 +82,11 @@ namespace CMS_Core.Entity
 
         [DataInfo]
         public int Views { get; set; }
+
+        [DataInfo]
+        public string Symptoms { get; set; }//biến chứng
+
+
         public HttpPostedFileBase ImageFile { get; set; }
 
     }

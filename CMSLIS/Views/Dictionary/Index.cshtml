@@ -145,8 +145,9 @@
             <div class="panel-body">
                 <div class="row" style="margin-bottom: 5px;margin-left: -5px;">
                     <button type="button" id="ListNewsAdd" value="listDictionaryAdd" class="btn btn-info mr-1 mb-2" onclick="location.href='/Dictionary/Add'"><i class="fa fa-plus-square-o"></i> Thêm mới (Ctrl + F1) </button>
-                    <button type="button" id="ListNewsDelete" value="ListNewsDelete" class="btn btn-danger mr-1 mb-2" style="width:100px;" onclick="return ConfirmDelete();"><i class="fa fa-remove"></i> Xóa </button>
-                    <button type="button" id="ListNewsPublic" value="ListNewsPublic" class="btn btn-info mr-1 mb-2" style="width:100px;" onclick="return ConfirmPublic();"><i class="fa fa-check-square-o"></i> Duyệt </button>
+                    <button type="button" id="ListNewsDelete" value="ListNewsDelete" class="btn btn-danger mr-1 mb-2" style="width:100px;" onclick="return ConfirmDeleteDic();"><i class="fa fa-remove"></i> Xóa </button>
+                    <button type="button" id="ListNewsPublic" value="ListNewsPublic" class="btn btn-info mr-1 mb-2" style="width:100px;" onclick="return ConfirmPublicDic();"><i class="fa fa-check-square-o"></i> Duyệt </button>
+                    <button type="button" id="ListNewsPublic" value="ListNewsPublic" class="btn btn-warning mr-1 mb-2" style="width:115px;" onclick="return ConfirmUnPublicDic();"><i class="fa fa-ban"></i> Bỏ Duyệt </button>
                 </div>
 
                 <!-- Sorting -->
@@ -175,7 +176,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="@CMSLIS.Common.Common.GetURLDetailByDictionary("benh",data.Url.ToString().ToLower())" target="_blank">
+                                        <a href="@CMSLIS.Common.Common.GetURLDetailByDictionary("tu-dien-benh-ly",data.Url.ToString().ToLower())" target="_blank">
                                             @data.Name
                                         </a>
                                     </td>

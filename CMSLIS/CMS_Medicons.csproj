@@ -65,9 +65,9 @@
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
       <HintPath>..\packages\Memcached.ClientLibrary.1.0\lib\net20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="IMEX.Core, Version=2.3.1.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="IMEX.Core.MED, Version=2.3.1.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\CORE\IMEX.Core.dll</HintPath>
+      <HintPath>..\..\..\..\CORE\IMEX.Core.MED.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp, Version=5.5.8.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.8\lib\itextsharp.dll</HintPath>

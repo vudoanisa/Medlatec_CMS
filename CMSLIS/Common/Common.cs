@@ -2822,7 +2822,7 @@ namespace CMSLIS.Common
             Html = Html.Replace(ImageLink, "");
             Html = Html.Replace(ImagePath, "");
             Html = Html.Replace("/../", "../");
-            Html = Html.Replace("//", "/");
+           // Html = Html.Replace("//", "/");
             Html = Html.Replace(ImagePath + "/Images/images", "/Images/images");
             Html = Html.Replace("/ckfinder/userfiles", "ckfinder/userfiles");
 

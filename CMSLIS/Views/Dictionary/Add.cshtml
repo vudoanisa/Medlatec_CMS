@@ -88,7 +88,28 @@
                                 //]]>
                             </script>
                         </div>
-                    </div>   <div class="form-group">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-2" style="font-weight:bold; ">Biến chứng của bệnh<span class="required">*</span> </label>
+                        <div class="col-xs-12">
+                            @Html.TextAreaFor(m => m.Symptoms, new { @class = "form-control", type = "SingleLine", placeholder = "Nguyên nhân", rows = "800", id = "Symptoms", name = "Symptoms" })
+                            <script>
+                                //<![CDATA[
+                                CKEDITOR.replace('Symptoms',
+                                    {
+                                        height: '160px',
+                                        filebrowserBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html',
+                                        filebrowserImageBrowseUrl: '/Content/assets/Themes/ckfinder/ckfinder.html?type=Images',
+
+                                        filebrowserUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/',
+                                        filebrowserImageUploadUrl: '/Content/assets/Themes/ckfinder/connector?command=QuickUpload&type=Files&currentFolder=~/userfiles/images/'
+                                    });
+                                //]]>
+                            </script>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="control-label col-xs-2" style="font-weight:bold; ">Đường lây nhiễm<span class="required">*</span> </label>
                         <div class="col-xs-12">
                             @Html.TextAreaFor(m => m.PathOfInfection, new { @class = "form-control", type = "SingleLine", placeholder = "Đường lây nhiễm", rows = "800", id = "PathOfInfection", name = "PathOfInfection" })
@@ -220,6 +241,9 @@
 
                 <p class="text-center control-label" style="margin:6px 0 1px 10px;">Từ khóa Seo</p>
                 @Html.TextBoxFor(m => m.Keyword, new { @class = "form-control", type = "SingleLine", placeholder = "Từ khóa Seo" })
+
+                <p class="text-center control-label" style="margin:6px 0 1px 10px;">Từ khóa Seo</p>
+                @Html.TextBoxFor(m => m.Description, new { @class = "form-control", type = "SingleLine", placeholder = "Mô tả trang" })
 
 
                 <p class="text-center control-label" style="margin:6px 0 1px 10px;">Tag<span class="required">*</span></p>

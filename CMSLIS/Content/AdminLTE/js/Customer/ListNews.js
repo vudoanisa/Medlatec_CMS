@@ -262,3 +262,193 @@ this.imagePreview = function () {
             .css("left", (e.pageX + yOffset) + "px");
     });
 };
+
+
+
+
+function ConfirmDeleteDic() {
+
+
+
+    var forgeryId = $("#forgeryToken").val();
+    var selectedIDs = new Array();
+    $('input:checkBox.checkBox').each(function () {
+        if ($(this).prop('checked')) {
+            selectedIDs.push($(this).val());
+        }
+    });
+
+    if (selectedIDs == '') {
+        $.alert({
+            title: 'Thông báo!',
+            content: 'Mời chọn bản ghi để xóa!',
+        });
+        return false;
+    } else {
+        $.confirm({
+            title: 'Xác nhận!',
+            content: 'Bạn có chắc thực hiện không?',
+            buttons: {
+                specialKey: {
+                    text: 'Đồng ý',
+
+                    action: function () {
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/Dictionary/ListDictionaryDelete",
+                            data: JSON.stringify(selectedIDs),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            headers: {
+                                'VerificationToken': forgeryId
+                            }
+                        }).done(function (msg) {
+                            toastr.success(msg, 'Thông báo');
+                            window.setTimeout(function () { location.reload() }, 2000);
+                        }).fail(function (data) {
+                            $.alert({
+                                title: 'Thông báo!',
+                                content: 'Có lỗi trong quá trình xóa bản ghi!',
+                            });
+                        });
+                    }
+                },
+                alphabet: {
+                    text: 'Bỏ qua',
+                    action: function () {
+
+                    }
+                }
+            }
+        });
+        return true;
+    }
+
+
+}
+
+
+
+function ConfirmPublicDic() {
+
+
+    var forgeryId = $("#forgeryToken").val();
+    var selectedIDs = new Array();
+    $('input:checkBox.checkBox').each(function () {
+        if ($(this).prop('checked')) {
+            selectedIDs.push($(this).val());
+        }
+    });
+
+    if (selectedIDs == '') {
+        $.alert({
+            title: 'Thông báo!',
+            content: 'Mời chọn bản ghi để duyệt!',
+        });
+        return false;
+    } else {
+        $.confirm({
+            title: 'Xác nhận!',
+            content: 'Bạn có chắc thực hiện không?',
+            buttons: {
+                specialKey: {
+                    text: 'Đồng ý',
+
+                    action: function () {
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/Dictionary/ListDictionaryPublic",
+                            data: JSON.stringify(selectedIDs),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            headers: {
+                                'VerificationToken': forgeryId
+                            }
+                        }).done(function (msg) {
+                            toastr.success(msg, 'Thông báo');
+                            window.setTimeout(function () { location.reload() }, 2000);
+                        }).fail(function (data) {
+                            $.alert({
+                                title: 'Thông báo!',
+                                content: 'Có lỗi trong quá trình duyệt bản ghi!',
+                            });
+                        });
+                    }
+                },
+                alphabet: {
+                    text: 'Bỏ qua',
+                    action: function () {
+
+                    }
+                }
+            }
+        });
+        return true;
+    }
+
+
+}
+
+
+function ConfirmUnPublicDic() {
+
+
+    var forgeryId = $("#forgeryToken").val();
+    var selectedIDs = new Array();
+    $('input:checkBox.checkBox').each(function () {
+        if ($(this).prop('checked')) {
+            selectedIDs.push($(this).val());
+        }
+    });
+
+    if (selectedIDs == '') {
+        $.alert({
+            title: 'Thông báo!',
+            content: 'Mời chọn bản ghi để bỏ duyệt!',
+        });
+        return false;
+    } else {
+        $.confirm({
+            title: 'Xác nhận!',
+            content: 'Bạn có chắc thực hiện không?',
+            buttons: {
+                specialKey: {
+                    text: 'Đồng ý',
+
+                    action: function () {
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/Dictionary/ListDictionaryUnPublic",
+                            data: JSON.stringify(selectedIDs),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            headers: {
+                                'VerificationToken': forgeryId
+                            }
+                        }).done(function (msg) {
+                            toastr.success(msg, 'Thông báo');
+                            window.setTimeout(function () { location.reload() }, 2000);
+                        }).fail(function (data) {
+                            $.alert({
+                                title: 'Thông báo!',
+                                content: 'Có lỗi trong quá trình duyệt bản ghi!',
+                            });
+                        });
+                    }
+                },
+                alphabet: {
+                    text: 'Bỏ qua',
+                    action: function () {
+
+                    }
+                }
+            }
+        });
+        return true;
+    }
+
+
+}

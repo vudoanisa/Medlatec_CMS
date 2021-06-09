@@ -1,0 +1,12 @@
+﻿INFO 2021-06-09 11:27:34 – DictionaryDelete: System.TypeInitializationException: The type initializer for 'IMEX.Core.Web.Cache' threw an exception. ---> System.TypeInitializationException: The type initializer for 'IMEX.Core.Web.Setting' threw an exception. ---> System.ArgumentNullException: Value cannot be null.
+Parameter name: collection
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at IMEX.Core.Global.Array.ToList(String[] source)
+   at IMEX.Core.Web.Setting..cctor()
+   --- End of inner exception stack trace ---
+   at IMEX.Core.Web.Cache..cctor()
+   --- End of inner exception stack trace ---
+   at IMEX.Core.Web.Cache.Clear(String tableName)
+   at IMEX.Core.Data.SQL.Delete(String connString, String tableName, String whereClause, Object[] Params)
+   at IMEX.Core.Models.ServiceBase`1.Delete(String WhereClause, Object[] Params)
+   at CMSLIS.Controllers.DictionaryController.ListDictionaryDelete(Int32[] customerIDs) in D:\__Work__\MED\2021\Month 5\CMSMedlatec\CMSLIS\Controllers\DictionaryController.cs:line 514

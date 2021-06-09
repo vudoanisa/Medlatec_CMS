@@ -2,6 +2,7 @@
 using CMS_Core.Implementtion;
 using CMSLIS.Common;
 using CMSLIS.Models;
+using CMSNEW.Models;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace CMSLIS.Controllers
             return View();
         }
 
-
+        
 
         #region --> Nhập tin bài
         private Cms_DictionaryEntity dicEntity;
@@ -64,6 +65,7 @@ namespace CMSLIS.Controllers
 
             return View(dicEntity);
         }
+     
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
@@ -222,6 +224,7 @@ namespace CMSLIS.Controllers
 
             return View(dictionaryEntity);
         }
+     
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public ActionResult AddRelate(SearchNewsViewModel searchNewsView, string submit)
@@ -453,6 +456,106 @@ namespace CMSLIS.Controllers
             //return View();
         }
 
+
+        #endregion
+
+        #region --> xóa và duyệt bài
+
+        [HttpPost]
+        [AjaxValidateAntiForgeryToken]
+        public ActionResult ListDictionaryPublic(int[] customerIDs)
+        {
+            // Initialization.  
+            AddBreadcrumb("Từ điển bệnh lý", "/Dictionary");
+            AddBreadcrumb("Danh sách bài viết", "/Dictionary/ListDictionaryPublic");
+            try
+            {
+                // Kiểm tra xem có bản ghi nào được chọn không?
+                if (customerIDs != null)
+                {
+
+                    Cms_DictionaryService.Instance.Update("[ID] IN (" + IMEX.Core.Global.Array.ToString(customerIDs) + ")", "@IsActive", 1);
+
+                  
+                }
+                else
+                {
+                    return Json("Chưa có bản tin nào được chọn để duyệt");
+                }
+            }
+            catch (Exception ex)
+            {
+                logError.Info("DictionaryPublic: " + ex.ToString());
+            }
+
+            return Json("Duyệt thành công bản ghi có id là: " + IMEX.Core.Global.Array.ToString(customerIDs));
+
+            // Info.  
+            //return View();
+        }
+
+        [HttpPost]
+        [AjaxValidateAntiForgeryToken]
+        public ActionResult ListDictionaryUnPublic(int[] customerIDs)
+        {
+            // Initialization.  
+            AddBreadcrumb("Từ điển bệnh lý", "/Dictionary");
+            AddBreadcrumb("Danh sách bài viết", "/Dictionary/ListDictionaryUnPublic");
+            try
+            {
+                // Kiểm tra xem có bản ghi nào được chọn không?
+                if (customerIDs != null)
+                {
+
+                    Cms_DictionaryService.Instance.Update("[ID] IN (" + IMEX.Core.Global.Array.ToString(customerIDs) + ")", "@IsActive", 0);
+
+                }
+                else
+                {
+                    return Json("Chưa có bản tin nào được chọn để duyệt");
+                }
+            }
+            catch (Exception ex)
+            {
+                logError.Info("DictionaryUnPublic: " + ex.ToString());
+            }
+
+            return Json("Bỏ duyệt thành công bản ghi có id là: " + IMEX.Core.Global.Array.ToString(customerIDs));
+
+            // Info.  
+            //return View();
+        }
+
+
+        [HttpPost]
+        [AjaxValidateAntiForgeryToken]
+        public ActionResult ListDictionaryDelete(int[] customerIDs)
+        {
+            // Initialization.  
+            AddBreadcrumb("Từ điển bệnh lý", "/Dictionary");
+            AddBreadcrumb("Danh sách bài viết", "/Dictionary/ListDictionaryDelete");
+            try
+            {
+                // Kiểm tra xem có bản ghi nào được chọn không?
+                if (customerIDs != null)
+                {
+                    Cms_DictionaryService.Instance.Delete("[ID] IN (" + IMEX.Core.Global.Array.ToString(customerIDs) + ")");
+                }
+                else
+                {
+                    return Json("Chưa có bản tin nào được chọn để xóa");
+                }
+            }
+            catch (Exception ex)
+            {
+                logError.Info("DictionaryDelete: " + ex.ToString());
+            }
+
+            return Json("Xóa thành công bản ghi có id là: " + IMEX.Core.Global.Array.ToString(customerIDs));
+
+            // Info.  
+            //return View();
+        }
 
         #endregion
 
